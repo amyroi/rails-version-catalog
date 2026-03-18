@@ -45,7 +45,7 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 
 ## Stack
 
-- Rails 8.0.4
+- Rails 8.1.2
 - PostgreSQL
 - Hotwire + Tailwind CSS
 - Solid Queue / Solid Cable / Solid Cache

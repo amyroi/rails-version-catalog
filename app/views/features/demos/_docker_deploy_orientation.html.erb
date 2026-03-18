@@ -1,15 +1,15 @@
 <div class="grid gap-4 md:grid-cols-2">
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
     <h3 class="text-lg font-semibold">Rails 8 generated artifacts</h3>
-    <ul class="mt-4 space-y-3 text-sm text-slate-300">
+    <ul class="mt-4 space-y-3 text-sm text-slate-700">
       <li>Dockerfile: <strong><%= @repo_facts[:dockerfile] ? "present" : "missing" %></strong></li>
       <li>GitHub Actions CI: <strong><%= @repo_facts[:github_actions] ? "present" : "missing" %></strong></li>
       <li>Kamal deploy config: <strong><%= @repo_facts[:kamal_config] ? "present" : "missing" %></strong></li>
     </ul>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <h3 class="text-lg font-semibold">7.2 → 8.0 interpretation</h3>
-    <p class="mt-4 text-sm leading-7 text-slate-300">生成直後から container / deploy 方向のファイルが揃うため、「アプリ本体だけ作って終わり」ではなく production までの道筋が見えやすくなっています。</p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <h3 class="text-lg font-semibold">7.0 → 8.0 interpretation</h3>
+    <p class="mt-4 text-sm leading-7 text-slate-700">生成直後から container / deploy 方向のファイルが揃うため、「アプリ本体だけ作って終わり」ではなく production までの道筋が見えやすくなっています。</p>
   </article>
 </div>

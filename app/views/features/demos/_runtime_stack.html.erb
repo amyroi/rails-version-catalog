@@ -1,36 +1,36 @@
 <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Active Job adapter</p>
-    <p class="mt-2 text-lg font-semibold"><%= @stack_facts[:queue_adapter] %></p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Active Job adapter</p>
+    <p class="mt-2 text-lg font-semibold text-slate-900"><%= @stack_facts[:queue_adapter] %></p>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Cache store</p>
-    <p class="mt-2 text-lg font-semibold"><%= @stack_facts[:cache_store] %></p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Cache store</p>
+    <p class="mt-2 text-lg font-semibold text-slate-900"><%= @stack_facts[:cache_store] %></p>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Action Cable adapter</p>
-    <p class="mt-2 text-lg font-semibold"><%= @stack_facts[:cable_adapter] %></p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Action Cable adapter</p>
+    <p class="mt-2 text-lg font-semibold text-slate-900"><%= @stack_facts[:cable_adapter] %></p>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Auth concern included</p>
-    <p class="mt-2 text-lg font-semibold"><%= @stack_facts[:auth_enabled] ? "Yes" : "No" %></p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Auth concern included</p>
+    <p class="mt-2 text-lg font-semibold text-slate-900"><%= @stack_facts[:auth_enabled] ? "Yes" : "No" %></p>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Queued jobs recorded</p>
-    <p class="mt-2 text-lg font-semibold"><%= @stack_facts[:queue_runs] %></p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Queued jobs recorded</p>
+    <p class="mt-2 text-lg font-semibold text-slate-900"><%= @stack_facts[:queue_runs] %></p>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Live messages recorded</p>
-    <p class="mt-2 text-lg font-semibold"><%= @stack_facts[:live_messages] %></p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Live messages recorded</p>
+    <p class="mt-2 text-lg font-semibold text-slate-900"><%= @stack_facts[:live_messages] %></p>
   </article>
 </div>
 
-<div class="mt-6 rounded-2xl border border-white/10 bg-slate-950/50 p-5 text-sm leading-7 text-slate-300">
+<div class="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-7 text-slate-700">
   この画面は「Rails 8 の default stack が 1 つの app にどう現れるか」を俯瞰するためのハブです。
   認証・Queue・Cable・Cache・Deploy cards を横断して比較してください。
 </div>

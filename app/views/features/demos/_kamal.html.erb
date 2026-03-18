@@ -1,0 +1,18 @@
+<div class="grid gap-4 md:grid-cols-2">
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Current app facts</p>
+    <ul class="mt-4 space-y-3 text-sm text-slate-700">
+      <li>Kamal Gem: <strong><%= @repo_facts[:kamal] ? "present" : "missing" %></strong></li>
+      <li><code>config/deploy.yml</code>: <strong><%= @repo_facts[:kamal_config] ? "present" : "missing" %></strong></li>
+      <li><code>.kamal/secrets</code>: <strong><%= @repo_facts[:kamal_secrets] ? "present" : "missing" %></strong></li>
+    </ul>
+  </article>
+
+  <article class="rounded-2xl border border-slate-200 bg-white p-5">
+    <p class="text-sm text-slate-500">Why it matters</p>
+    <p class="mt-2 text-sm leading-7 text-slate-700">
+      Rails 8.0 で app に近づいた Kamal deploy story は、8.1 では registry-free deploy の導線まで広がります。
+      7.0 時代の「deploy は各チームで別設計」と比べると、比較対象としてかなり扱いやすくなりました。
+    </p>
+  </article>
+</div>

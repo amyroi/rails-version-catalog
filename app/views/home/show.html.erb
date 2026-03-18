@@ -1,88 +1,110 @@
-<% content_for :title, "Rails 8.0 UI Diff Catalog" %>
+<% content_for :title, "Rails Multi-Version UI Diff Catalog" %>
 
 <section class="grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
-  <div class="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 p-8">
-    <p class="mb-3 text-sm uppercase tracking-[0.2em] text-sky-300">Rails 7.2 → 8.0</p>
-    <h1 class="text-4xl font-semibold tracking-tight">UI で確認する Rails 8 の差分カタログ</h1>
-    <p class="mt-4 max-w-3xl text-base leading-7 text-slate-300">
-      Rails 8 の新しい default story を、認証・Queue・Cable・Cache・Deploy の観点から 1 つのアプリで触れます。
-      7.2 との差分を比較表で確認しつつ、主要機能は実際に動かせます。
+  <div class="rounded-3xl border border-sky-100 bg-gradient-to-br from-white via-sky-50 to-indigo-50 p-8 shadow-sm">
+    <p class="mb-3 text-sm uppercase tracking-[0.2em] text-sky-600">Rails multi-version catalog</p>
+    <h1 class="text-4xl font-semibold tracking-tight text-slate-900">Rails 7.0 / 8.0 / 8.1.2 を UI で比較するカタログ</h1>
+    <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600">
+      この app は単一の before / after 比較ではなく、複数メジャーバージョンを横並びで比較できる構造を目指しています。
+      初期対応は Rails 7.0 / 8.0 / 8.1.2 で、将来 9.x を追加しやすいデータ構造に寄せています。
     </p>
 
+    <div class="mt-6 flex flex-wrap gap-2">
+      <% @versions.each do |version| %>
+        <span class="<%= version_chip_classes(version, active: version.latest?) %>">
+          <%= version.label %>
+        </span>
+      <% end %>
+    </div>
+
     <div class="mt-8 flex flex-wrap gap-3">
-      <%= link_to "機能一覧を見る", features_path, class: "rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-200" %>
-      <%= link_to "Authentication demo", feature_path("authentication-generator"), class: "rounded-full border border-white/15 px-5 py-3 text-sm font-semibold hover:bg-white/5" %>
-      <%= link_to "Solid Queue demo", feature_path("solid-queue"), class: "rounded-full border border-white/15 px-5 py-3 text-sm font-semibold hover:bg-white/5" %>
+      <%= link_to "機能一覧を見る", features_path(compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-700" %>
+      <%= link_to "Authentication demo", feature_path("authentication-generator", compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
+      <%= link_to "Active Job Continuations", feature_path("active-job-continuations", compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-100" %>
     </div>
   </div>
 
   <aside class="grid gap-4">
-    <div class="rounded-3xl border border-white/10 bg-slate-900 p-6">
-      <p class="text-sm text-slate-400">Catalog coverage</p>
+    <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <p class="text-sm text-slate-500">Catalog coverage</p>
       <dl class="mt-4 space-y-4">
         <div class="flex items-center justify-between">
-          <dt class="text-slate-300">Runtime demos</dt>
-          <dd class="text-2xl font-semibold"><%= @runtime_features.size %></dd>
+          <dt class="text-slate-600">Runtime demos</dt>
+          <dd class="text-2xl font-semibold text-slate-900"><%= @runtime_features.size %></dd>
         </div>
         <div class="flex items-center justify-between">
-          <dt class="text-slate-300">Comparison cards</dt>
-          <dd class="text-2xl font-semibold"><%= @platform_features.size %></dd>
+          <dt class="text-slate-600">Comparison cards</dt>
+          <dd class="text-2xl font-semibold text-slate-900"><%= @platform_features.size %></dd>
         </div>
         <div class="flex items-center justify-between">
-          <dt class="text-slate-300">Queued examples</dt>
-          <dd class="text-2xl font-semibold"><%= @queue_runs_count %></dd>
+          <dt class="text-slate-600">Supported versions</dt>
+          <dd class="text-2xl font-semibold text-slate-900"><%= @versions.size %></dd>
         </div>
         <div class="flex items-center justify-between">
-          <dt class="text-slate-300">Live messages</dt>
-          <dd class="text-2xl font-semibold"><%= @demo_messages_count %></dd>
+          <dt class="text-slate-600">Queued examples</dt>
+          <dd class="text-2xl font-semibold text-slate-900"><%= @queue_runs_count %></dd>
+        </div>
+        <div class="flex items-center justify-between">
+          <dt class="text-slate-600">Live messages</dt>
+          <dd class="text-2xl font-semibold text-slate-900"><%= @demo_messages_count %></dd>
         </div>
       </dl>
     </div>
 
-    <div class="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-6">
-      <p class="text-sm font-semibold text-emerald-200">Demo account</p>
-      <p class="mt-2 text-sm text-emerald-50">email: <code>demo@example.com</code></p>
-      <p class="mt-1 text-sm text-emerald-50">password: <code>password123</code></p>
+    <div class="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-sm">
+      <p class="text-sm font-semibold text-emerald-700">Demo account</p>
+      <p class="mt-2 text-sm text-emerald-900">email: <code>demo@example.com</code></p>
+      <p class="mt-1 text-sm text-emerald-900">password: <code>password123</code></p>
     </div>
   </aside>
 </section>
 
 <section class="mt-10 grid gap-6 lg:grid-cols-2">
-  <div class="rounded-3xl border border-white/10 bg-slate-900 p-6">
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-4 flex items-center justify-between">
-      <h2 class="text-xl font-semibold">Runtime demos</h2>
-      <span class="text-sm text-slate-400">6 cards</span>
+      <h2 class="text-xl font-semibold text-slate-900">Runtime demos</h2>
+      <span class="text-sm text-slate-500"><%= @runtime_features.size %> cards</span>
     </div>
 
     <div class="space-y-4">
       <% @runtime_features.each do |feature| %>
-        <article class="rounded-2xl border border-white/10 bg-slate-950/60 p-5">
+        <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
           <div class="flex items-start justify-between gap-4">
             <div>
               <span class="<%= feature_badge_classes(feature) %>"><%= feature.category_label %></span>
-              <h3 class="mt-3 text-lg font-semibold"><%= feature.title %></h3>
-              <p class="mt-2 text-sm leading-6 text-slate-400"><%= feature.summary %></p>
+              <h3 class="mt-3 text-lg font-semibold text-slate-900"><%= feature.title %></h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600"><%= feature.summary %></p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <% feature.available_versions.each do |version| %>
+                  <span class="<%= version_chip_classes(version, active: version.latest?) %>"><%= version.label %></span>
+                <% end %>
+              </div>
             </div>
-            <%= link_to "Open", feature_path(feature.slug), class: "rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/5" %>
+            <%= link_to "Open", feature_path(feature.slug, compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
           </div>
         </article>
       <% end %>
     </div>
   </div>
 
-  <div class="rounded-3xl border border-white/10 bg-slate-900 p-6">
+  <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-4 flex items-center justify-between">
-      <h2 class="text-xl font-semibold">Platform / defaults</h2>
-      <span class="text-sm text-slate-400">3 cards</span>
+      <h2 class="text-xl font-semibold text-slate-900">Platform / defaults</h2>
+      <span class="text-sm text-slate-500"><%= @platform_features.size %> cards</span>
     </div>
 
     <div class="space-y-4">
       <% @platform_features.each do |feature| %>
-        <article class="rounded-2xl border border-white/10 bg-slate-950/60 p-5">
+        <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
           <span class="<%= feature_badge_classes(feature) %>"><%= feature.category_label %></span>
-          <h3 class="mt-3 text-lg font-semibold"><%= feature.title %></h3>
-          <p class="mt-2 text-sm leading-6 text-slate-400"><%= feature.summary %></p>
-          <%= link_to "Compare", feature_path(feature.slug), class: "mt-4 inline-flex rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/5" %>
+          <h3 class="mt-3 text-lg font-semibold text-slate-900"><%= feature.title %></h3>
+          <p class="mt-2 text-sm leading-6 text-slate-600"><%= feature.summary %></p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <% feature.available_versions.each do |version| %>
+              <span class="<%= version_chip_classes(version, active: version.latest?) %>"><%= version.label %></span>
+            <% end %>
+          </div>
+          <%= link_to "Compare", feature_path(feature.slug, compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "mt-4 inline-flex rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
         </article>
       <% end %>
     </div>

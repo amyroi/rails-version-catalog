@@ -1,18 +1,47 @@
-# Rails8 Feature Catalog
+# Rails Multi-Version Feature Catalog
 
-Rails 7.2 → Rails 8.0 の差分や新機能を **UI で確認できる Rails 8.0 app** です。
+Rails の**複数メジャーバージョン比較**を UI で確認できるカタログ app です。  
+現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2** です。
+
+## 目的 ✨
+
+- 単一の before / after ではなく、**複数 version を横並びで比較**する
+- runtime demo と comparison card を分けて、**触って理解**しやすくする
+- 将来 **Rails 9.0 / 9.2** などが出たときに、**データ追加中心で拡張**しやすくする
 
 ## What you can see
+
+### Runtime demos
 
 - Authentication generator
 - Solid Queue
 - Solid Cable
 - Solid Cache
 - Runtime stack overview
-- Docker / deploy orientation
+
+### Comparison cards
+
+- Active Job Continuations
+- Structured Event Reporting
+- Markdown Rendering
+- Local CI
+- Command-line Credentials Fetching
+- Deprecated Associations
 - Propshaft
-- Kamal 2 integration
+- Kamal deployments
 - Thruster / production defaults
+
+## Architecture highlights 🛠️
+
+- `VersionCatalog`
+  - 比較対象 version の metadata を一元管理
+  - release date / label / official source / latest status を保持
+- `FeatureCatalog`
+  - feature ごとの version matrix を管理
+  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` で拡張可能
+- UI
+  - `compare` query param で表示対象 version を切替
+  - 詳細画面は **multi-version matrix** で表示
 
 ## Stack
 
@@ -21,6 +50,9 @@ Rails 7.2 → Rails 8.0 の差分や新機能を **UI で確認できる Rails 8
 - Hotwire + Tailwind CSS
 - Solid Queue / Solid Cable / Solid Cache
 - Minitest
+
+> 補足: app runtime は現在この repo の Rails version で動いています。  
+> 比較データは **Rails 7.0 / 8.0 / 8.1.2** の公式情報を基準に整理しています。
 
 ## Local setup
 
@@ -44,10 +76,32 @@ bin/dev
 - email: `demo@example.com`
 - password: `password123`
 
+## Add a future version
+
+将来 `Rails 9.0` や `Rails 9.2` を足すときは、基本的に次を更新します。
+
+1. `app/services/version_catalog.rb`
+   - version metadata を追加
+2. `app/services/feature_catalog.rb`
+   - 各 feature の `notes_by_version` / `highlights_by_version` を追加
+3. 必要なら demo / comparison partial を追加
+
+大きな 2カラム UI 改修をせず、**version metadata と feature data の追加**で広げる前提です。
+
+## Sources
+
+- Rails 7.0 Release Notes  
+  https://guides.rubyonrails.org/7_0_release_notes.html
+- Rails 8.0 Release Notes  
+  https://guides.rubyonrails.org/8_0_release_notes.html
+- Rails 8.1 Release Notes  
+  https://guides.rubyonrails.org/8_1_release_notes.html
+- Upgrading Ruby on Rails  
+  https://guides.rubyonrails.org/upgrading_ruby_on_rails.html
+
 ## Notes
 
-- The catalog uses official Rails 8 release / upgrading information as the comparison baseline:
-  - https://guides.rubyonrails.org/8_0_release_notes.html
-  - https://guides.rubyonrails.org/upgrading_ruby_on_rails.html
-- `config/database.yml` expects PostgreSQL credentials via `POSTGRES_USER` / `POSTGRES_PASSWORD` or `PGUSER` / `PGPASSWORD`.
+- `config/database.yml` expects PostgreSQL credentials via:
+  - `POSTGRES_USER` / `POSTGRES_PASSWORD`
+  - or `PGUSER` / `PGPASSWORD`
 - You can also provide a full `DATABASE_URL`.

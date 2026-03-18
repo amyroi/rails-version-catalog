@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Rails8 Feature Catalog" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-slate-950 text-slate-100">
+    <header class="border-b border-white/10 bg-slate-950/90 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div>
+          <%= link_to "Rails8 Feature Catalog", root_path, class: "text-lg font-semibold tracking-tight" %>
+          <p class="text-sm text-slate-400">Rails 7.2 → 8.0 differences, explained with UI demos.</p>
+        </div>
+
+        <nav class="flex items-center gap-3 text-sm">
+          <%= link_to "Overview", root_path, class: "rounded-full border border-white/10 px-4 py-2 hover:bg-white/5" %>
+          <%= link_to "All Features", features_path, class: "rounded-full border border-white/10 px-4 py-2 hover:bg-white/5" %>
+          <% if Current.session %>
+            <%= link_to "Auth Lab", auth_lab_path, class: "rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-emerald-200 hover:bg-emerald-400/20" %>
+            <%= button_to "Sign out", session_path, method: :delete, class: "rounded-full border border-rose-400/30 bg-rose-400/10 px-4 py-2 text-rose-200 hover:bg-rose-400/20" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "rounded-full border border-blue-400/30 bg-blue-400/10 px-4 py-2 text-blue-200 hover:bg-blue-400/20" %>
+            <%= link_to "Sign up", new_user_path, class: "rounded-full border border-white/10 px-4 py-2 hover:bg-white/5" %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 py-8">
+      <% if flash.any? %>
+        <div class="mb-6 space-y-3">
+          <% flash.each do |type, message| %>
+            <div class="rounded-2xl border px-4 py-3 text-sm <%= type.to_s == "notice" ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100" : "border-rose-400/30 bg-rose-400/10 text-rose-100" %>">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+<div class="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+  <div class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
+    <h3 class="text-lg font-semibold">Enqueue a durable job</h3>
+    <p class="mt-2 text-sm leading-6 text-slate-400">`Procfile.dev` に `jobs: bin/jobs start` を入れているため、ローカル起動時に worker も立ち上がります。</p>
+
+    <%= form_with model: @queue_run, class: "mt-5 space-y-4" do |form| %>
+      <div>
+        <%= form.label :input, "Job input", class: "text-sm text-slate-300" %>
+        <%= form.text_field :input, class: "mt-2 w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-100" %>
+      </div>
+
+      <%= form.submit "Queue with Solid Queue", class: "rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-200" %>
+    <% end %>
+
+    <div class="mt-5 rounded-2xl border border-white/10 p-4 text-sm text-slate-300">
+      <p class="font-semibold text-white">What to look for</p>
+      <ul class="mt-2 space-y-2">
+        <li>• click enqueue</li>
+        <li>• row appears as <code>queued</code> / <code>working</code></li>
+        <li>• finishes as <code>completed</code> with durable output</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-semibold">Recent jobs</h3>
+      <span class="text-sm text-slate-400"><%= @queue_runs.size %> shown</span>
+    </div>
+
+    <%= turbo_stream_from "solid_queue_runs" %>
+    <div id="solid_queue_runs" class="mt-5 space-y-3">
+      <%= render @queue_runs %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<article id="<%= dom_id(demo_message) %>" class="rounded-2xl border border-white/10 bg-slate-900 p-4">
+  <div class="flex items-center justify-between gap-4">
+    <p class="text-sm font-semibold text-slate-100"><%= demo_message.author %></p>
+    <p class="text-xs text-slate-500"><%= demo_message.created_at.strftime("%H:%M:%S") %></p>
+  </div>
+  <p class="mt-2 text-sm leading-6 text-slate-300"><%= demo_message.body %></p>
+</article>

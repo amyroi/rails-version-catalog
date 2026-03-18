@@ -1,0 +1,43 @@
+<% content_for :title, "Feature Index" %>
+
+<div class="mb-8">
+  <p class="text-sm uppercase tracking-[0.2em] text-sky-300">Feature Index</p>
+  <h1 class="mt-3 text-3xl font-semibold tracking-tight">Rails 8.0 の差分をカテゴリ別に一覧表示</h1>
+  <p class="mt-3 max-w-3xl text-slate-400">各カードから、7.2 と 8.0 の違い・現在の app 状態・操作デモへ移動できます。</p>
+</div>
+
+<section class="grid gap-8 lg:grid-cols-2">
+  <div class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Runtime demos</h2>
+      <span class="text-sm text-slate-400"><%= @runtime_features.size %> entries</span>
+    </div>
+
+    <% @runtime_features.each do |feature| %>
+      <article class="rounded-3xl border border-white/10 bg-slate-900 p-6">
+        <span class="<%= feature_badge_classes(feature) %>"><%= feature.category_label %></span>
+        <h3 class="mt-4 text-xl font-semibold"><%= feature.title %></h3>
+        <p class="mt-3 text-sm leading-6 text-slate-400"><%= feature.summary %></p>
+        <p class="mt-4 rounded-2xl border border-white/10 bg-slate-950/50 p-4 text-sm text-slate-300"><strong class="text-white">Rails 8 focus:</strong> <%= feature.highlight %></p>
+        <%= link_to "Open feature", feature_path(feature.slug), class: "mt-5 inline-flex rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/5" %>
+      </article>
+    <% end %>
+  </div>
+
+  <div class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-semibold">Platform / defaults</h2>
+      <span class="text-sm text-slate-400"><%= @platform_features.size %> entries</span>
+    </div>
+
+    <% @platform_features.each do |feature| %>
+      <article class="rounded-3xl border border-white/10 bg-slate-900 p-6">
+        <span class="<%= feature_badge_classes(feature) %>"><%= feature.category_label %></span>
+        <h3 class="mt-4 text-xl font-semibold"><%= feature.title %></h3>
+        <p class="mt-3 text-sm leading-6 text-slate-400"><%= feature.summary %></p>
+        <p class="mt-4 rounded-2xl border border-white/10 bg-slate-950/50 p-4 text-sm text-slate-300"><strong class="text-white">Rails 8 focus:</strong> <%= feature.highlight %></p>
+        <%= link_to "Open comparison", feature_path(feature.slug), class: "mt-5 inline-flex rounded-full border border-white/10 px-4 py-2 text-sm hover:bg-white/5" %>
+      </article>
+    <% end %>
+  </div>
+</section>

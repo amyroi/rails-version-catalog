@@ -1,0 +1,12 @@
+<div class="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-slate-900 p-8">
+  <h1 class="text-3xl font-semibold tracking-tight">Forgot your password?</h1>
+
+  <%= form_with url: passwords_path, class: "mt-8 space-y-5" do |form| %>
+    <div>
+      <%= form.label :email_address, class: "text-sm text-slate-300" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: "mt-2 w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-slate-100" %>
+    </div>
+
+    <%= form.submit "Email reset instructions", class: "rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-slate-200" %>
+  <% end %>
+</div>

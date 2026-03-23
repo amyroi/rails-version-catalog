@@ -19,7 +19,10 @@
 <section class="grid gap-8 lg:grid-cols-2">
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h2 class="text-xl font-semibold">Runtime demos</h2>
+      <div>
+        <h2 class="text-xl font-semibold">Interactive demos</h2>
+        <p class="mt-1 text-sm text-slate-500">Rails 8.1.2 runtime 上で実際に触って確認できます。</p>
+      </div>
       <span class="text-sm text-slate-500"><%= @runtime_features.size %> entries</span>
     </div>
 
@@ -41,7 +44,10 @@
 
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h2 class="text-xl font-semibold">Platform / defaults</h2>
+      <div>
+        <h2 class="text-xl font-semibold">Config / platform differences</h2>
+        <p class="mt-1 text-sm text-slate-500">Rails 7.0 / 8.0 / 8.1.2 の比較を読むためのカードです。</p>
+      </div>
       <span class="text-sm text-slate-500"><%= @platform_features.size %> entries</span>
     </div>
 

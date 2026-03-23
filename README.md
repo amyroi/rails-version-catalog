@@ -2,16 +2,39 @@
 
 Rails の**複数メジャーバージョン比較**を UI で確認できるカタログ app です。  
 現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2** です。
+この repo は、**比較情報を増やしながら将来の Rails 9.x 追加にも対応しやすい構造**を目指しています。
 
 ## 目的 ✨
 
 - 単一の before / after ではなく、**複数 version を横並びで比較**する
-- runtime demo と comparison card を分けて、**触って理解**しやすくする
+- **live demo** と **version comparison** を分けて、触る情報と読む情報を整理する
 - 将来 **Rails 9.0 / 9.2** などが出たときに、**データ追加中心で拡張**しやすくする
+
+## どういう構成か
+
+### Live demo
+
+- 現在の **Rails 8.1.2 runtime** で動く実装を触って確認する領域です
+- Authentication / Solid Queue / Solid Cable / Solid Cache などの実動作を見せます
+- ここは **「今この repo で動いているもの」** を見るための panel です
+
+### Version comparison
+
+- Rails 7.0 / 8.0 / 8.1.2 の違いを横並びで読むための領域です
+- 各 feature ごとに
+  - 何が変わったか
+  - 何のファイルや config に影響するか
+  - upgrade 時の注意点は何か
+  を整理していきます
+
+### Comparison card
+
+- Propshaft / Kamal / Thruster のような **platform / defaults** の違いを読むためのカードです
+- 実装デモではなく、**導入判断や upgrade 判断の材料**を置く場所です
 
 ## What you can see
 
-### Runtime demos
+### Interactive demos
 
 - Authentication generator
 - Solid Queue
@@ -19,7 +42,7 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 - Solid Cache
 - Runtime stack overview
 
-### Comparison cards
+### Config / platform differences
 
 - Active Job Continuations
 - Structured Event Reporting
@@ -38,10 +61,12 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
   - release date / label / official source / latest status を保持
 - `FeatureCatalog`
   - feature ごとの version matrix を管理
-  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` で拡張可能
+  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` に加えて、
+    `status_by_version` / `files_by_version` / `upgrade_notes_by_version` などで拡張可能
 - UI
   - `compare` query param で表示対象 version を切替
   - 詳細画面は **multi-version matrix** で表示
+  - live demo panel は current runtime に紐づく
 
 ## Stack
 
@@ -52,7 +77,7 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 - Minitest
 
 > 補足: app runtime は現在この repo の Rails version で動いています。  
-> 比較データは **Rails 7.0 / 8.0 / 8.1.2** の公式情報を基準に整理しています。
+> live demo は **Rails 8.1.2 の実装**、version comparison は **Rails 7.0 / 8.0 / 8.1.2 の比較データ** です。
 
 ## Local setup
 
@@ -83,8 +108,10 @@ bin/dev
 1. `app/services/version_catalog.rb`
    - version metadata を追加
 2. `app/services/feature_catalog.rb`
-   - 各 feature の `notes_by_version` / `highlights_by_version` を追加
+   - 各 feature の `notes_by_version` / `highlights_by_version`
+   - 必要に応じて `status_by_version` / `files_by_version` / `upgrade_notes_by_version` を追加
 3. 必要なら demo / comparison partial を追加
+4. UI 上の matrix / copy を version 追加に合わせて調整する
 
 大きな 2カラム UI 改修をせず、**version metadata と feature data の追加**で広げる前提です。
 

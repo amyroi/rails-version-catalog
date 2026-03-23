@@ -62,7 +62,9 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 cp .env.example .env
 docker compose up -d db
 
+set -a
 source .env
+set +a
 
 bin/rails db:prepare
 bin/rails db:seed

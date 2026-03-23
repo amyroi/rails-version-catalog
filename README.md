@@ -56,6 +56,23 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 
 ## Local setup
 
+### Option A: project-local Docker PostgreSQL
+
+```bash
+cp .env.example .env
+docker compose up -d db
+
+set -a
+source .env
+set +a
+
+bin/rails db:prepare
+bin/rails db:seed
+bin/dev
+```
+
+### Option B: external/local PostgreSQL
+
 ```bash
 bundle install
 export PGUSER=your_postgres_user
@@ -102,6 +119,8 @@ bin/dev
 ## Notes
 
 - `config/database.yml` expects PostgreSQL credentials via:
+  - `POSTGRES_HOST` / `POSTGRES_PORT`
+  - or `PGHOST` / `PGPORT`
   - `POSTGRES_USER` / `POSTGRES_PASSWORD`
   - or `PGUSER` / `PGPASSWORD`
 - You can also provide a full `DATABASE_URL`.

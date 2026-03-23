@@ -5,8 +5,8 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    assert_includes response.body, "Rails 8.0 UI Diff Catalog"
-    assert_includes response.body, "Solid Queue demo"
+    assert_includes response.body, "Rails Multi-Version UI Diff Catalog"
+    assert_includes response.body, "Rails 7.0 / 8.0 / 8.1.2 を UI で比較するカタログ"
   end
 
   test "feature detail renders" do
@@ -38,5 +38,14 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to feature_path("solid-queue")
+  end
+
+  test "comparison feature renders multi-version matrix" do
+    get feature_path("active-job-continuations"), params: { compare: "7.0,8.0,8.1.2" }
+
+    assert_response :success
+    assert_includes response.body, "Version comparison matrix"
+    assert_includes response.body, "Rails 8.1.2"
+    assert_includes response.body, "ActiveJob::Continuable"
   end
 end

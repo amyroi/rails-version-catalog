@@ -1,15 +1,15 @@
 <div class="grid gap-4 md:grid-cols-2">
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Current app facts</p>
-    <ul class="mt-4 space-y-3 text-sm text-slate-300">
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Current app facts</p>
+    <ul class="mt-4 space-y-3 text-sm text-slate-700">
       <li>Kamal Gem: <strong><%= @repo_facts[:kamal] ? "present" : "missing" %></strong></li>
       <li>config/deploy.yml: <strong><%= @repo_facts[:kamal_config] ? "present" : "missing" %></strong></li>
       <li>.kamal/secrets: <strong><%= @repo_facts[:kamal_secrets] ? "present" : "missing" %></strong></li>
     </ul>
   </article>
 
-  <article class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
-    <p class="text-sm text-slate-400">Meaning for Rails 8</p>
-    <p class="mt-2 text-sm leading-7 text-slate-300">deploy 導線が app テンプレートに近づいたことで、self-hosted production を前提にした比較もしやすくなりました。</p>
+  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500">Meaning for Rails 8</p>
+    <p class="mt-2 text-sm leading-7 text-slate-700">deploy 導線が app テンプレートに近づいたことで、self-hosted production を前提にした比較もしやすくなりました。</p>
   </article>
 </div>

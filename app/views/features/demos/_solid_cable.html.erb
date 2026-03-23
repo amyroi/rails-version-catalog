@@ -1,25 +1,25 @@
 <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-  <div class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
+  <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
     <h3 class="text-lg font-semibold">Broadcast a message</h3>
-    <p class="mt-2 text-sm leading-6 text-slate-400">別タブを開いたまま投稿すると、Turbo Stream 経由でメッセージ一覧が同期されます。</p>
+    <p class="mt-2 text-sm leading-6 text-slate-600">別タブを開いたまま投稿すると、Turbo Stream 経由でメッセージ一覧が同期されます。</p>
 
     <%= form_with model: @demo_message, class: "mt-5 space-y-4" do |form| %>
       <div>
-        <%= form.label :author, class: "text-sm text-slate-300" %>
-        <%= form.text_field :author, class: "mt-2 w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-100" %>
+        <%= form.label :author, class: "text-sm text-slate-600" %>
+        <%= form.text_field :author, class: "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900" %>
       </div>
       <div>
-        <%= form.label :body, class: "text-sm text-slate-300" %>
-        <%= form.text_area :body, rows: 4, class: "mt-2 w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-slate-100" %>
+        <%= form.label :body, class: "text-sm text-slate-600" %>
+        <%= form.text_area :body, rows: 4, class: "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900" %>
       </div>
-      <%= form.submit "Broadcast with Solid Cable", class: "rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-slate-200" %>
+      <%= form.submit "Broadcast with Solid Cable", class: "rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700" %>
     <% end %>
   </div>
 
-  <div class="rounded-2xl border border-white/10 bg-slate-950/50 p-5">
+  <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
     <div class="flex items-center justify-between">
       <h3 class="text-lg font-semibold">Live timeline</h3>
-      <span class="text-sm text-slate-400">DB-backed cable demo</span>
+      <span class="text-sm text-slate-500">DB-backed cable demo</span>
     </div>
 
     <%= turbo_stream_from "solid_cable_messages" %>

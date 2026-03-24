@@ -62,14 +62,20 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 cp .env.example .env
 docker compose up -d db
 
-set -a
-source .env
-set +a
-
 bin/rails db:prepare
 bin/rails db:seed
+bin/rails tailwindcss:build
 bin/dev
 ```
+
+`bin/dev` は `web` / `jobs` を起動します。  
+`bin/dev` は `.env` を自動読込します。
+
+> Note:
+> 一部の macOS 環境では `tailwindcss:watch` が
+> `Error starting FSEvents stream` で停止します。
+> この repo では `bin/dev` に CSS watcher を含めず、
+> CSS 変更時は `bin/rails tailwindcss:build` を実行する運用にしています。
 
 ### Option B: external/local PostgreSQL
 
@@ -79,14 +85,12 @@ export PGUSER=your_postgres_user
 export PGPASSWORD=your_postgres_password
 bin/rails db:prepare
 bin/rails db:seed
+bin/rails tailwindcss:build
 bin/dev
 ```
 
-`Procfile.dev` starts:
-
-- web
-- Tailwind watcher
-- Solid Queue worker
+`bin/dev` は `web` / `jobs` を起動します。  
+外部 DB を使う場合は、必要な環境変数を shell 側で export してください。
 
 ## Demo account
 
@@ -97,9 +101,9 @@ bin/dev
 
 将来 `Rails 9.0` や `Rails 9.2` を足すときは、基本的に次を更新します。
 
-1. `app/services/version_catalog.rb`
+1. `app/models/version_catalog.rb`
    - version metadata を追加
-2. `app/services/feature_catalog.rb`
+2. `app/models/feature_catalog.rb`
    - 各 feature の `notes_by_version` / `highlights_by_version` を追加
 3. 必要なら demo / comparison partial を追加
 

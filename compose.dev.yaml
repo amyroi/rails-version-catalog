@@ -42,7 +42,7 @@ services:
       - rails8_feature_catalog_bundle:/usr/local/bundle
     stdin_open: true
     tty: true
-    command: bash -lc "bundle check || bundle install && bin/rails db:prepare && bin/dev"
+    command: bash -lc "bundle check || bundle install && bin/rails db:prepare && bin/rails tailwindcss:build && bin/dev"
 
 volumes:
   rails8_feature_catalog_dev_pgdata:

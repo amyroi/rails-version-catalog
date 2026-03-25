@@ -2,12 +2,12 @@ class CacheDemosController < ApplicationController
   allow_unauthenticated_access
 
   def refresh
-    CacheDemoProbe.snapshot(force_refresh: true)
+    CacheDemo::Refresh.call(force_refresh: true)
     redirect_to feature_path("solid-cache"), notice: "Cache miss triggered and payload regenerated."
   end
 
   def destroy
-    CacheDemoProbe.clear!
+    CacheDemo::CacheAdapter.delete(CacheDemo::Refresh::KEY)
     redirect_to feature_path("solid-cache"), notice: "Cache entry cleared."
   end
 end

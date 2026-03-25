@@ -31,7 +31,7 @@ class FeaturesController < ApplicationController
         @demo_messages = DemoMessage.recent.limit(12)
         @demo_message = DemoMessage.new(author: Current.session&.user&.email_address || "Guest")
       when "solid-cache"
-        @cache_snapshot = CacheDemoProbe.snapshot
+        @cache_snapshot = CacheDemo::Snapshot.call
       when "runtime-stack"
         @stack_facts = stack_facts
       when "propshaft", "kamal", "thruster", "local-ci", "credentials-fetching"

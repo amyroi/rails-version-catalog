@@ -3,6 +3,10 @@ module ApplicationHelper
     Array(keys).join(",")
   end
 
+  def catalog_version_heading(keys = VersionCatalog.default_compare_keys)
+    VersionCatalog.normalize(keys).map { |key| VersionCatalog.fetch(key)&.label }.compact.join(" / ")
+  end
+
   def version_chip_classes(version, active: false)
     base = "inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold transition"
     tone = if active

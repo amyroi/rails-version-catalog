@@ -26,7 +26,7 @@ class FeaturesController < ApplicationController
       case @feature.slug
       when "solid-queue"
         @queue_runs = QueueRun.recent.limit(8)
-        @queue_run = QueueRun.new(input: "Compare Rails 7.0, 8.0, and 8.1.2 queue defaults")
+        @queue_run = QueueRun.new(input: "Compare queue defaults across the selected Rails versions")
       when "solid-cable"
         @demo_messages = DemoMessage.recent.limit(12)
         @demo_message = DemoMessage.new(author: Current.session&.user&.email_address || "Guest")

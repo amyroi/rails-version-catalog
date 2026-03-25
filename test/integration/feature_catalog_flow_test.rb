@@ -6,7 +6,7 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes response.body, "Rails Multi-Version UI Diff Catalog"
-    assert_includes response.body, "Rails 7.0 / 8.0 / 8.1.2 を UI で比較するカタログ"
+    assert_includes response.body, "Rails 7.0 / Rails 8.0 / Rails 8.1.2 を UI で比較するカタログ"
   end
 
   test "feature detail renders" do

@@ -3,6 +3,12 @@ class QueueRunsController < ApplicationController
 
   def create
     queue_run = QueueRun.create!(queue_run_params)
+    queue_run.broadcast_prepend_later_to(
+      "solid_queue_runs",
+      target: "solid_queue_runs",
+      partial: "queue_runs/queue_run",
+      locals: { queue_run: queue_run }
+    )
     QueueRunJob.perform_later(queue_run.id)
 
     redirect_to feature_path("solid-queue"), notice: "Queued a Solid Queue demo job."

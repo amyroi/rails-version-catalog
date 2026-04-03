@@ -6,7 +6,7 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes response.body, "Rails Multi-Version UI Diff Catalog"
-    assert_includes response.body, "Rails 7.0 / 8.0 / 8.1.2 を UI で比較するカタログ"
+    assert_includes response.body, "Rails 7.0 / Rails 8.0 / Rails 8.1.2 を UI で比較するカタログ"
     assert_includes response.body, "Interactive demos"
     assert_includes response.body, "Config / platform differences"
   end
@@ -40,6 +40,27 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to feature_path("solid-queue")
+  end
+
+  test "signup failure re-renders with validation message" do
+    post users_path, params: {
+      user: {
+        email_address: "",
+        password: "password123",
+        password_confirmation: "password123"
+      }
+    }
+
+    assert_response :unprocessable_entity
+    assert_includes response.body, "Email address can&#39;t be blank"
+  end
+
+  test "invalid password reset token redirects to request form" do
+    get edit_password_path(token: "invalid-token")
+
+    assert_redirected_to new_password_path
+    follow_redirect!
+    assert_includes response.body, "Password reset link is invalid or has expired."
   end
 
   test "comparison feature renders multi-version matrix" do

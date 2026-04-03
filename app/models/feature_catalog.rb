@@ -1,232 +1,20 @@
 class FeatureCatalog
+  DATA_PATH = Rails.root.join("config/catalog/features.yml").freeze
+  REQUIRED_KEYS = %w[
+    slug
+    category
+    demo_type
+    title
+    summary
+    notes_by_version
+    highlights_by_version
+    source_links_by_version
+  ].freeze
+  ALLOWED_DEMO_TYPES = %w[runtime_demo comparison_card].freeze
+
   class << self
     def all
-      @all ||= [
-        runtime_feature(
-          slug: "authentication-generator",
-          title: "Authentication generator",
-          summary: "Rails の標準認証 story がどう変わったかを、サインアップ・ログイン・保護ページで確認できます。",
-          notes_by_version: {
-            "7.0" => "標準認証 generator は未同梱で、Devise などの外部ライブラリか手作業実装に寄りがちでした。",
-            "8.0" => "generate authentication で Users / Sessions / Password reset の土台をすぐに作れるようになりました。",
-            "8.1.2" => "認証 generator は Rails 8 系の標準導線として定着し、Current session・rate limit・password reset と一緒に学びやすくなっています."
-          },
-          highlights_by_version: {
-            "7.0" => "No first-party auth generator",
-            "8.0" => "First-party authentication generator",
-            "8.1.2" => "Stable Rails 8 auth baseline"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        runtime_feature(
-          slug: "solid-queue",
-          title: "Solid Queue",
-          summary: "Active Job backend の変化を、enqueue と状態遷移の UI で確認できます。",
-          notes_by_version: {
-            "7.0" => "デフォルトは in-process / non-durable backend で、永続 queue は別途選定が必要でした。",
-            "8.0" => "Solid Queue が production default story に入り、DB-backed queue を採用しやすくなりました。",
-            "8.1.2" => "Continuations と組み合わせやすい durable backend として、Rails 8.1 系の新機能の土台にもなります。"
-          },
-          highlights_by_version: {
-            "7.0" => "Async / external queue choice",
-            "8.0" => "Solid Queue arrives",
-            "8.1.2" => "Continuations-ready durable queue"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        runtime_feature(
-          slug: "solid-cable",
-          title: "Solid Cable",
-          summary: "Turbo Stream と DB-backed cable story の違いを、ライブ更新 UI で確認できます。",
-          notes_by_version: {
-            "7.0" => "Action Cable は Redis 構成が一般的で、DB-backed cable は標準の主流ではありませんでした。",
-            "8.0" => "Solid Cable が Rails 8 の default stack に入り、DB-backed realtime の選択肢が近くなりました。",
-            "8.1.2" => "Solid 系 stack とあわせて、single-app で queue / cache / cable を揃えやすい構成が続いています。"
-          },
-          highlights_by_version: {
-            "7.0" => "Redis-first realtime setups",
-            "8.0" => "Solid Cable default story",
-            "8.1.2" => "DB-backed realtime remains first-class"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        runtime_feature(
-          slug: "solid-cache",
-          title: "Solid Cache",
-          summary: "Cache hit / miss を通じて、durable cache story の違いを比較できます。",
-          notes_by_version: {
-            "7.0" => "memory_store や Redis を環境ごとに選ぶことが多く、durable cache は標準同梱ではありませんでした。",
-            "8.0" => "Solid Cache が標準 stack に入り、DB-backed cache を採用しやすくなりました。",
-            "8.1.2" => "Solid Cache は Rails 8.1 系でも durable stack の一部として継続し、queue / cable と一緒に理解しやすくなっています."
-          },
-          highlights_by_version: {
-            "7.0" => "Choose cache backend yourself",
-            "8.0" => "Solid Cache arrives",
-            "8.1.2" => "Durable stack remains cohesive"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        runtime_feature(
-          slug: "runtime-stack",
-          title: "Runtime stack overview",
-          summary: "現行 app の runtime facts を見ながら、Rails の標準 stack がどう進化したかを俯瞰できます。",
-          notes_by_version: {
-            "7.0" => "Hotwire は大きなテーマでしたが、queue / cache / cable / deploy は個別選定の色が強めでした。",
-            "8.0" => "Solid Queue / Cache / Cable、Kamal、Thruster などで default story が一段まとまりました。",
-            "8.1.2" => "8.1 では Continuations・Structured Event Reporting・Local CI など、運用と開発体験の story がさらに広がりました。"
-          },
-          highlights_by_version: {
-            "7.0" => "Hotwire era baseline",
-            "8.0" => "Default stack gets cohesive",
-            "8.1.2" => "Operational developer experience expands"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "active-job-continuations",
-          title: "Active Job Continuations",
-          summary: "長い job を step 単位で継続できる Rails 8.1 の新機能です。",
-          notes_by_version: {
-            "7.0" => "中断に強い multi-step job を標準 API だけで表現するのは難しく、再開ロジックは自前で持ちがちでした。",
-            "8.0" => "Solid Queue は入りましたが、job continuation 自体はまだ標準 API ではありませんでした。",
-            "8.1.2" => "ActiveJob::Continuable により step / cursor を用いた再開可能ジョブを標準で組み立てられます。"
-          },
-          highlights_by_version: {
-            "7.0" => "Custom resumable jobs",
-            "8.0" => "Durable queue without continuations",
-            "8.1.2" => "ActiveJob::Continuable"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "structured-event-reporting",
-          title: "Structured Event Reporting",
-          summary: "Rails 8.1 の Event Reporter により、構造化イベントを標準インターフェースで発行できます。",
-          notes_by_version: {
-            "7.0" => "構造化イベントは ActiveSupport::Notifications や独自 logger 設計に分散しやすい状態でした。",
-            "8.0" => "運用向け default story は広がりましたが、統一的な structured event API はまだありませんでした。",
-            "8.1.2" => "Rails.event.notify / tagged / set_context と subscriber により、post-processing 向けイベントを標準化できます。"
-          },
-          highlights_by_version: {
-            "7.0" => "Notifications + custom logging",
-            "8.0" => "No unified event reporter yet",
-            "8.1.2" => "Rails.event"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "markdown-rendering",
-          title: "Markdown Rendering",
-          summary: "Rails 8.1 では Markdown response / rendering をより直接扱えるようになりました。",
-          notes_by_version: {
-            "7.0" => "Markdown response は gem や custom responder による拡張が前提になりやすかったです。",
-            "8.0" => "標準 rendering story は引き続き HTML / JSON 中心でした。",
-            "8.1.2" => "respond_to の中で render markdown: object を使う導線が公式 release notes に登場しました。"
-          },
-          highlights_by_version: {
-            "7.0" => "Custom markdown rendering",
-            "8.0" => "No first-class markdown response",
-            "8.1.2" => "render markdown:"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "local-ci",
-          title: "Local CI",
-          summary: "Rails 8.1 の Local CI DSL は、cloud CI 以外の軽量な標準導線を提供します。",
-          notes_by_version: {
-            "7.0" => "CI は GitHub Actions や CircleCI などクラウド設定ファイル中心でした。",
-            "8.0" => "新規 app に CI workflow は入りますが、ローカル実行前提の DSL はありませんでした。",
-            "8.1.2" => "config/ci.rb と bin/ci によって、developer machine での標準 CI declaration が導入されました。"
-          },
-          highlights_by_version: {
-            "7.0" => "Cloud CI first",
-            "8.0" => "Generated CI workflow",
-            "8.1.2" => "config/ci.rb + bin/ci"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "credentials-fetching",
-          title: "Command-line Credentials Fetching",
-          summary: "Rails 8.1 では CLI から credentials を取り出す deploy 導線が強化されました。",
-          notes_by_version: {
-            "7.0" => "credentials は Rails 内で読む前提が強く、deploy 連携は custom scripting に寄りがちでした。",
-            "8.0" => "Kamal は近くなりましたが、credentials fetch を前提にした CLI story はまだ薄めでした。",
-            "8.1.2" => "rails credentials:fetch が紹介され、Kamal secrets と encrypted credentials をつなぎやすくなりました。"
-          },
-          highlights_by_version: {
-            "7.0" => "Custom secret scripting",
-            "8.0" => "Kamal introduced",
-            "8.1.2" => "rails credentials:fetch"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "deprecated-associations",
-          title: "Deprecated Associations",
-          summary: "Rails 8.1 では association 自体を deprecated として宣言し、利用報告できます。",
-          notes_by_version: {
-            "7.0" => "association の利用抑制や移行警告は、lint や手製 warning に頼ることが多かったです。",
-            "8.0" => "標準の association deprecation reporting はまだありませんでした。",
-            "8.1.2" => "has_many :posts, deprecated: true のように関連自体へ deprecation を付けられます。"
-          },
-          highlights_by_version: {
-            "7.0" => "Manual migration warnings",
-            "8.0" => "No built-in deprecated associations",
-            "8.1.2" => "deprecated: true"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "propshaft",
-          title: "Propshaft",
-          summary: "asset pipeline story が Sprockets optional から Propshaft default へどう変わったかを整理します。",
-          notes_by_version: {
-            "7.0" => "Sprockets は optional dependency になりましたが、asset pipeline の比較軸では依然 Sprockets 前提が強く残っていました。",
-            "8.0" => "新規 app は Propshaft が前提になり、より薄い asset 管理へ寄りました。",
-            "8.1.2" => "Propshaft 前提は継続し、importmap / Hotwire と組み合わせた軽量構成を保ちやすいです。"
-          },
-          highlights_by_version: {
-            "7.0" => "Sprockets becomes optional",
-            "8.0" => "Propshaft default",
-            "8.1.2" => "Propshaft continues as baseline"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "kamal",
-          title: "Kamal deployments",
-          summary: "Kamal が Rails app の deploy story にどう入ってきたかを比較します。",
-          notes_by_version: {
-            "7.0" => "deploy は Capistrano / custom CI/CD / PaaS 依存になりがちでした。",
-            "8.0" => "Kamal が Gemfile / config に入り、self-hosted deploy 導線が app に近づきました。",
-            "8.1.2" => "Registry-free Kamal deployments が追加され、最初の deploy story がさらに軽くなりました。"
-          },
-          highlights_by_version: {
-            "7.0" => "Deploy left to app teams",
-            "8.0" => "Kamal integrated",
-            "8.1.2" => "Registry-free Kamal deploys"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        ),
-        comparison_feature(
-          slug: "thruster",
-          title: "Thruster / production defaults",
-          summary: "reverse proxy / acceleration を含む production story の変化を比較します。",
-          notes_by_version: {
-            "7.0" => "本番向け reverse proxy / acceleration は app 外で組み立てる前提が強めでした。",
-            "8.0" => "Thruster が生成時に入り、本番構成の default story が一段増えました。",
-            "8.1.2" => "Thruster を含む production defaults は、Kamal や local CI と並ぶ運用導線の一部として理解しやすくなっています。"
-          },
-          highlights_by_version: {
-            "7.0" => "External production proxy choices",
-            "8.0" => "Thruster added",
-            "8.1.2" => "Production story stays cohesive"
-          },
-          source_links_by_version: version_links("7.0", "8.0", "8.1.2")
-        )
-      ]
+      @all ||= load_features
     end
 
     def runtime_demos
@@ -242,23 +30,57 @@ class FeatureCatalog
     end
 
     private
-      def runtime_feature(**attributes)
-        feature(category: "Runtime Demo", demo_type: :runtime_demo, **attributes)
+      def load_features
+        raw_features.map do |attributes|
+          validate_feature!(attributes)
+
+          CatalogFeature.new(
+            slug: attributes.fetch("slug"),
+            title: attributes.fetch("title"),
+            category: attributes.fetch("category"),
+            summary: attributes.fetch("summary"),
+            supported_versions: VersionCatalog.default_compare_keys,
+            notes_by_version: stringify_hash(attributes.fetch("notes_by_version")),
+            highlights_by_version: stringify_hash(attributes.fetch("highlights_by_version")),
+            demo_type: attributes.fetch("demo_type").to_sym,
+            source_links_by_version: stringify_hash(attributes.fetch("source_links_by_version"))
+          )
+        end.tap { |features| validate_uniqueness!(features) }
       end
 
-      def comparison_feature(**attributes)
-        feature(category: "Platform / Defaults", demo_type: :comparison_card, **attributes)
+      def raw_features
+        data = YAML.safe_load_file(DATA_PATH, aliases: false)
+        features = data.fetch("features")
+        raise ArgumentError, "config/catalog/features.yml must contain an array of features" unless features.is_a?(Array)
+
+        features.map do |attributes|
+          raise ArgumentError, "each feature entry must be a hash" unless attributes.is_a?(Hash)
+
+          stringify_hash(attributes)
+        end
       end
 
-      def feature(**attributes)
-        CatalogFeature.new(
-          supported_versions: VersionCatalog.default_compare_keys,
-          **attributes
-        )
+      def validate_feature!(attributes)
+        missing_keys = REQUIRED_KEYS.reject { |key| attributes[key].present? }
+        raise ArgumentError, "feature entry is missing keys: #{missing_keys.join(', ')}" if missing_keys.any?
+
+        demo_type = attributes.fetch("demo_type")
+        raise ArgumentError, "invalid feature demo_type: #{demo_type}" unless ALLOWED_DEMO_TYPES.include?(demo_type)
       end
 
-      def version_links(*keys)
-        keys.index_with { |key| VersionCatalog.fetch(key).release_notes_url }
+      def validate_uniqueness!(features)
+        duplicate_slugs = features.group_by(&:slug).select { |_slug, items| items.size > 1 }.keys
+        raise ArgumentError, "duplicate feature slugs: #{duplicate_slugs.join(', ')}" if duplicate_slugs.any?
+      end
+
+      def stringify_hash(hash)
+        hash.to_h.each_with_object({}) do |(key, value), result|
+          result[key.to_s] = value.is_a?(Hash) ? stringify_hash(value) : value
+        end
+      end
+
+      def reset_cache!
+        remove_instance_variable(:@all) if instance_variable_defined?(:@all)
       end
   end
 end

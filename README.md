@@ -34,29 +34,13 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 ## Architecture highlights 🛠️
 
 - `VersionCatalog`
-  - `config/catalog/versions.yml` から比較対象 version の metadata を読む
-  - release date / label / official source / latest status を保持する loader / validator
+  - 比較対象 version の metadata を一元管理
 - `FeatureCatalog`
-  - `config/catalog/features.yml` から feature ごとの version matrix を読む
-  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` を object 化する loader / validator
+  - feature ごとの version matrix を管理
+  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` で拡張可能
 - UI
   - `compare` query param で表示対象 version を切替
   - 詳細画面は **multi-version matrix** で表示
-
-## Catalog data files 🗂️
-
-- `config/catalog/versions.yml`
-  - 比較対象 version の一覧と metadata
-- `config/catalog/features.yml`
-  - feature 定義本体と version ごとの差分 data
-- `app/models/version_catalog.rb`
-  - YAML load / normalization / validation
-- `app/models/feature_catalog.rb`
-  - YAML load / object conversion / validation
-
-> 補足:
-> view や controller から YAML を直接読まず、必ず `VersionCatalog` / `FeatureCatalog` を通す構成です。  
-> YAML schema が壊れている場合は、初回 load 時点で例外として検出します。
 
 ## Stack
 
@@ -116,10 +100,8 @@ bin/dev
 
 将来 `Rails 9.0` や `Rails 9.2` を足すときは、基本的に次を更新します。
 
-1. `config/catalog/versions.yml`
-   - version metadata を追加
-2. `config/catalog/features.yml`
-   - 各 feature の `notes_by_version` / `highlights_by_version` / `source_links_by_version` を追加
+1. catalog data
+   - version metadata や feature 比較 data を追加
 3. 必要なら demo / comparison partial を追加
 4. `bin/rails test test/models/version_catalog_test.rb test/models/feature_catalog_test.rb test/integration/feature_catalog_flow_test.rb`
    - schema validation と画面回帰を確認

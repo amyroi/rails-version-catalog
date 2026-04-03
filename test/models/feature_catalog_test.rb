@@ -51,9 +51,9 @@ class FeatureCatalogTest < ActiveSupport::TestCase
         "demo_type" => "runtime_demo",
         "title" => "Feature A",
         "summary" => "Summary A",
-        "notes_by_version" => { "7.0" => "A" },
-        "highlights_by_version" => { "7.0" => "A" },
-        "source_links_by_version" => { "7.0" => "https://example.com/a" }
+        "notes_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.2" => "A" },
+        "highlights_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.2" => "A" },
+        "source_links_by_version" => { "7.0" => "https://example.com/a", "8.0" => "https://example.com/a", "8.1.2" => "https://example.com/a" }
       },
       {
         "slug" => "same-slug",
@@ -61,9 +61,9 @@ class FeatureCatalogTest < ActiveSupport::TestCase
         "demo_type" => "comparison_card",
         "title" => "Feature B",
         "summary" => "Summary B",
-        "notes_by_version" => { "7.0" => "B" },
-        "highlights_by_version" => { "7.0" => "B" },
-        "source_links_by_version" => { "7.0" => "https://example.com/b" }
+        "notes_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.2" => "B" },
+        "highlights_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.2" => "B" },
+        "source_links_by_version" => { "7.0" => "https://example.com/b", "8.0" => "https://example.com/b", "8.1.2" => "https://example.com/b" }
       }
     ]
 
@@ -76,7 +76,80 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_match(/duplicate feature slugs/, error.message)
   end
 
+  test "raises when versioned hashes include unknown version keys" do
+    invalid_features = [
+      valid_feature_hash.merge(
+        "notes_by_version" => valid_feature_hash.fetch("notes_by_version").merge("9.0" => "future")
+      )
+    ]
+
+    error = assert_raises(ArgumentError) do
+      with_raw_features(invalid_features) do
+        FeatureCatalog.all
+      end
+    end
+
+    assert_match(/notes_by_version has unknown version keys: 9.0/, error.message)
+  end
+
+  test "raises when versioned hashes are missing configured version keys" do
+    invalid_features = [
+      valid_feature_hash.merge(
+        "highlights_by_version" => valid_feature_hash.fetch("highlights_by_version").except("8.0")
+      )
+    ]
+
+    error = assert_raises(ArgumentError) do
+      with_raw_features(invalid_features) do
+        FeatureCatalog.all
+      end
+    end
+
+    assert_match(/highlights_by_version is missing version keys: 8.0/, error.message)
+  end
+
+  test "raises when source links are not absolute urls" do
+    invalid_features = [
+      valid_feature_hash.merge(
+        "source_links_by_version" => valid_feature_hash.fetch("source_links_by_version").merge("8.0" => "/relative/path")
+      )
+    ]
+
+    error = assert_raises(ArgumentError) do
+      with_raw_features(invalid_features) do
+        FeatureCatalog.all
+      end
+    end
+
+    assert_match(/source_links_by_version.8.0 must be an absolute http\(s\) URL/, error.message)
+  end
+
   private
+    def valid_feature_hash
+      {
+        "slug" => "valid-feature",
+        "category" => "Runtime Demo",
+        "demo_type" => "runtime_demo",
+        "title" => "Valid feature",
+        "summary" => "Summary",
+        "notes_by_version" => {
+          "7.0" => "note 7",
+          "8.0" => "note 8",
+          "8.1.2" => "note 8.1.2"
+        },
+        "highlights_by_version" => {
+          "7.0" => "highlight 7",
+          "8.0" => "highlight 8",
+          "8.1.2" => "highlight 8.1.2"
+        },
+        "source_links_by_version" => {
+          "7.0" => "https://example.com/7",
+          "8.0" => "https://example.com/8",
+          "8.1.2" => "https://example.com/8-1-2"
+        }
+      }
+    end
+
     def with_raw_features(raw_features)
       singleton_class = FeatureCatalog.singleton_class
       original_method = singleton_class.instance_method(:raw_features)

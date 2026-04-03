@@ -10,6 +10,7 @@ class FeatureCatalog
     highlights_by_version
     source_links_by_version
   ].freeze
+  VERSIONED_KEYS = %w[notes_by_version highlights_by_version source_links_by_version].freeze
   ALLOWED_DEMO_TYPES = %w[runtime_demo comparison_card].freeze
 
   class << self
@@ -66,11 +67,46 @@ class FeatureCatalog
 
         demo_type = attributes.fetch("demo_type")
         raise ArgumentError, "invalid feature demo_type: #{demo_type}" unless ALLOWED_DEMO_TYPES.include?(demo_type)
+
+        validate_versioned_hashes!(attributes)
+      end
+
+      def validate_versioned_hashes!(attributes)
+        VERSIONED_KEYS.each do |key|
+          values = attributes.fetch(key)
+          raise ArgumentError, "#{key} must be a hash" unless values.is_a?(Hash)
+
+          validate_version_keys!(key, values.keys)
+        end
+
+        attributes.fetch("source_links_by_version").each do |version_key, url|
+          validate_url!(url, key: "source_links_by_version.#{version_key}")
+        end
+      end
+
+      def validate_version_keys!(attribute_key, keys)
+        keys = keys.map(&:to_s)
+        known_keys = VersionCatalog.default_compare_keys
+
+        unknown_keys = keys - known_keys
+        raise ArgumentError, "#{attribute_key} has unknown version keys: #{unknown_keys.join(', ')}" if unknown_keys.any?
+
+        missing_keys = known_keys - keys
+        raise ArgumentError, "#{attribute_key} is missing version keys: #{missing_keys.join(', ')}" if missing_keys.any?
       end
 
       def validate_uniqueness!(features)
         duplicate_slugs = features.group_by(&:slug).select { |_slug, items| items.size > 1 }.keys
         raise ArgumentError, "duplicate feature slugs: #{duplicate_slugs.join(', ')}" if duplicate_slugs.any?
+      end
+
+      def validate_url!(value, key:)
+        uri = URI.parse(value)
+        return if uri.is_a?(URI::HTTP) && uri.host.present?
+
+        raise ArgumentError, "#{key} must be an absolute http(s) URL"
+      rescue URI::InvalidURIError
+        raise ArgumentError, "#{key} must be an absolute http(s) URL"
       end
 
       def stringify_hash(hash)

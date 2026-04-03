@@ -60,14 +60,23 @@ class VersionCatalog
         raise ArgumentError, "version entry is missing keys: #{missing_keys.join(', ')}" if missing_keys.any?
 
         status = attributes.fetch("status")
-        return if ALLOWED_STATUSES.include?(status)
+        raise ArgumentError, "invalid version status: #{status}" unless ALLOWED_STATUSES.include?(status)
 
-        raise ArgumentError, "invalid version status: #{status}"
+        validate_url!(attributes.fetch("release_notes_url"), key: "release_notes_url")
       end
 
       def validate_uniqueness!(versions)
         duplicate_keys = versions.group_by(&:key).select { |_key, items| items.size > 1 }.keys
         raise ArgumentError, "duplicate version keys: #{duplicate_keys.join(', ')}" if duplicate_keys.any?
+      end
+
+      def validate_url!(value, key:)
+        uri = URI.parse(value)
+        return if uri.is_a?(URI::HTTP) && uri.host.present?
+
+        raise ArgumentError, "#{key} must be an absolute http(s) URL"
+      rescue URI::InvalidURIError
+        raise ArgumentError, "#{key} must be an absolute http(s) URL"
       end
 
       def reset_cache!

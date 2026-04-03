@@ -5,19 +5,6 @@ class VersionCatalogTest < ActiveSupport::TestCase
     VersionCatalog.send(:reset_cache!)
   end
 
-  private
-    def with_raw_versions(raw_versions)
-      singleton_class = VersionCatalog.singleton_class
-      original_method = singleton_class.instance_method(:raw_versions)
-
-      singleton_class.send(:define_method, :raw_versions) { raw_versions }
-      VersionCatalog.send(:reset_cache!)
-      yield
-    ensure
-      singleton_class.send(:define_method, :raw_versions, original_method)
-      VersionCatalog.send(:reset_cache!)
-    end
-
   test "default compare keys are loaded from yaml" do
     assert_equal [ "7.0", "8.0", "8.1.2" ], VersionCatalog.default_compare_keys
   end
@@ -85,4 +72,37 @@ class VersionCatalogTest < ActiveSupport::TestCase
 
     assert_match(/duplicate version keys/, error.message)
   end
+
+  test "raises when release notes url is not absolute" do
+    invalid_versions = [
+      {
+        "key" => "8.2",
+        "label" => "Rails 8.2",
+        "release_date" => "June 2026",
+        "status" => "supported",
+        "release_notes_url" => "/relative/path"
+      }
+    ]
+
+    error = assert_raises(ArgumentError) do
+      with_raw_versions(invalid_versions) do
+        VersionCatalog.all
+      end
+    end
+
+    assert_match(/release_notes_url must be an absolute http\(s\) URL/, error.message)
+  end
+
+  private
+    def with_raw_versions(raw_versions)
+      singleton_class = VersionCatalog.singleton_class
+      original_method = singleton_class.instance_method(:raw_versions)
+
+      singleton_class.send(:define_method, :raw_versions) { raw_versions }
+      VersionCatalog.send(:reset_cache!)
+      yield
+    ensure
+      singleton_class.send(:define_method, :raw_versions, original_method)
+      VersionCatalog.send(:reset_cache!)
+    end
 end

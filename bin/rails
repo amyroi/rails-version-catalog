@@ -1,4 +1,31 @@
 #!/usr/bin/env ruby
+
+env_path = File.expand_path("../.env", __dir__)
+
+if File.file?(env_path)
+  File.foreach(env_path) do |line|
+    stripped = line.strip
+    next if stripped.empty? || stripped.start_with?("#")
+
+    assignment = stripped.delete_prefix("export ").strip
+    key, raw_value = assignment.split("=", 2)
+    next if key.nil? || key.strip.empty? || raw_value.nil?
+    next if ENV.key?(key)
+
+    value = raw_value.strip
+    value =
+      if (match = value.match(/\A"(.*)"(?:\s+#.*)?\z/m))
+        match[1]
+      elsif (match = value.match(/\A'(.*)'(?:\s+#.*)?\z/m))
+        match[1]
+      else
+        value.sub(/\s+#.*\z/, "").strip
+      end
+
+    ENV[key.strip] = value
+  end
+end
+
 APP_PATH = File.expand_path("../config/application", __dir__)
 require_relative "../config/boot"
 require "rails/commands"

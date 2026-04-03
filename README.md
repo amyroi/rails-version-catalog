@@ -35,7 +35,6 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 
 - `VersionCatalog`
   - 比較対象 version の metadata を一元管理
-  - release date / label / official source / latest status を保持
 - `FeatureCatalog`
   - feature ごとの version matrix を管理
   - `notes_by_version` / `highlights_by_version` / `source_links_by_version` で拡張可能
@@ -101,13 +100,13 @@ bin/dev
 
 将来 `Rails 9.0` や `Rails 9.2` を足すときは、基本的に次を更新します。
 
-1. `app/models/version_catalog.rb`
-   - version metadata を追加
-2. `app/models/feature_catalog.rb`
-   - 各 feature の `notes_by_version` / `highlights_by_version` を追加
+1. catalog data
+   - version metadata や feature 比較 data を追加
 3. 必要なら demo / comparison partial を追加
+4. `bin/rails test test/models/version_catalog_test.rb test/models/feature_catalog_test.rb test/integration/feature_catalog_flow_test.rb`
+   - schema validation と画面回帰を確認
 
-大きな 2カラム UI 改修をせず、**version metadata と feature data の追加**で広げる前提です。
+大きな 2カラム UI 改修をせず、**YAML data の追加**を中心に広げる前提です。
 
 ## Sources
 

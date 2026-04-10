@@ -26,6 +26,23 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_not_predicate feature, :live_demo_available?
   end
 
+  test "loads propshaft and kamal metadata from yaml" do
+    propshaft = FeatureCatalog.fetch!("propshaft")
+    kamal = FeatureCatalog.fetch!("kamal")
+
+    assert_equal "Propshaft becomes the default asset story", propshaft.status_for("8.0")
+    assert_equal [ "config/importmap.rb", "app/views/features/demos/_propshaft.html.erb", "app/controllers/features_controller.rb" ], propshaft.files_for("8.0")
+    assert_equal [ "Propshaft enabled" ], propshaft.code_examples_for("8.0")
+    assert_equal [ "Confirm asset precompilation and fingerprinted file handling still work." ], propshaft.operational_notes_for("8.0")
+    assert_predicate propshaft, :live_demo_available?
+
+    assert_equal "Kamal becomes part of the default deploy story", kamal.status_for("8.0")
+    assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.0")
+    assert_equal [ "config/deploy.yml" ], kamal.code_examples_for("8.0")
+    assert_equal [ "Verify the deploy image host, proxy, and secret settings together." ], kamal.operational_notes_for("8.0")
+    assert_predicate kamal, :live_demo_available?
+  end
+
   test "raises when feature entry is missing required keys" do
     invalid_features = [
       {

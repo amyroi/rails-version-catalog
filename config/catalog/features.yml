@@ -204,6 +204,48 @@ features:
     '7.0': Sprockets becomes optional
     '8.0': Propshaft default
     8.1.2: Propshaft continues as baseline
+  status_by_version:
+    '7.0': Sprockets is still the common comparison point
+    '8.0': Propshaft becomes the default asset story
+    8.1.2: Propshaft remains the baseline
+  files_by_version:
+    '7.0':
+      - config/importmap.rb
+      - app/views/features/demos/_propshaft.html.erb
+      - app/controllers/features_controller.rb
+    '8.0':
+      - config/importmap.rb
+      - app/views/features/demos/_propshaft.html.erb
+      - app/controllers/features_controller.rb
+    8.1.2:
+      - config/importmap.rb
+      - app/views/features/demos/_propshaft.html.erb
+      - app/controllers/features_controller.rb
+  upgrade_notes_by_version:
+    '7.0':
+      - Trim Sprockets-specific assumptions before adopting Propshaft.
+      - Check how asset fingerprinting and importmap fit together.
+    '8.0':
+      - Make sure the new default asset pipeline is wired into app boot and deploy.
+      - Review any Sprockets-specific helper or asset config before migrating.
+    8.1.2:
+      - Keep importmap and Propshaft aligned when updating assets.
+      - Re-check fingerprinted asset behavior after each release upgrade.
+  code_examples_by_version:
+    '7.0':
+      - config/importmap.rb
+    '8.0':
+      - Propshaft enabled
+    8.1.2:
+      - importmap + Propshaft
+  operational_notes_by_version:
+    '7.0':
+      - Audit any Sprockets assumptions in helpers and asset loading paths.
+    '8.0':
+      - Confirm asset precompilation and fingerprinted file handling still work.
+    8.1.2:
+      - Re-test asset delivery after deploy or cache invalidation changes.
+  live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
@@ -221,6 +263,48 @@ features:
     '7.0': Deploy left to app teams
     '8.0': Kamal integrated
     8.1.2: Registry-free Kamal deploys
+  status_by_version:
+    '7.0': Custom deploy pipelines dominate
+    '8.0': Kamal becomes part of the default deploy story
+    8.1.2: Registry-free deploy is available
+  files_by_version:
+    '7.0':
+      - config/deploy.yml
+      - .kamal/secrets
+      - app/views/features/demos/_kamal.html.erb
+    '8.0':
+      - config/deploy.yml
+      - .kamal/secrets
+      - app/views/features/demos/_kamal.html.erb
+    8.1.2:
+      - config/deploy.yml
+      - .kamal/secrets
+      - app/views/features/demos/_kamal_2.html.erb
+  upgrade_notes_by_version:
+    '7.0':
+      - Replace bespoke deploy pipelines with a repeatable app-centric deploy flow.
+      - Review secrets handling before moving to Kamal.
+    '8.0':
+      - Keep `config/deploy.yml` and `.kamal/secrets` in sync with the deploy target.
+      - Decide whether the new deploy story should own registry and proxy settings.
+    8.1.2:
+      - Check registry-free deploy and production defaults before rolling forward.
+      - Revisit secret and image host handling as part of the upgrade.
+  code_examples_by_version:
+    '7.0':
+      - bin/kamal deploy
+    '8.0':
+      - config/deploy.yml
+    8.1.2:
+      - rails credentials:fetch
+  operational_notes_by_version:
+    '7.0':
+      - Keep deploy secrets and server inventory separately documented.
+    '8.0':
+      - Verify the deploy image host, proxy, and secret settings together.
+    8.1.2:
+      - Re-check registry-free deploy assumptions before production rollout.
+  live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html

@@ -90,6 +90,48 @@ features:
     '7.0': Redis-first realtime setups
     '8.0': Solid Cable default story
     8.1.2: DB-backed realtime remains first-class
+  status_by_version:
+    '7.0': Redis-backed realtime or custom cable setup
+    '8.0': DB-backed realtime enters the default stack
+    8.1.2: Durable realtime stays first-class
+  files_by_version:
+    '7.0':
+      - config/cable.yml
+      - app/views/features/demos/_solid_cable.html.erb
+      - app/controllers/features_controller.rb
+    '8.0':
+      - config/cable.yml
+      - app/views/features/demos/_solid_cable.html.erb
+      - app/controllers/features_controller.rb
+    8.1.2:
+      - config/cable.yml
+      - app/views/features/demos/_solid_cable.html.erb
+      - app/controllers/features_controller.rb
+  upgrade_notes_by_version:
+    '7.0':
+      - Move away from Redis-first assumptions if you want the app to stay in the default Rails stack.
+      - Review whether realtime streams can be backed by the database in your environment.
+    '8.0':
+      - Confirm `config/cable.yml` and the cable database are configured together.
+      - Re-test broadcast flows after switching to the DB-backed adapter.
+    8.1.2:
+      - Verify turbo-stream updates, message retention, and database-backed cable polling together.
+      - Keep the cable database and runtime worker story aligned.
+  code_examples_by_version:
+    '7.0':
+      - config/cable.yml
+    '8.0':
+      - "adapter: solid_cable"
+    8.1.2:
+      - Turbo::StreamsChannel.broadcast_append_to
+  operational_notes_by_version:
+    '7.0':
+      - Check Redis dependencies and custom cable deployments before migrating.
+    '8.0':
+      - Keep the cable database migrated and reachable in development and production.
+    8.1.2:
+      - Confirm cable polling and retention settings still match the app's usage pattern.
+  live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
@@ -107,6 +149,48 @@ features:
     '7.0': Choose cache backend yourself
     '8.0': Solid Cache arrives
     8.1.2: Durable stack remains cohesive
+  status_by_version:
+    '7.0': Memory or Redis cache configuration
+    '8.0': DB-backed cache enters the default stack
+    8.1.2: Durable cache remains part of the stack
+  files_by_version:
+    '7.0':
+      - config/cache.yml
+      - app/views/features/demos/_solid_cache.html.erb
+      - app/controllers/features_controller.rb
+    '8.0':
+      - config/cache.yml
+      - app/views/features/demos/_solid_cache.html.erb
+      - app/controllers/features_controller.rb
+    8.1.2:
+      - config/cache.yml
+      - app/views/features/demos/_solid_cache.html.erb
+      - app/controllers/features_controller.rb
+  upgrade_notes_by_version:
+    '7.0':
+      - Revisit cache backend selection if you are moving from Redis or memory store.
+      - Check database capacity before shifting cache traffic into Solid Cache.
+    '8.0':
+      - Align `config/cache.yml` with the new durable cache story.
+      - Validate cache hit / miss behavior in development and deploy environments.
+    8.1.2:
+      - Keep cache retention, database size, and runtime expectations aligned.
+      - Re-check the app's cache keys after the upgrade.
+  code_examples_by_version:
+    '7.0':
+      - config/cache.yml
+    '8.0':
+      - cache do
+    8.1.2:
+      - Rails.cache.fetch
+  operational_notes_by_version:
+    '7.0':
+      - Review whether existing Redis assumptions still fit the deployment.
+    '8.0':
+      - Confirm the cache database and retention settings match the workload.
+    8.1.2:
+      - Check cache warmup, invalidation, and the database footprint together.
+  live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html

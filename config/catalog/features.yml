@@ -20,18 +20,20 @@ features:
     8.1.2: Stable Rails auth stack
   files_by_version:
     '7.0':
+      - app/controllers/concerns/authentication.rb
       - app/controllers/sessions_controller.rb
       - app/controllers/passwords_controller.rb
-      - app/controllers/concerns/authentication.rb
+      - app/views/sessions/new.html.erb
     '8.0':
       - app/models/user.rb
       - app/models/session.rb
       - app/controllers/sessions_controller.rb
       - app/controllers/passwords_controller.rb
     8.1.2:
-      - app/controllers/auth_labs_controller.rb
-      - app/views/features/demos/_authentication_generator.html.erb
       - app/models/current.rb
+      - app/models/session.rb
+      - app/views/auth_labs/show.html.erb
+      - app/views/passwords/edit.html.erb
   upgrade_notes_by_version:
     '7.0':
       - Replace ad hoc auth with generated sessions, password reset, and signed cookies.

@@ -34,6 +34,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal [ "app/models/user.rb", "app/models/session.rb", "app/controllers/sessions_controller.rb", "app/controllers/passwords_controller.rb" ], feature.files_for("8.0")
     assert_equal [ "bin/rails generate authentication" ], feature.code_examples_for("7.0")
     assert_equal [ "Confirm password reset mail delivery and signed session cookies." ], feature.operational_notes_for("8.0")
+    assert_equal [ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ], feature.files_for("8.1.2")
     assert_predicate feature, :live_demo_available?
   end
 

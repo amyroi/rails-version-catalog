@@ -29,11 +29,11 @@
       <p class="text-sm text-slate-500">Catalog coverage</p>
       <dl class="mt-4 space-y-4">
         <div class="flex items-center justify-between">
-          <dt class="text-slate-600">Runtime demos</dt>
+          <dt class="text-slate-600">Interactive demos</dt>
           <dd class="text-2xl font-semibold text-slate-900"><%= @runtime_features.size %></dd>
         </div>
         <div class="flex items-center justify-between">
-          <dt class="text-slate-600">Comparison cards</dt>
+          <dt class="text-slate-600">Config differences</dt>
           <dd class="text-2xl font-semibold text-slate-900"><%= @platform_features.size %></dd>
         </div>
         <div class="flex items-center justify-between">
@@ -62,7 +62,10 @@
 <section class="mt-10 grid gap-6 lg:grid-cols-2">
   <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-4 flex items-center justify-between">
-      <h2 class="text-xl font-semibold text-slate-900">Runtime demos</h2>
+      <div>
+        <h2 class="text-xl font-semibold text-slate-900">Interactive demos</h2>
+        <p class="mt-1 text-sm text-slate-600">現在の <%= current_runtime_label %> runtime 上で、実際に操作して挙動を確認できるデモです。</p>
+      </div>
       <span class="text-sm text-slate-500"><%= @runtime_features.size %> cards</span>
     </div>
 
@@ -89,7 +92,10 @@
 
   <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-4 flex items-center justify-between">
-      <h2 class="text-xl font-semibold text-slate-900">Platform / defaults</h2>
+      <div>
+        <h2 class="text-xl font-semibold text-slate-900">Config / platform differences</h2>
+        <p class="mt-1 text-sm text-slate-600"><%= catalog_version_heading(VersionCatalog.default_compare_keys) %> の設定・標準構成・運用差分を比較するカードです。</p>
+      </div>
       <span class="text-sm text-slate-500"><%= @platform_features.size %> cards</span>
     </div>
 

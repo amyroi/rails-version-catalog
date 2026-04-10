@@ -1,7 +1,7 @@
 ---
 features:
 - slug: authentication-generator
-  category: Runtime Demo
+  category: Interactive Demo
   demo_type: runtime_demo
   title: Authentication generator
   summary: Rails の標準認証 story がどう変わったかを、サインアップ・ログイン・保護ページで確認できます。
@@ -19,7 +19,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: solid-queue
-  category: Runtime Demo
+  category: Interactive Demo
   demo_type: runtime_demo
   title: Solid Queue
   summary: Active Job backend の変化を、enqueue と状態遷移の UI で確認できます。
@@ -36,7 +36,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: solid-cable
-  category: Runtime Demo
+  category: Interactive Demo
   demo_type: runtime_demo
   title: Solid Cable
   summary: Turbo Stream と DB-backed cable story の違いを、ライブ更新 UI で確認できます。
@@ -53,7 +53,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: solid-cache
-  category: Runtime Demo
+  category: Interactive Demo
   demo_type: runtime_demo
   title: Solid Cache
   summary: Cache hit / miss を通じて、durable cache story の違いを比較できます。
@@ -70,7 +70,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: runtime-stack
-  category: Runtime Demo
+  category: Interactive Demo
   demo_type: runtime_demo
   title: Runtime stack overview
   summary: 現行 app の runtime facts を見ながら、Rails の標準 stack がどう進化したかを俯瞰できます。
@@ -88,7 +88,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: active-job-continuations
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Active Job Continuations
   summary: 長い job を step 単位で継続できる Rails 8.1 の新機能です。
@@ -105,7 +105,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: structured-event-reporting
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Structured Event Reporting
   summary: Rails 8.1 の Event Reporter により、構造化イベントを標準インターフェースで発行できます。
@@ -123,7 +123,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: markdown-rendering
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Markdown Rendering
   summary: Rails 8.1 では Markdown response / rendering をより直接扱えるようになりました。
@@ -140,7 +140,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: local-ci
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Local CI
   summary: Rails 8.1 の Local CI DSL は、cloud CI 以外の軽量な標準導線を提供します。
@@ -157,7 +157,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: credentials-fetching
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Command-line Credentials Fetching
   summary: Rails 8.1 では CLI から credentials を取り出す deploy 導線が強化されました。
@@ -174,7 +174,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: deprecated-associations
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Deprecated Associations
   summary: Rails 8.1 では association 自体を deprecated として宣言し、利用報告できます。
@@ -191,7 +191,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: propshaft
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Propshaft
   summary: asset pipeline story が Sprockets optional から Propshaft default へどう変わったかを整理します。
@@ -209,7 +209,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: kamal
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Kamal deployments
   summary: Kamal が Rails app の deploy story にどう入ってきたかを比較します。
@@ -226,7 +226,7 @@ features:
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
 - slug: thruster
-  category: Platform / Defaults
+  category: Config / Platform Differences
   demo_type: comparison_card
   title: Thruster / production defaults
   summary: reverse proxy / acceleration を含む production story の変化を比較します。

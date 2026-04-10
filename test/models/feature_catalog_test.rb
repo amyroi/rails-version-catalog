@@ -27,7 +27,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     invalid_features = [
       {
         "slug" => "broken-feature",
-        "category" => "Runtime Demo",
+        "category" => "Interactive Demo",
         "demo_type" => "runtime_demo",
         "title" => "Broken feature",
         "summary" => "Missing notes"
@@ -47,7 +47,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     duplicate_features = [
       {
         "slug" => "same-slug",
-        "category" => "Runtime Demo",
+        "category" => "Interactive Demo",
         "demo_type" => "runtime_demo",
         "title" => "Feature A",
         "summary" => "Summary A",
@@ -57,7 +57,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
       },
       {
         "slug" => "same-slug",
-        "category" => "Platform / Defaults",
+        "category" => "Config / Platform Differences",
         "demo_type" => "comparison_card",
         "title" => "Feature B",
         "summary" => "Summary B",
@@ -128,7 +128,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     def valid_feature_hash
       {
         "slug" => "valid-feature",
-        "category" => "Runtime Demo",
+        "category" => "Interactive Demo",
         "demo_type" => "runtime_demo",
         "title" => "Valid feature",
         "summary" => "Summary",

@@ -21,6 +21,9 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal :runtime_demo, feature.demo_type
     assert_equal "Continuations-ready durable queue", feature.highlight_for("8.1.2")
     assert_equal "https://guides.rubyonrails.org/8_1_release_notes.html", feature.source_for("8.1.2")
+    assert_nil feature.status_for("8.1.2")
+    assert_equal [], feature.files_for("8.1.2")
+    assert_not_predicate feature, :live_demo_available?
   end
 
   test "raises when feature entry is missing required keys" do
@@ -122,6 +125,74 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     end
 
     assert_match(/source_links_by_version.8.0 must be an absolute http\(s\) URL/, error.message)
+  end
+
+  test "allows optional metadata hashes to be omitted" do
+    feature = nil
+
+    with_raw_features([ valid_feature_hash ]) do
+      feature = FeatureCatalog.all.first
+    end
+
+    assert_nil feature.status_for("8.0")
+    assert_equal [], feature.files_for("8.0")
+    assert_not_predicate feature, :live_demo_available?
+  end
+
+  test "loads optional metadata when present" do
+    feature = nil
+
+    with_raw_features([
+      valid_feature_hash.merge(
+        "status_by_version" => { "8.0" => "default" },
+        "files_by_version" => { "8.0" => [ "config/queue.yml" ] },
+        "upgrade_notes_by_version" => { "8.0" => [ "worker required" ] },
+        "code_examples_by_version" => { "8.0" => [ "bin/jobs start" ] },
+        "operational_notes_by_version" => { "8.0" => [ "check worker health" ] },
+        "live_demo_available" => true
+      )
+    ]) do
+      feature = FeatureCatalog.all.first
+    end
+
+    assert_equal "default", feature.status_for("8.0")
+    assert_equal [ "config/queue.yml" ], feature.files_for("8.0")
+    assert_equal [ "worker required" ], feature.upgrade_notes_for("8.0")
+    assert_equal [ "bin/jobs start" ], feature.code_examples_for("8.0")
+    assert_equal [ "check worker health" ], feature.operational_notes_for("8.0")
+    assert_predicate feature, :live_demo_available?
+  end
+
+  test "raises when optional metadata hashes include unknown version keys" do
+    invalid_features = [
+      valid_feature_hash.merge(
+        "status_by_version" => { "9.0" => "future" }
+      )
+    ]
+
+    error = assert_raises(ArgumentError) do
+      with_raw_features(invalid_features) do
+        FeatureCatalog.all
+      end
+    end
+
+    assert_match(/status_by_version has unknown version keys: 9.0/, error.message)
+  end
+
+  test "raises when live_demo_available is not boolean" do
+    invalid_features = [
+      valid_feature_hash.merge(
+        "live_demo_available" => "yes"
+      )
+    ]
+
+    error = assert_raises(ArgumentError) do
+      with_raw_features(invalid_features) do
+        FeatureCatalog.all
+      end
+    end
+
+    assert_match(/live_demo_available must be a boolean/, error.message)
   end
 
   private

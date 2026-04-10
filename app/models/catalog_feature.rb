@@ -1,8 +1,26 @@
 class CatalogFeature
   attr_reader :slug, :title, :category, :summary, :supported_versions, :notes_by_version,
-              :highlights_by_version, :demo_type, :source_links_by_version
+              :highlights_by_version, :demo_type, :source_links_by_version, :status_by_version,
+              :files_by_version, :upgrade_notes_by_version, :code_examples_by_version,
+              :operational_notes_by_version, :live_demo_available
 
-  def initialize(slug:, title:, category:, summary:, supported_versions:, notes_by_version:, highlights_by_version:, demo_type:, source_links_by_version:)
+  def initialize(
+    slug:,
+    title:,
+    category:,
+    summary:,
+    supported_versions:,
+    notes_by_version:,
+    highlights_by_version:,
+    demo_type:,
+    source_links_by_version:,
+    status_by_version: {},
+    files_by_version: {},
+    upgrade_notes_by_version: {},
+    code_examples_by_version: {},
+    operational_notes_by_version: {},
+    live_demo_available: false
+  )
     @slug = slug
     @title = title
     @category = category
@@ -12,6 +30,12 @@ class CatalogFeature
     @highlights_by_version = highlights_by_version
     @demo_type = demo_type
     @source_links_by_version = source_links_by_version
+    @status_by_version = status_by_version
+    @files_by_version = files_by_version
+    @upgrade_notes_by_version = upgrade_notes_by_version
+    @code_examples_by_version = code_examples_by_version
+    @operational_notes_by_version = operational_notes_by_version
+    @live_demo_available = live_demo_available
   end
 
   def runtime_demo?
@@ -50,6 +74,30 @@ class CatalogFeature
 
   def source_for(version_key)
     source_links_by_version[version_key]
+  end
+
+  def status_for(version_key)
+    status_by_version[version_key]
+  end
+
+  def files_for(version_key)
+    Array(files_by_version[version_key])
+  end
+
+  def upgrade_notes_for(version_key)
+    Array(upgrade_notes_by_version[version_key])
+  end
+
+  def code_examples_for(version_key)
+    Array(code_examples_by_version[version_key])
+  end
+
+  def operational_notes_for(version_key)
+    Array(operational_notes_by_version[version_key])
+  end
+
+  def live_demo_available?
+    live_demo_available
   end
 
   def source_url

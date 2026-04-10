@@ -11,6 +11,13 @@ class FeatureCatalog
     source_links_by_version
   ].freeze
   VERSIONED_KEYS = %w[notes_by_version highlights_by_version source_links_by_version].freeze
+  OPTIONAL_VERSIONED_KEYS = %w[
+    status_by_version
+    files_by_version
+    upgrade_notes_by_version
+    code_examples_by_version
+    operational_notes_by_version
+  ].freeze
   ALLOWED_DEMO_TYPES = %w[runtime_demo comparison_card].freeze
 
   class << self
@@ -44,7 +51,13 @@ class FeatureCatalog
             notes_by_version: stringify_hash(attributes.fetch("notes_by_version")),
             highlights_by_version: stringify_hash(attributes.fetch("highlights_by_version")),
             demo_type: attributes.fetch("demo_type").to_sym,
-            source_links_by_version: stringify_hash(attributes.fetch("source_links_by_version"))
+            source_links_by_version: stringify_hash(attributes.fetch("source_links_by_version")),
+            status_by_version: stringify_hash(attributes.fetch("status_by_version", {})),
+            files_by_version: stringify_hash(attributes.fetch("files_by_version", {})),
+            upgrade_notes_by_version: stringify_hash(attributes.fetch("upgrade_notes_by_version", {})),
+            code_examples_by_version: stringify_hash(attributes.fetch("code_examples_by_version", {})),
+            operational_notes_by_version: stringify_hash(attributes.fetch("operational_notes_by_version", {})),
+            live_demo_available: attributes.fetch("live_demo_available", false)
           )
         end.tap { |features| validate_uniqueness!(features) }
       end
@@ -79,9 +92,20 @@ class FeatureCatalog
           validate_version_keys!(key, values.keys)
         end
 
+        OPTIONAL_VERSIONED_KEYS.each do |key|
+          next unless attributes.key?(key)
+
+          values = attributes.fetch(key)
+          raise ArgumentError, "#{key} must be a hash" unless values.is_a?(Hash)
+
+          validate_optional_version_keys!(key, values.keys)
+        end
+
         attributes.fetch("source_links_by_version").each do |version_key, url|
           validate_url!(url, key: "source_links_by_version.#{version_key}")
         end
+
+        validate_live_demo_available!(attributes)
       end
 
       def validate_version_keys!(attribute_key, keys)
@@ -93,6 +117,23 @@ class FeatureCatalog
 
         missing_keys = known_keys - keys
         raise ArgumentError, "#{attribute_key} is missing version keys: #{missing_keys.join(', ')}" if missing_keys.any?
+      end
+
+      def validate_optional_version_keys!(attribute_key, keys)
+        keys = keys.map(&:to_s)
+        known_keys = VersionCatalog.default_compare_keys
+
+        unknown_keys = keys - known_keys
+        raise ArgumentError, "#{attribute_key} has unknown version keys: #{unknown_keys.join(', ')}" if unknown_keys.any?
+      end
+
+      def validate_live_demo_available!(attributes)
+        return unless attributes.key?("live_demo_available")
+
+        value = attributes.fetch("live_demo_available")
+        return if value.in?([ true, false ])
+
+        raise ArgumentError, "live_demo_available must be a boolean"
       end
 
       def validate_uniqueness!(features)

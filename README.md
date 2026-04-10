@@ -1,13 +1,14 @@
 # Rails Multi-Version Feature Catalog
 
-Rails の**複数メジャーバージョン比較**を UI で確認できるカタログ app です。  
+Rails の**比較カタログ**を UI で確認できる app です。  
 現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2** です。
 
 ## 目的 ✨
 
 - 単一の before / after ではなく、**複数 version を横並びで比較**する
-- interactive demo と config / platform differences を分けて、**触って理解**しやすくする
-- 将来 **Rails 9.0 / 9.2** などが出たときに、**データ追加中心で拡張**しやすくする
+- **live demo** は current runtime の挙動確認、**version comparison** は version 間の差分確認、と役割を分ける
+- feature ごとの比較 data を YAML で持ち、**データ追加中心で拡張**しやすくする
+- 将来 **Rails 9.0 / 9.2** などが出たときに、比較軸を増やしやすくする
 
 ## What you can see
 
@@ -31,16 +32,25 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 - Kamal deployments
 - Thruster / production defaults
 
+### What each section means
+
+- **Overview**  
+  feature の概要と、どの version を比較しているかをまとめます。
+- **Version comparison matrix**  
+  version ごとの status / summary / key changes / files / upgrade impact を並べて比較します。
+- **Live demo**  
+  current runtime 上で実際に触れる操作や画面を確認します。
+
 ## Architecture highlights 🛠️
 
 - `VersionCatalog`
   - 比較対象 version の metadata を一元管理
 - `FeatureCatalog`
   - feature ごとの version matrix を管理
-  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` で拡張可能
+  - `notes_by_version` / `highlights_by_version` / `source_links_by_version` に加えて、`status_by_version` / `files_by_version` / `upgrade_notes_by_version` などで比較 data を拡張できる
 - UI
   - `compare` query param で表示対象 version を切替
-  - 詳細画面は **multi-version matrix** で表示
+  - 詳細画面は **overview / comparison / live demo / upgrade notes** のように section を分けて表示
 
 ## Stack
 
@@ -102,8 +112,8 @@ bin/dev
 
 1. catalog data
    - version metadata や feature 比較 data を追加
-3. 必要なら demo / comparison partial を追加
-4. `bin/rails test test/models/version_catalog_test.rb test/models/feature_catalog_test.rb test/integration/feature_catalog_flow_test.rb`
+2. 必要なら demo / comparison partial を追加
+3. `bin/rails test test/models/version_catalog_test.rb test/models/feature_catalog_test.rb test/integration/feature_catalog_flow_test.rb`
    - schema validation と画面回帰を確認
 
 大きな 2カラム UI 改修をせず、**YAML data の追加**を中心に広げる前提です。

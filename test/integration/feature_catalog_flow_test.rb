@@ -68,6 +68,12 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes response.body, "Version comparison matrix"
+    assert_includes response.body, "Status"
+    assert_includes response.body, "Summary"
+    assert_includes response.body, "Key changes"
+    assert_includes response.body, "Files / config involved"
+    assert_includes response.body, "Upgrade impact"
+    assert_includes response.body, "Notes"
     assert_includes response.body, "Live demo (current runtime: Rails 8.1.2)"
     assert_includes response.body, "Rails 8.1.2"
     assert_includes response.body, "ActiveJob::Continuable"

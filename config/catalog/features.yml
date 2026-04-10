@@ -31,6 +31,48 @@ features:
     '7.0': Async / external queue choice
     '8.0': Solid Queue arrives
     8.1.2: Continuations-ready durable queue
+  status_by_version:
+    '7.0': In-process or external queue choice
+    '8.0': Production default durable queue
+    8.1.2: Durable queue with continuations baseline
+  files_by_version:
+    '7.0':
+      - app/controllers/queue_runs_controller.rb
+      - app/jobs/queue_run_job.rb
+      - config/queue.yml
+    '8.0':
+      - config/queue.yml
+      - db/queue_schema.rb
+      - bin/jobs
+    8.1.2:
+      - app/views/features/demos/_solid_queue.html.erb
+      - app/models/queue_run.rb
+      - app/jobs/queue_run_job.rb
+  upgrade_notes_by_version:
+    '7.0':
+      - Move from in-process or external queue choices to a durable queue backend.
+      - Add a worker boot command before relying on background processing.
+    '8.0':
+      - Confirm `config/queue.yml` and `bin/jobs` are wired into local development and deploy.
+      - Treat Solid Queue as the default backend story rather than an add-on.
+    8.1.2:
+      - Review continuations, queue durability, and worker concurrency together.
+      - Validate queue visibility and completion reporting after the upgrade.
+  code_examples_by_version:
+    '7.0':
+      - bin/jobs start
+    '8.0':
+      - config.active_job.queue_adapter = :solid_queue
+    8.1.2:
+      - QueueRunJob.perform_later(queue_run.id)
+  operational_notes_by_version:
+    '7.0':
+      - Check whether a separate worker process is needed before enabling jobs.
+    '8.0':
+      - Keep `bin/jobs start` or an equivalent worker command running.
+    8.1.2:
+      - Verify durable queue processing and turbo-stream updates together.
+  live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html

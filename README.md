@@ -6,12 +6,12 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 ## 目的 ✨
 
 - 単一の before / after ではなく、**複数 version を横並びで比較**する
-- runtime demo と comparison card を分けて、**触って理解**しやすくする
+- interactive demo と config / platform differences を分けて、**触って理解**しやすくする
 - 将来 **Rails 9.0 / 9.2** などが出たときに、**データ追加中心で拡張**しやすくする
 
 ## What you can see
 
-### Runtime demos
+### Interactive demos
 
 - Authentication generator
 - Solid Queue
@@ -19,7 +19,7 @@ Rails の**複数メジャーバージョン比較**を UI で確認できるカ
 - Solid Cache
 - Runtime stack overview
 
-### Comparison cards
+### Config / platform differences
 
 - Active Job Continuations
 - Structured Event Reporting

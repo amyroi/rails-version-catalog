@@ -40,6 +40,8 @@ Rails の**比較カタログ**を UI で確認できる app です。
   version ごとの status / summary / key changes / files / upgrade impact を並べて比較します。
 - **Live demo**  
   current runtime 上で実際に触れる操作や画面を確認します。
+- **Code / config diff**  
+  version ごとの関連ファイル、設定、移行観点をまとめて確認します。
 
 ## Architecture highlights 🛠️
 

@@ -26,6 +26,31 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_not_predicate feature, :live_demo_available?
   end
 
+  test "optional metadata falls back when omitted" do
+    feature = CatalogFeature.new(
+      slug: "sample",
+      title: "Sample",
+      category: "Interactive Demo",
+      summary: "summary",
+      supported_versions: %w[7.0 8.0 8.1.2],
+      notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.2" => "note 8.1.2" },
+      highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.2" => "h812" },
+      demo_type: :runtime_demo,
+      source_links_by_version: {
+        "7.0" => "https://example.com/7",
+        "8.0" => "https://example.com/8",
+        "8.1.2" => "https://example.com/812"
+      }
+    )
+
+    assert_nil feature.status_for("8.0")
+    assert_equal [], feature.files_for("8.0")
+    assert_equal [], feature.upgrade_notes_for("8.0")
+    assert_equal [], feature.code_examples_for("8.0")
+    assert_equal [], feature.operational_notes_for("8.0")
+    assert_not_predicate feature, :live_demo_available?
+  end
+
   test "raises when feature entry is missing required keys" do
     invalid_features = [
       {

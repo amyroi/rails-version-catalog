@@ -14,6 +14,49 @@ features:
     '7.0': No first-party auth generator
     '8.0': First-party authentication generator
     8.1.2: Stable Rails 8 auth baseline
+  status_by_version:
+    '7.0': Hand-rolled or third-party auth
+    '8.0': First-party generator baseline
+    8.1.2: Stable Rails auth stack
+  files_by_version:
+    '7.0':
+      - app/controllers/sessions_controller.rb
+      - app/controllers/passwords_controller.rb
+      - app/controllers/concerns/authentication.rb
+    '8.0':
+      - app/models/user.rb
+      - app/models/session.rb
+      - app/controllers/sessions_controller.rb
+      - app/controllers/passwords_controller.rb
+    8.1.2:
+      - app/controllers/auth_labs_controller.rb
+      - app/views/features/demos/_authentication_generator.html.erb
+      - app/models/current.rb
+  upgrade_notes_by_version:
+    '7.0':
+      - Replace ad hoc auth with generated sessions, password reset, and signed cookies.
+      - Audit custom sign-in and reset flows before adopting the generator.
+    '8.0':
+      - Wire the generated controllers into the existing sign-in and password reset screens.
+      - Keep unauthenticated access boundaries explicit around protected pages.
+    8.1.2:
+      - Keep `Current.session` and `rate_limit` behavior in mind when upgrading.
+      - Verify redirects to the protected page still match the app's auth flow.
+  code_examples_by_version:
+    '7.0':
+      - bin/rails generate authentication
+    '8.0':
+      - User.authenticate_by(params.permit(:email_address, :password))
+    8.1.2:
+      - start_new_session_for user
+  operational_notes_by_version:
+    '7.0':
+      - Check custom auth and reset endpoints for gaps before switching.
+    '8.0':
+      - Confirm password reset mail delivery and signed session cookies.
+    8.1.2:
+      - Re-test protected pages, rate limits, and session expiry together.
+  live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html

@@ -279,7 +279,7 @@ features:
     8.1.2:
       - config/deploy.yml
       - .kamal/secrets
-      - app/views/features/demos/_kamal_2.html.erb
+      - app/views/features/demos/_kamal.html.erb
   upgrade_notes_by_version:
     '7.0':
       - Replace bespoke deploy pipelines with a repeatable app-centric deploy flow.

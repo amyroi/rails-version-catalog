@@ -40,6 +40,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.0")
     assert_equal [ "config/deploy.yml" ], kamal.code_examples_for("8.0")
     assert_equal [ "Verify the deploy image host, proxy, and secret settings together." ], kamal.operational_notes_for("8.0")
+    assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.1.2")
     assert_predicate kamal, :live_demo_available?
   end
 

@@ -20,10 +20,14 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal "Solid Queue", feature.title
     assert_equal :runtime_demo, feature.demo_type
     assert_equal "Continuations-ready durable queue", feature.highlight_for("8.1.2")
+    assert_equal "Production default durable queue", feature.status_for("8.0")
+    assert_equal [ "config/queue.yml", "db/queue_schema.rb", "bin/jobs" ], feature.files_for("8.0")
+    assert_equal [ "config.active_job.queue_adapter = :solid_queue" ], feature.code_examples_for("8.0")
+    assert_equal [ "Keep `bin/jobs start` or an equivalent worker command running." ], feature.operational_notes_for("8.0")
     assert_equal "https://guides.rubyonrails.org/8_1_release_notes.html", feature.source_for("8.1.2")
-    assert_nil feature.status_for("8.1.2")
-    assert_equal [], feature.files_for("8.1.2")
-    assert_not_predicate feature, :live_demo_available?
+    assert_equal "Durable queue with continuations baseline", feature.status_for("8.1.2")
+    assert_equal [ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ], feature.files_for("8.1.2")
+    assert_predicate feature, :live_demo_available?
   end
 
   test "loads authentication generator metadata from yaml" do

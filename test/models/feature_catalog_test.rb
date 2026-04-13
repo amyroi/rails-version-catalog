@@ -30,6 +30,23 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_predicate feature, :live_demo_available?
   end
 
+  test "loads solid cache and solid cable metadata from yaml" do
+    solid_cache = FeatureCatalog.fetch!("solid-cache")
+    solid_cable = FeatureCatalog.fetch!("solid-cable")
+
+    assert_equal "DB-backed cache enters the default stack", solid_cache.status_for("8.0")
+    assert_equal [ "config/cache.yml", "app/views/features/demos/_solid_cache.html.erb", "app/controllers/features_controller.rb" ], solid_cache.files_for("8.0")
+    assert_equal [ "cache do" ], solid_cache.code_examples_for("8.0")
+    assert_equal [ "Confirm the cache database and retention settings match the workload." ], solid_cache.operational_notes_for("8.0")
+    assert_predicate solid_cache, :live_demo_available?
+
+    assert_equal "DB-backed realtime enters the default stack", solid_cable.status_for("8.0")
+    assert_equal [ "config/cable.yml", "app/views/features/demos/_solid_cable.html.erb", "app/controllers/features_controller.rb" ], solid_cable.files_for("8.0")
+    assert_equal [ "adapter: solid_cable" ], solid_cable.code_examples_for("8.0")
+    assert_equal [ "Keep the cable database migrated and reachable in development and production." ], solid_cable.operational_notes_for("8.0")
+    assert_predicate solid_cable, :live_demo_available?
+  end
+
   test "loads authentication generator metadata from yaml" do
     feature = FeatureCatalog.fetch!("authentication-generator")
 

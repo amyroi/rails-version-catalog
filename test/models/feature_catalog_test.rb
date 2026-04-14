@@ -20,10 +20,61 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal "Solid Queue", feature.title
     assert_equal :runtime_demo, feature.demo_type
     assert_equal "Continuations-ready durable queue", feature.highlight_for("8.1.2")
+    assert_equal "Production default durable queue", feature.status_for("8.0")
+    assert_equal [ "config/queue.yml", "db/queue_schema.rb", "bin/jobs" ], feature.files_for("8.0")
+    assert_equal [ "config.active_job.queue_adapter = :solid_queue" ], feature.code_examples_for("8.0")
+    assert_equal [ "Keep `bin/jobs start` or an equivalent worker command running." ], feature.operational_notes_for("8.0")
     assert_equal "https://guides.rubyonrails.org/8_1_release_notes.html", feature.source_for("8.1.2")
-    assert_nil feature.status_for("8.1.2")
-    assert_equal [], feature.files_for("8.1.2")
-    assert_not_predicate feature, :live_demo_available?
+    assert_equal "Durable queue with continuations baseline", feature.status_for("8.1.2")
+    assert_equal [ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ], feature.files_for("8.1.2")
+    assert_predicate feature, :live_demo_available?
+  end
+
+  test "loads solid cache and solid cable metadata from yaml" do
+    solid_cache = FeatureCatalog.fetch!("solid-cache")
+    solid_cable = FeatureCatalog.fetch!("solid-cable")
+
+    assert_equal "DB-backed cache enters the default stack", solid_cache.status_for("8.0")
+    assert_equal [ "config/cache.yml", "app/views/features/demos/_solid_cache.html.erb", "app/controllers/features_controller.rb" ], solid_cache.files_for("8.0")
+    assert_equal [ "cache do" ], solid_cache.code_examples_for("8.0")
+    assert_equal [ "Confirm the cache database and retention settings match the workload." ], solid_cache.operational_notes_for("8.0")
+    assert_predicate solid_cache, :live_demo_available?
+
+    assert_equal "DB-backed realtime enters the default stack", solid_cable.status_for("8.0")
+    assert_equal [ "config/cable.yml", "app/views/features/demos/_solid_cable.html.erb", "app/controllers/features_controller.rb" ], solid_cable.files_for("8.0")
+    assert_equal [ "adapter: solid_cable" ], solid_cable.code_examples_for("8.0")
+    assert_equal [ "Keep the cable database migrated and reachable in development and production." ], solid_cable.operational_notes_for("8.0")
+    assert_predicate solid_cable, :live_demo_available?
+  end
+
+  test "loads authentication generator metadata from yaml" do
+    feature = FeatureCatalog.fetch!("authentication-generator")
+
+    assert_equal "First-party authentication generator", feature.highlight_for("8.0")
+    assert_equal "First-party generator baseline", feature.status_for("8.0")
+    assert_equal [ "app/models/user.rb", "app/models/session.rb", "app/controllers/sessions_controller.rb", "app/controllers/passwords_controller.rb" ], feature.files_for("8.0")
+    assert_equal [ "bin/rails generate authentication" ], feature.code_examples_for("7.0")
+    assert_equal [ "Confirm password reset mail delivery and signed session cookies." ], feature.operational_notes_for("8.0")
+    assert_equal [ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ], feature.files_for("8.1.2")
+    assert_predicate feature, :live_demo_available?
+  end
+
+  test "loads propshaft and kamal metadata from yaml" do
+    propshaft = FeatureCatalog.fetch!("propshaft")
+    kamal = FeatureCatalog.fetch!("kamal")
+
+    assert_equal "Propshaft becomes the default asset story", propshaft.status_for("8.0")
+    assert_equal [ "config/importmap.rb", "app/views/features/demos/_propshaft.html.erb", "app/controllers/features_controller.rb" ], propshaft.files_for("8.0")
+    assert_equal [ "Propshaft enabled" ], propshaft.code_examples_for("8.0")
+    assert_equal [ "Confirm asset precompilation and fingerprinted file handling still work." ], propshaft.operational_notes_for("8.0")
+    assert_predicate propshaft, :live_demo_available?
+
+    assert_equal "Kamal becomes part of the default deploy story", kamal.status_for("8.0")
+    assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.0")
+    assert_equal [ "config/deploy.yml" ], kamal.code_examples_for("8.0")
+    assert_equal [ "Verify the deploy image host, proxy, and secret settings together." ], kamal.operational_notes_for("8.0")
+    assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.1.2")
+    assert_predicate kamal, :live_demo_available?
   end
 
   test "raises when feature entry is missing required keys" do

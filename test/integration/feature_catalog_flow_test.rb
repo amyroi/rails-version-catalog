@@ -19,8 +19,18 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Overview"
     assert_includes response.body, "Version comparison matrix"
     assert_includes response.body, "Code / config diff"
-    assert_includes response.body, "Live demo (current runtime:"
+    assert_includes response.body, "Live demo (current runtime: Rails 8.1.2)"
     assert_includes response.body, "Upgrade notes"
+    assert_includes response.body, "Recent jobs"
+  end
+
+  test "authentication generator detail renders" do
+    get feature_path("authentication-generator")
+
+    assert_response :success
+    assert_includes response.body, "Authentication flow"
+    assert_includes response.body, "Quick try"
+    assert_includes response.body, "Current status"
   end
 
   test "auth lab redirects when unauthenticated" do

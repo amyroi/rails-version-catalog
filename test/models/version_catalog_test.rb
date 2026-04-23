@@ -6,7 +6,7 @@ class VersionCatalogTest < ActiveSupport::TestCase
   end
 
   test "default compare keys are loaded from yaml" do
-    assert_equal [ "7.0", "8.0", "8.1.2" ], VersionCatalog.default_compare_keys
+    assert_equal [ "7.0", "8.0", "8.1.3" ], VersionCatalog.default_compare_keys
   end
 
   test "fetch returns configured version" do
@@ -23,7 +23,7 @@ class VersionCatalogTest < ActiveSupport::TestCase
 
   test "index_for returns position of configured version" do
     assert_equal 0, VersionCatalog.index_for("7.0")
-    assert_equal 2, VersionCatalog.index_for("8.1.2")
+    assert_equal 2, VersionCatalog.index_for("8.1.3")
     assert_equal(-1, VersionCatalog.index_for("9.0"))
   end
 
@@ -49,15 +49,15 @@ class VersionCatalogTest < ActiveSupport::TestCase
   test "raises when version keys are duplicated" do
     duplicate_versions = [
       {
-        "key" => "8.1.2",
-        "label" => "Rails 8.1.2",
-        "release_date" => "January 8, 2026",
+        "key" => "8.1.3",
+        "label" => "Rails 8.1.3",
+        "release_date" => "March 24, 2026",
         "status" => "latest",
         "release_notes_url" => "https://guides.rubyonrails.org/8_1_release_notes.html"
       },
       {
-        "key" => "8.1.2",
-        "label" => "Rails 8.1.2 duplicate",
+        "key" => "8.1.3",
+        "label" => "Rails 8.1.3 duplicate",
         "release_date" => "January 9, 2026",
         "status" => "supported",
         "release_notes_url" => "https://example.com/duplicate"

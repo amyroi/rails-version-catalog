@@ -6,7 +6,7 @@ class VersionCatalogTest < ActiveSupport::TestCase
   end
 
   test "default compare keys are loaded from yaml" do
-    assert_equal [ "7.0", "8.0", "8.1.2", "8.1.3" ], VersionCatalog.default_compare_keys
+    assert_equal [ "7.0", "8.0", "8.1.3" ], VersionCatalog.default_compare_keys
   end
 
   test "fetch returns configured version" do
@@ -23,8 +23,7 @@ class VersionCatalogTest < ActiveSupport::TestCase
 
   test "index_for returns position of configured version" do
     assert_equal 0, VersionCatalog.index_for("7.0")
-    assert_equal 2, VersionCatalog.index_for("8.1.2")
-    assert_equal 3, VersionCatalog.index_for("8.1.3")
+    assert_equal 2, VersionCatalog.index_for("8.1.3")
     assert_equal(-1, VersionCatalog.index_for("9.0"))
   end
 

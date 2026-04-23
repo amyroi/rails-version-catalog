@@ -6,12 +6,12 @@ class FeatureCatalogTest < ActiveSupport::TestCase
   end
 
   test "loads all features from yaml" do
-    assert_equal 14, FeatureCatalog.all.size
+    assert_equal 15, FeatureCatalog.all.size
   end
 
   test "returns runtime demos and comparison cards" do
     assert_equal 5, FeatureCatalog.runtime_demos.size
-    assert_equal 9, FeatureCatalog.comparison_cards.size
+    assert_equal 10, FeatureCatalog.comparison_cards.size
   end
 
   test "fetch returns configured feature" do
@@ -19,14 +19,14 @@ class FeatureCatalogTest < ActiveSupport::TestCase
 
     assert_equal "Solid Queue", feature.title
     assert_equal :runtime_demo, feature.demo_type
-    assert_equal "Continuations-ready durable queue", feature.highlight_for("8.1.3")
+    assert_equal "Continuations-ready durable queue", feature.highlight_for("8.1.2")
     assert_equal "Production default durable queue", feature.status_for("8.0")
     assert_equal [ "config/queue.yml", "db/queue_schema.rb", "bin/jobs" ], feature.files_for("8.0")
     assert_equal [ "config.active_job.queue_adapter = :solid_queue" ], feature.code_examples_for("8.0")
     assert_equal [ "Keep `bin/jobs start` or an equivalent worker command running." ], feature.operational_notes_for("8.0")
-    assert_equal "https://guides.rubyonrails.org/8_1_release_notes.html", feature.source_for("8.1.3")
-    assert_equal "Durable queue with continuations baseline", feature.status_for("8.1.3")
-    assert_equal [ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ], feature.files_for("8.1.3")
+    assert_equal "https://guides.rubyonrails.org/8_1_release_notes.html", feature.source_for("8.1.2")
+    assert_equal "Durable queue with continuations baseline", feature.status_for("8.1.2")
+    assert_equal [ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ], feature.files_for("8.1.2")
     assert_predicate feature, :live_demo_available?
   end
 
@@ -55,7 +55,7 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal [ "app/models/user.rb", "app/models/session.rb", "app/controllers/sessions_controller.rb", "app/controllers/passwords_controller.rb" ], feature.files_for("8.0")
     assert_equal [ "bin/rails generate authentication" ], feature.code_examples_for("7.0")
     assert_equal [ "Confirm password reset mail delivery and signed session cookies." ], feature.operational_notes_for("8.0")
-    assert_equal [ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ], feature.files_for("8.1.3")
+    assert_equal [ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ], feature.files_for("8.1.2")
     assert_predicate feature, :live_demo_available?
   end
 
@@ -73,8 +73,23 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.0")
     assert_equal [ "config/deploy.yml" ], kamal.code_examples_for("8.0")
     assert_equal [ "Verify the deploy image host, proxy, and secret settings together." ], kamal.operational_notes_for("8.0")
-    assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.1.3")
+    assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.1.2")
     assert_predicate kamal, :live_demo_available?
+  end
+
+
+  test "loads rails 8.1.3 patch release as a dedicated comparison card" do
+    feature = FeatureCatalog.fetch!("rails-8-1-3-patch-release")
+
+    assert_equal "Rails 8.1.3 patch release", feature.title
+    assert_equal :comparison_card, feature.demo_type
+    assert_equal "Rails 8.1 baseline before patch fixes", feature.highlight_for("8.1.2")
+    assert_equal "JSON / inflector / Active Record / Active Storage fixes", feature.highlight_for("8.1.3")
+    assert_equal "Latest Rails 8.1 patch release", feature.status_for("8.1.3")
+    assert_includes feature.note_for("8.1.3"), "custom object hash key"
+    assert_includes feature.upgrade_notes_for("8.1.3"), "Check JSON output when custom objects are used as hash keys."
+    assert_equal [ 'gem "rails", "~> 8.1.3"' ], feature.code_examples_for("8.1.3")
+    assert_equal "https://github.com/rails/rails/releases/tag/v8.1.3", feature.source_for("8.1.3")
   end
 
   test "optional metadata falls back when omitted" do
@@ -83,13 +98,14 @@ class FeatureCatalogTest < ActiveSupport::TestCase
       title: "Sample",
       category: "Interactive Demo",
       summary: "summary",
-      supported_versions: %w[7.0 8.0 8.1.3],
-      notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.3" => "note 8.1.3" },
-      highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.3" => "h813" },
+      supported_versions: %w[7.0 8.0 8.1.2 8.1.3],
+      notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.2" => "note 8.1.2", "8.1.3" => "note 8.1.3" },
+      highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.2" => "h812", "8.1.3" => "h813" },
       demo_type: :runtime_demo,
       source_links_by_version: {
         "7.0" => "https://example.com/7",
         "8.0" => "https://example.com/8",
+        "8.1.2" => "https://example.com/812",
         "8.1.3" => "https://example.com/813"
       }
     )
@@ -130,9 +146,9 @@ class FeatureCatalogTest < ActiveSupport::TestCase
         "demo_type" => "runtime_demo",
         "title" => "Feature A",
         "summary" => "Summary A",
-        "notes_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.3" => "A" },
-        "highlights_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.3" => "A" },
-        "source_links_by_version" => { "7.0" => "https://example.com/a", "8.0" => "https://example.com/a", "8.1.3" => "https://example.com/a" }
+        "notes_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.2" => "A", "8.1.3" => "A" },
+        "highlights_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.2" => "A", "8.1.3" => "A" },
+        "source_links_by_version" => { "7.0" => "https://example.com/a", "8.0" => "https://example.com/a", "8.1.2" => "https://example.com/a", "8.1.3" => "https://example.com/a" }
       },
       {
         "slug" => "same-slug",
@@ -140,9 +156,9 @@ class FeatureCatalogTest < ActiveSupport::TestCase
         "demo_type" => "comparison_card",
         "title" => "Feature B",
         "summary" => "Summary B",
-        "notes_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.3" => "B" },
-        "highlights_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.3" => "B" },
-        "source_links_by_version" => { "7.0" => "https://example.com/b", "8.0" => "https://example.com/b", "8.1.3" => "https://example.com/b" }
+        "notes_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.2" => "B", "8.1.3" => "B" },
+        "highlights_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.2" => "B", "8.1.3" => "B" },
+        "source_links_by_version" => { "7.0" => "https://example.com/b", "8.0" => "https://example.com/b", "8.1.2" => "https://example.com/b", "8.1.3" => "https://example.com/b" }
       }
     ]
 
@@ -282,16 +298,19 @@ class FeatureCatalogTest < ActiveSupport::TestCase
         "notes_by_version" => {
           "7.0" => "note 7",
           "8.0" => "note 8",
+          "8.1.2" => "note 8.1.2",
           "8.1.3" => "note 8.1.3"
         },
         "highlights_by_version" => {
           "7.0" => "highlight 7",
           "8.0" => "highlight 8",
+          "8.1.2" => "highlight 8.1.2",
           "8.1.3" => "highlight 8.1.3"
         },
         "source_links_by_version" => {
           "7.0" => "https://example.com/7",
           "8.0" => "https://example.com/8",
+          "8.1.2" => "https://example.com/8-1-2",
           "8.1.3" => "https://example.com/8-1-3"
         }
       }

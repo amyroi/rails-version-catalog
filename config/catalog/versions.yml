@@ -1,16 +1,22 @@
+---
 versions:
-  - key: "7.0"
-    label: "Rails 7.0"
-    release_date: "December 2021"
-    status: "supported"
-    release_notes_url: "https://guides.rubyonrails.org/7_0_release_notes.html"
-  - key: "8.0"
-    label: "Rails 8.0"
-    release_date: "November 2024"
-    status: "supported"
-    release_notes_url: "https://guides.rubyonrails.org/8_0_release_notes.html"
-  - key: "8.1.3"
-    label: "Rails 8.1.3"
-    release_date: "March 24, 2026"
-    status: "latest"
-    release_notes_url: "https://guides.rubyonrails.org/8_1_release_notes.html"
+- key: '7.0'
+  label: Rails 7.0
+  release_date: December 2021
+  status: supported
+  release_notes_url: https://guides.rubyonrails.org/7_0_release_notes.html
+- key: '8.0'
+  label: Rails 8.0
+  release_date: November 2024
+  status: supported
+  release_notes_url: https://guides.rubyonrails.org/8_0_release_notes.html
+- key: 8.1.2
+  label: Rails 8.1.2
+  release_date: January 8, 2026
+  status: supported
+  release_notes_url: https://guides.rubyonrails.org/8_1_release_notes.html
+- key: 8.1.3
+  label: Rails 8.1.3
+  release_date: March 24, 2026
+  status: latest
+  release_notes_url: https://github.com/rails/rails/releases/tag/v8.1.3

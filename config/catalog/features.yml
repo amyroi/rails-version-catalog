@@ -8,61 +8,81 @@ features:
   notes_by_version:
     '7.0': 標準認証 generator は未同梱で、Devise などの外部ライブラリか手作業実装に寄りがちでした。
     '8.0': generate authentication で Users / Sessions / Password reset の土台をすぐに作れるようになりました。
-    8.1.3: 認証 generator は Rails 8 系の標準導線として定着し、Current session・rate limit・password
+    8.1.2: 認証 generator は Rails 8 系の標準導線として定着し、Current session・rate limit・password
       reset と一緒に学びやすくなっています.
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': No first-party auth generator
     '8.0': First-party authentication generator
-    8.1.3: Stable Rails 8 auth baseline
+    8.1.2: Stable Rails 8 auth baseline
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   status_by_version:
     '7.0': Hand-rolled or third-party auth
     '8.0': First-party generator baseline
-    8.1.3: Stable Rails auth stack
+    8.1.2: Stable Rails auth stack
+    8.1.3: Latest patch release on the Rails 8.1 line
   files_by_version:
     '7.0':
-      - app/controllers/concerns/authentication.rb
-      - app/controllers/sessions_controller.rb
-      - app/controllers/passwords_controller.rb
-      - app/views/sessions/new.html.erb
+    - app/controllers/concerns/authentication.rb
+    - app/controllers/sessions_controller.rb
+    - app/controllers/passwords_controller.rb
+    - app/views/sessions/new.html.erb
     '8.0':
-      - app/models/user.rb
-      - app/models/session.rb
-      - app/controllers/sessions_controller.rb
-      - app/controllers/passwords_controller.rb
+    - app/models/user.rb
+    - app/models/session.rb
+    - app/controllers/sessions_controller.rb
+    - app/controllers/passwords_controller.rb
+    8.1.2:
+    - app/models/current.rb
+    - app/models/session.rb
+    - app/views/auth_labs/show.html.erb
+    - app/views/passwords/edit.html.erb
     8.1.3:
-      - app/models/current.rb
-      - app/models/session.rb
-      - app/views/auth_labs/show.html.erb
-      - app/views/passwords/edit.html.erb
+    - app/models/current.rb
+    - app/models/session.rb
+    - app/views/auth_labs/show.html.erb
+    - app/views/passwords/edit.html.erb
   upgrade_notes_by_version:
     '7.0':
-      - Replace ad hoc auth with generated sessions, password reset, and signed cookies.
-      - Audit custom sign-in and reset flows before adopting the generator.
+    - Replace ad hoc auth with generated sessions, password reset, and signed cookies.
+    - Audit custom sign-in and reset flows before adopting the generator.
     '8.0':
-      - Wire the generated controllers into the existing sign-in and password reset screens.
-      - Keep unauthenticated access boundaries explicit around protected pages.
+    - Wire the generated controllers into the existing sign-in and password reset
+      screens.
+    - Keep unauthenticated access boundaries explicit around protected pages.
+    8.1.2:
+    - Keep `Current.session` and `rate_limit` behavior in mind when upgrading.
+    - Verify redirects to the protected page still match the app's auth flow.
     8.1.3:
-      - Keep `Current.session` and `rate_limit` behavior in mind when upgrading.
-      - Verify redirects to the protected page still match the app's auth flow.
+    - Treat this as a Rails 8.1 patch upgrade, not a new feature adoption.
+    - Review the dedicated Rails 8.1.3 patch release card for behavioral fixes that
+      may affect the app.
   code_examples_by_version:
     '7.0':
-      - bin/rails generate authentication
+    - bin/rails generate authentication
     '8.0':
-      - User.authenticate_by(params.permit(:email_address, :password))
+    - User.authenticate_by(params.permit(:email_address, :password))
+    8.1.2:
+    - start_new_session_for user
     8.1.3:
-      - start_new_session_for user
+    - start_new_session_for user
   operational_notes_by_version:
     '7.0':
-      - Check custom auth and reset endpoints for gaps before switching.
+    - Check custom auth and reset endpoints for gaps before switching.
     '8.0':
-      - Confirm password reset mail delivery and signed session cookies.
+    - Confirm password reset mail delivery and signed session cookies.
+    8.1.2:
+    - Re-test protected pages, rate limits, and session expiry together.
     8.1.3:
-      - Re-test protected pages, rate limits, and session expiry together.
+    - Run the catalog test suite after the dependency bump because runtime labels
+      and patch behavior now differ from 8.1.2.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: solid-queue
   category: Interactive Demo
   demo_type: runtime_demo
@@ -71,57 +91,76 @@ features:
   notes_by_version:
     '7.0': デフォルトは in-process / non-durable backend で、永続 queue は別途選定が必要でした。
     '8.0': Solid Queue が production default story に入り、DB-backed queue を採用しやすくなりました。
-    8.1.3: Continuations と組み合わせやすい durable backend として、Rails 8.1 系の新機能の土台にもなります。
+    8.1.2: Continuations と組み合わせやすい durable backend として、Rails 8.1 系の新機能の土台にもなります。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Async / external queue choice
     '8.0': Solid Queue arrives
-    8.1.3: Continuations-ready durable queue
+    8.1.2: Continuations-ready durable queue
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   status_by_version:
     '7.0': In-process or external queue choice
     '8.0': Production default durable queue
-    8.1.3: Durable queue with continuations baseline
+    8.1.2: Durable queue with continuations baseline
+    8.1.3: Latest patch release on the Rails 8.1 line
   files_by_version:
     '7.0':
-      - app/controllers/queue_runs_controller.rb
-      - app/jobs/queue_run_job.rb
-      - config/queue.yml
+    - app/controllers/queue_runs_controller.rb
+    - app/jobs/queue_run_job.rb
+    - config/queue.yml
     '8.0':
-      - config/queue.yml
-      - db/queue_schema.rb
-      - bin/jobs
+    - config/queue.yml
+    - db/queue_schema.rb
+    - bin/jobs
+    8.1.2:
+    - app/views/features/demos/_solid_queue.html.erb
+    - app/models/queue_run.rb
+    - app/jobs/queue_run_job.rb
     8.1.3:
-      - app/views/features/demos/_solid_queue.html.erb
-      - app/models/queue_run.rb
-      - app/jobs/queue_run_job.rb
+    - app/views/features/demos/_solid_queue.html.erb
+    - app/models/queue_run.rb
+    - app/jobs/queue_run_job.rb
   upgrade_notes_by_version:
     '7.0':
-      - Move from in-process or external queue choices to a durable queue backend.
-      - Add a worker boot command before relying on background processing.
+    - Move from in-process or external queue choices to a durable queue backend.
+    - Add a worker boot command before relying on background processing.
     '8.0':
-      - Confirm `config/queue.yml` and `bin/jobs` are wired into local development and deploy.
-      - Treat Solid Queue as the default backend story rather than an add-on.
+    - Confirm `config/queue.yml` and `bin/jobs` are wired into local development and
+      deploy.
+    - Treat Solid Queue as the default backend story rather than an add-on.
+    8.1.2:
+    - Review continuations, queue durability, and worker concurrency together.
+    - Validate queue visibility and completion reporting after the upgrade.
     8.1.3:
-      - Review continuations, queue durability, and worker concurrency together.
-      - Validate queue visibility and completion reporting after the upgrade.
+    - Treat this as a Rails 8.1 patch upgrade, not a new feature adoption.
+    - Review the dedicated Rails 8.1.3 patch release card for behavioral fixes that
+      may affect the app.
   code_examples_by_version:
     '7.0':
-      - bin/jobs start
+    - bin/jobs start
     '8.0':
-      - config.active_job.queue_adapter = :solid_queue
+    - config.active_job.queue_adapter = :solid_queue
+    8.1.2:
+    - QueueRunJob.perform_later(queue_run.id)
     8.1.3:
-      - QueueRunJob.perform_later(queue_run.id)
+    - QueueRunJob.perform_later(queue_run.id)
   operational_notes_by_version:
     '7.0':
-      - Check whether a separate worker process is needed before enabling jobs.
+    - Check whether a separate worker process is needed before enabling jobs.
     '8.0':
-      - Keep `bin/jobs start` or an equivalent worker command running.
+    - Keep `bin/jobs start` or an equivalent worker command running.
+    8.1.2:
+    - Verify durable queue processing and turbo-stream updates together.
     8.1.3:
-      - Verify durable queue processing and turbo-stream updates together.
+    - Run the catalog test suite after the dependency bump because runtime labels
+      and patch behavior now differ from 8.1.2.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: solid-cable
   category: Interactive Demo
   demo_type: runtime_demo
@@ -130,57 +169,77 @@ features:
   notes_by_version:
     '7.0': Action Cable は Redis 構成が一般的で、DB-backed cable は標準の主流ではありませんでした。
     '8.0': Solid Cable が Rails 8 の default stack に入り、DB-backed realtime の選択肢が近くなりました。
-    8.1.3: Solid 系 stack とあわせて、single-app で queue / cache / cable を揃えやすい構成が続いています。
+    8.1.2: Solid 系 stack とあわせて、single-app で queue / cache / cable を揃えやすい構成が続いています。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Redis-first realtime setups
     '8.0': Solid Cable default story
-    8.1.3: DB-backed realtime remains first-class
+    8.1.2: DB-backed realtime remains first-class
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   status_by_version:
     '7.0': Redis-backed realtime or custom cable setup
     '8.0': DB-backed realtime enters the default stack
-    8.1.3: Durable realtime stays first-class
+    8.1.2: Durable realtime stays first-class
+    8.1.3: Latest patch release on the Rails 8.1 line
   files_by_version:
     '7.0':
-      - config/cable.yml
-      - app/views/features/demos/_solid_cable.html.erb
-      - app/controllers/features_controller.rb
+    - config/cable.yml
+    - app/views/features/demos/_solid_cable.html.erb
+    - app/controllers/features_controller.rb
     '8.0':
-      - config/cable.yml
-      - app/views/features/demos/_solid_cable.html.erb
-      - app/controllers/features_controller.rb
+    - config/cable.yml
+    - app/views/features/demos/_solid_cable.html.erb
+    - app/controllers/features_controller.rb
+    8.1.2:
+    - config/cable.yml
+    - app/views/features/demos/_solid_cable.html.erb
+    - app/controllers/features_controller.rb
     8.1.3:
-      - config/cable.yml
-      - app/views/features/demos/_solid_cable.html.erb
-      - app/controllers/features_controller.rb
+    - config/cable.yml
+    - app/views/features/demos/_solid_cable.html.erb
+    - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-      - Move away from Redis-first assumptions if you want the app to stay in the default Rails stack.
-      - Review whether realtime streams can be backed by the database in your environment.
+    - Move away from Redis-first assumptions if you want the app to stay in the default
+      Rails stack.
+    - Review whether realtime streams can be backed by the database in your environment.
     '8.0':
-      - Confirm `config/cable.yml` and the cable database are configured together.
-      - Re-test broadcast flows after switching to the DB-backed adapter.
+    - Confirm `config/cable.yml` and the cable database are configured together.
+    - Re-test broadcast flows after switching to the DB-backed adapter.
+    8.1.2:
+    - Verify turbo-stream updates, message retention, and database-backed cable polling
+      together.
+    - Keep the cable database and runtime worker story aligned.
     8.1.3:
-      - Verify turbo-stream updates, message retention, and database-backed cable polling together.
-      - Keep the cable database and runtime worker story aligned.
+    - Treat this as a Rails 8.1 patch upgrade, not a new feature adoption.
+    - Review the dedicated Rails 8.1.3 patch release card for behavioral fixes that
+      may affect the app.
   code_examples_by_version:
     '7.0':
-      - config/cable.yml
+    - config/cable.yml
     '8.0':
-      - "adapter: solid_cable"
+    - 'adapter: solid_cable'
+    8.1.2:
+    - Turbo::StreamsChannel.broadcast_append_to
     8.1.3:
-      - Turbo::StreamsChannel.broadcast_append_to
+    - Turbo::StreamsChannel.broadcast_append_to
   operational_notes_by_version:
     '7.0':
-      - Check Redis dependencies and custom cable deployments before migrating.
+    - Check Redis dependencies and custom cable deployments before migrating.
     '8.0':
-      - Keep the cable database migrated and reachable in development and production.
+    - Keep the cable database migrated and reachable in development and production.
+    8.1.2:
+    - Confirm cable polling and retention settings still match the app's usage pattern.
     8.1.3:
-      - Confirm cable polling and retention settings still match the app's usage pattern.
+    - Run the catalog test suite after the dependency bump because runtime labels
+      and patch behavior now differ from 8.1.2.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: solid-cache
   category: Interactive Demo
   demo_type: runtime_demo
@@ -189,57 +248,75 @@ features:
   notes_by_version:
     '7.0': memory_store や Redis を環境ごとに選ぶことが多く、durable cache は標準同梱ではありませんでした。
     '8.0': Solid Cache が標準 stack に入り、DB-backed cache を採用しやすくなりました。
-    8.1.3: Solid Cache は Rails 8.1 系でも durable stack の一部として継続し、queue / cable と一緒に理解しやすくなっています.
+    8.1.2: Solid Cache は Rails 8.1 系でも durable stack の一部として継続し、queue / cable と一緒に理解しやすくなっています.
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Choose cache backend yourself
     '8.0': Solid Cache arrives
-    8.1.3: Durable stack remains cohesive
+    8.1.2: Durable stack remains cohesive
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   status_by_version:
     '7.0': Memory or Redis cache configuration
     '8.0': DB-backed cache enters the default stack
-    8.1.3: Durable cache remains part of the stack
+    8.1.2: Durable cache remains part of the stack
+    8.1.3: Latest patch release on the Rails 8.1 line
   files_by_version:
     '7.0':
-      - config/cache.yml
-      - app/views/features/demos/_solid_cache.html.erb
-      - app/controllers/features_controller.rb
+    - config/cache.yml
+    - app/views/features/demos/_solid_cache.html.erb
+    - app/controllers/features_controller.rb
     '8.0':
-      - config/cache.yml
-      - app/views/features/demos/_solid_cache.html.erb
-      - app/controllers/features_controller.rb
+    - config/cache.yml
+    - app/views/features/demos/_solid_cache.html.erb
+    - app/controllers/features_controller.rb
+    8.1.2:
+    - config/cache.yml
+    - app/views/features/demos/_solid_cache.html.erb
+    - app/controllers/features_controller.rb
     8.1.3:
-      - config/cache.yml
-      - app/views/features/demos/_solid_cache.html.erb
-      - app/controllers/features_controller.rb
+    - config/cache.yml
+    - app/views/features/demos/_solid_cache.html.erb
+    - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-      - Revisit cache backend selection if you are moving from Redis or memory store.
-      - Check database capacity before shifting cache traffic into Solid Cache.
+    - Revisit cache backend selection if you are moving from Redis or memory store.
+    - Check database capacity before shifting cache traffic into Solid Cache.
     '8.0':
-      - Align `config/cache.yml` with the new durable cache story.
-      - Validate cache hit / miss behavior in development and deploy environments.
+    - Align `config/cache.yml` with the new durable cache story.
+    - Validate cache hit / miss behavior in development and deploy environments.
+    8.1.2:
+    - Keep cache retention, database size, and runtime expectations aligned.
+    - Re-check the app's cache keys after the upgrade.
     8.1.3:
-      - Keep cache retention, database size, and runtime expectations aligned.
-      - Re-check the app's cache keys after the upgrade.
+    - Treat this as a Rails 8.1 patch upgrade, not a new feature adoption.
+    - Review the dedicated Rails 8.1.3 patch release card for behavioral fixes that
+      may affect the app.
   code_examples_by_version:
     '7.0':
-      - config/cache.yml
+    - config/cache.yml
     '8.0':
-      - cache do
+    - cache do
+    8.1.2:
+    - Rails.cache.fetch
     8.1.3:
-      - Rails.cache.fetch
+    - Rails.cache.fetch
   operational_notes_by_version:
     '7.0':
-      - Review whether existing Redis assumptions still fit the deployment.
+    - Review whether existing Redis assumptions still fit the deployment.
     '8.0':
-      - Confirm the cache database and retention settings match the workload.
+    - Confirm the cache database and retention settings match the workload.
+    8.1.2:
+    - Check cache warmup, invalidation, and the database footprint together.
     8.1.3:
-      - Check cache warmup, invalidation, and the database footprint together.
+    - Run the catalog test suite after the dependency bump because runtime labels
+      and patch behavior now differ from 8.1.2.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: runtime-stack
   category: Interactive Demo
   demo_type: runtime_demo
@@ -248,16 +325,20 @@ features:
   notes_by_version:
     '7.0': Hotwire は大きなテーマでしたが、queue / cache / cable / deploy は個別選定の色が強めでした。
     '8.0': Solid Queue / Cache / Cable、Kamal、Thruster などで default story が一段まとまりました。
-    8.1.3: 8.1 では Continuations・Structured Event Reporting・Local CI など、運用と開発体験の story
+    8.1.2: 8.1 では Continuations・Structured Event Reporting・Local CI など、運用と開発体験の story
       がさらに広がりました。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Hotwire era baseline
     '8.0': Default stack gets cohesive
-    8.1.3: Operational developer experience expands
+    8.1.2: Operational developer experience expands
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: active-job-continuations
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -266,15 +347,19 @@ features:
   notes_by_version:
     '7.0': 中断に強い multi-step job を標準 API だけで表現するのは難しく、再開ロジックは自前で持ちがちでした。
     '8.0': Solid Queue は入りましたが、job continuation 自体はまだ標準 API ではありませんでした。
-    8.1.3: ActiveJob::Continuable により step / cursor を用いた再開可能ジョブを標準で組み立てられます。
+    8.1.2: ActiveJob::Continuable により step / cursor を用いた再開可能ジョブを標準で組み立てられます。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Custom resumable jobs
     '8.0': Durable queue without continuations
-    8.1.3: ActiveJob::Continuable
+    8.1.2: ActiveJob::Continuable
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: structured-event-reporting
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -283,16 +368,20 @@ features:
   notes_by_version:
     '7.0': 構造化イベントは ActiveSupport::Notifications や独自 logger 設計に分散しやすい状態でした。
     '8.0': 運用向け default story は広がりましたが、統一的な structured event API はまだありませんでした。
-    8.1.3: Rails.event.notify / tagged / set_context と subscriber により、post-processing
+    8.1.2: Rails.event.notify / tagged / set_context と subscriber により、post-processing
       向けイベントを標準化できます。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Notifications + custom logging
     '8.0': No unified event reporter yet
-    8.1.3: Rails.event
+    8.1.2: Rails.event
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: markdown-rendering
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -301,15 +390,19 @@ features:
   notes_by_version:
     '7.0': Markdown response は gem や custom responder による拡張が前提になりやすかったです。
     '8.0': 標準 rendering story は引き続き HTML / JSON 中心でした。
-    8.1.3: 'respond_to の中で render markdown: object を使う導線が公式 release notes に登場しました。'
+    8.1.2: 'respond_to の中で render markdown: object を使う導線が公式 release notes に登場しました。'
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Custom markdown rendering
     '8.0': No first-class markdown response
-    8.1.3: 'render markdown:'
+    8.1.2: 'render markdown:'
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: local-ci
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -318,15 +411,19 @@ features:
   notes_by_version:
     '7.0': CI は GitHub Actions や CircleCI などクラウド設定ファイル中心でした。
     '8.0': 新規 app に CI workflow は入りますが、ローカル実行前提の DSL はありませんでした。
-    8.1.3: config/ci.rb と bin/ci によって、developer machine での標準 CI declaration が導入されました。
+    8.1.2: config/ci.rb と bin/ci によって、developer machine での標準 CI declaration が導入されました。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Cloud CI first
     '8.0': Generated CI workflow
-    8.1.3: config/ci.rb + bin/ci
+    8.1.2: config/ci.rb + bin/ci
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: credentials-fetching
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -335,15 +432,19 @@ features:
   notes_by_version:
     '7.0': credentials は Rails 内で読む前提が強く、deploy 連携は custom scripting に寄りがちでした。
     '8.0': Kamal は近くなりましたが、credentials fetch を前提にした CLI story はまだ薄めでした。
-    8.1.3: rails credentials:fetch が紹介され、Kamal secrets と encrypted credentials をつなぎやすくなりました。
+    8.1.2: rails credentials:fetch が紹介され、Kamal secrets と encrypted credentials をつなぎやすくなりました。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Custom secret scripting
     '8.0': Kamal introduced
-    8.1.3: rails credentials:fetch
+    8.1.2: rails credentials:fetch
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: deprecated-associations
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -352,15 +453,19 @@ features:
   notes_by_version:
     '7.0': association の利用抑制や移行警告は、lint や手製 warning に頼ることが多かったです。
     '8.0': 標準の association deprecation reporting はまだありませんでした。
-    8.1.3: 'has_many :posts, deprecated: true のように関連自体へ deprecation を付けられます。'
+    8.1.2: 'has_many :posts, deprecated: true のように関連自体へ deprecation を付けられます。'
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Manual migration warnings
     '8.0': No built-in deprecated associations
-    8.1.3: 'deprecated: true'
+    8.1.2: 'deprecated: true'
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: propshaft
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -370,57 +475,75 @@ features:
     '7.0': Sprockets は optional dependency になりましたが、asset pipeline の比較軸では依然 Sprockets
       前提が強く残っていました。
     '8.0': 新規 app は Propshaft が前提になり、より薄い asset 管理へ寄りました。
-    8.1.3: Propshaft 前提は継続し、importmap / Hotwire と組み合わせた軽量構成を保ちやすいです。
+    8.1.2: Propshaft 前提は継続し、importmap / Hotwire と組み合わせた軽量構成を保ちやすいです。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Sprockets becomes optional
     '8.0': Propshaft default
-    8.1.3: Propshaft continues as baseline
+    8.1.2: Propshaft continues as baseline
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   status_by_version:
     '7.0': Sprockets is still the common comparison point
     '8.0': Propshaft becomes the default asset story
-    8.1.3: Propshaft remains the baseline
+    8.1.2: Propshaft remains the baseline
+    8.1.3: Latest patch release on the Rails 8.1 line
   files_by_version:
     '7.0':
-      - config/importmap.rb
-      - app/views/features/demos/_propshaft.html.erb
-      - app/controllers/features_controller.rb
+    - config/importmap.rb
+    - app/views/features/demos/_propshaft.html.erb
+    - app/controllers/features_controller.rb
     '8.0':
-      - config/importmap.rb
-      - app/views/features/demos/_propshaft.html.erb
-      - app/controllers/features_controller.rb
+    - config/importmap.rb
+    - app/views/features/demos/_propshaft.html.erb
+    - app/controllers/features_controller.rb
+    8.1.2:
+    - config/importmap.rb
+    - app/views/features/demos/_propshaft.html.erb
+    - app/controllers/features_controller.rb
     8.1.3:
-      - config/importmap.rb
-      - app/views/features/demos/_propshaft.html.erb
-      - app/controllers/features_controller.rb
+    - config/importmap.rb
+    - app/views/features/demos/_propshaft.html.erb
+    - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-      - Trim Sprockets-specific assumptions before adopting Propshaft.
-      - Check how asset fingerprinting and importmap fit together.
+    - Trim Sprockets-specific assumptions before adopting Propshaft.
+    - Check how asset fingerprinting and importmap fit together.
     '8.0':
-      - Make sure the new default asset pipeline is wired into app boot and deploy.
-      - Review any Sprockets-specific helper or asset config before migrating.
+    - Make sure the new default asset pipeline is wired into app boot and deploy.
+    - Review any Sprockets-specific helper or asset config before migrating.
+    8.1.2:
+    - Keep importmap and Propshaft aligned when updating assets.
+    - Re-check fingerprinted asset behavior after each release upgrade.
     8.1.3:
-      - Keep importmap and Propshaft aligned when updating assets.
-      - Re-check fingerprinted asset behavior after each release upgrade.
+    - Treat this as a Rails 8.1 patch upgrade, not a new feature adoption.
+    - Review the dedicated Rails 8.1.3 patch release card for behavioral fixes that
+      may affect the app.
   code_examples_by_version:
     '7.0':
-      - config/importmap.rb
+    - config/importmap.rb
     '8.0':
-      - Propshaft enabled
+    - Propshaft enabled
+    8.1.2:
+    - importmap + Propshaft
     8.1.3:
-      - importmap + Propshaft
+    - importmap + Propshaft
   operational_notes_by_version:
     '7.0':
-      - Audit any Sprockets assumptions in helpers and asset loading paths.
+    - Audit any Sprockets assumptions in helpers and asset loading paths.
     '8.0':
-      - Confirm asset precompilation and fingerprinted file handling still work.
+    - Confirm asset precompilation and fingerprinted file handling still work.
+    8.1.2:
+    - Re-test asset delivery after deploy or cache invalidation changes.
     8.1.3:
-      - Re-test asset delivery after deploy or cache invalidation changes.
+    - Run the catalog test suite after the dependency bump because runtime labels
+      and patch behavior now differ from 8.1.2.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: kamal
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -429,57 +552,75 @@ features:
   notes_by_version:
     '7.0': deploy は Capistrano / custom CI/CD / PaaS 依存になりがちでした。
     '8.0': Kamal が Gemfile / config に入り、self-hosted deploy 導線が app に近づきました。
-    8.1.3: Registry-free Kamal deployments が追加され、最初の deploy story がさらに軽くなりました。
+    8.1.2: Registry-free Kamal deployments が追加され、最初の deploy story がさらに軽くなりました。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': Deploy left to app teams
     '8.0': Kamal integrated
-    8.1.3: Registry-free Kamal deploys
+    8.1.2: Registry-free Kamal deploys
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   status_by_version:
     '7.0': Custom deploy pipelines dominate
     '8.0': Kamal becomes part of the default deploy story
-    8.1.3: Registry-free deploy is available
+    8.1.2: Registry-free deploy is available
+    8.1.3: Latest patch release on the Rails 8.1 line
   files_by_version:
     '7.0':
-      - config/deploy.yml
-      - .kamal/secrets
-      - app/views/features/demos/_kamal.html.erb
+    - config/deploy.yml
+    - ".kamal/secrets"
+    - app/views/features/demos/_kamal.html.erb
     '8.0':
-      - config/deploy.yml
-      - .kamal/secrets
-      - app/views/features/demos/_kamal.html.erb
+    - config/deploy.yml
+    - ".kamal/secrets"
+    - app/views/features/demos/_kamal.html.erb
+    8.1.2:
+    - config/deploy.yml
+    - ".kamal/secrets"
+    - app/views/features/demos/_kamal.html.erb
     8.1.3:
-      - config/deploy.yml
-      - .kamal/secrets
-      - app/views/features/demos/_kamal.html.erb
+    - config/deploy.yml
+    - ".kamal/secrets"
+    - app/views/features/demos/_kamal.html.erb
   upgrade_notes_by_version:
     '7.0':
-      - Replace bespoke deploy pipelines with a repeatable app-centric deploy flow.
-      - Review secrets handling before moving to Kamal.
+    - Replace bespoke deploy pipelines with a repeatable app-centric deploy flow.
+    - Review secrets handling before moving to Kamal.
     '8.0':
-      - Keep `config/deploy.yml` and `.kamal/secrets` in sync with the deploy target.
-      - Decide whether the new deploy story should own registry and proxy settings.
+    - Keep `config/deploy.yml` and `.kamal/secrets` in sync with the deploy target.
+    - Decide whether the new deploy story should own registry and proxy settings.
+    8.1.2:
+    - Check registry-free deploy and production defaults before rolling forward.
+    - Revisit secret and image host handling as part of the upgrade.
     8.1.3:
-      - Check registry-free deploy and production defaults before rolling forward.
-      - Revisit secret and image host handling as part of the upgrade.
+    - Treat this as a Rails 8.1 patch upgrade, not a new feature adoption.
+    - Review the dedicated Rails 8.1.3 patch release card for behavioral fixes that
+      may affect the app.
   code_examples_by_version:
     '7.0':
-      - bin/kamal deploy
+    - bin/kamal deploy
     '8.0':
-      - config/deploy.yml
+    - config/deploy.yml
+    8.1.2:
+    - rails credentials:fetch
     8.1.3:
-      - rails credentials:fetch
+    - rails credentials:fetch
   operational_notes_by_version:
     '7.0':
-      - Keep deploy secrets and server inventory separately documented.
+    - Keep deploy secrets and server inventory separately documented.
     '8.0':
-      - Verify the deploy image host, proxy, and secret settings together.
+    - Verify the deploy image host, proxy, and secret settings together.
+    8.1.2:
+    - Re-check registry-free deploy assumptions before production rollout.
     8.1.3:
-      - Re-check registry-free deploy assumptions before production rollout.
+    - Run the catalog test suite after the dependency bump because runtime labels
+      and patch behavior now differ from 8.1.2.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
 - slug: thruster
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -488,12 +629,77 @@ features:
   notes_by_version:
     '7.0': 本番向け reverse proxy / acceleration は app 外で組み立てる前提が強めでした。
     '8.0': Thruster が生成時に入り、本番構成の default story が一段増えました。
-    8.1.3: Thruster を含む production defaults は、Kamal や local CI と並ぶ運用導線の一部として理解しやすくなっています。
+    8.1.2: Thruster を含む production defaults は、Kamal や local CI と並ぶ運用導線の一部として理解しやすくなっています。
+    8.1.3: Rails 8.1.3 は Rails 8.1.2 の機能面を維持しつつ、JSON serialization、inflector、Active
+      Record / Active Storage などの patch fix を取り込む安定化リリースです。
   highlights_by_version:
     '7.0': External production proxy choices
     '8.0': Thruster added
-    8.1.3: Production story stays cohesive
+    8.1.2: Production story stays cohesive
+    8.1.3: 8.1.2 feature set + 8.1.3 patch fixes
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
-    8.1.3: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
+- slug: rails-8-1-3-patch-release
+  category: Config / Platform Differences
+  demo_type: comparison_card
+  title: Rails 8.1.3 patch release
+  summary: Rails 8.1.2 から 8.1.3 への patch update で入った修正を、カタログ上の独立した差分として扱います。
+  notes_by_version:
+    '7.0': Rails 7.0 では Rails 8.1 系の JSON encoder / inflector / Active Record patch
+      fix は対象外です。
+    '8.0': Rails 8.0 でも Rails 8.1.3 の Active Model marshal compatibility や Rails 8.1
+      系の patch fix は未適用です。
+    8.1.2: Rails 8.1.2 は ActiveJob::Continuable など 8.1 の主要機能を含みますが、8.1.3 の bug fix
+      はまだ含みません。
+    8.1.3: Rails 8.1.3 は custom object hash key の JSON serialization、overlapping acronym
+      inflection、ActiveRecord async query instrumentation、ActiveStorage nil content
+      type などを修正します。
+  highlights_by_version:
+    '7.0': Pre Rails 8.1 patch line
+    '8.0': Before Rails 8.1 patch fixes
+    8.1.2: Rails 8.1 baseline before patch fixes
+    8.1.3: JSON / inflector / Active Record / Active Storage fixes
+  source_links_by_version:
+    '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
+    '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
+    8.1.2: https://guides.rubyonrails.org/8_1_release_notes.html
+    8.1.3: https://github.com/rails/rails/releases/tag/v8.1.3
+  status_by_version:
+    '7.0': Older major line
+    '8.0': Before Rails 8.1 patch line
+    8.1.2: Rails 8.1 baseline before 8.1.3 fixes
+    8.1.3: Latest Rails 8.1 patch release
+  files_by_version:
+    8.1.2:
+    - Gemfile
+    - Gemfile.lock
+    - config/catalog/versions.yml
+    - config/catalog/features.yml
+    8.1.3:
+    - Gemfile
+    - Gemfile.lock
+    - config/catalog/versions.yml
+    - config/catalog/features.yml
+  upgrade_notes_by_version:
+    8.1.2:
+    - Keep 8.1.2 as a comparison point when bumping the runtime to 8.1.3.
+    - Do not replace catalog labels without documenting the patch delta.
+    8.1.3:
+    - Check JSON output when custom objects are used as hash keys.
+    - Check acronym inflections when overlapping acronyms such as USD / USDC are configured.
+    - Review Active Record schema dumping / async query instrumentation behavior if
+      the app depends on those internals.
+  code_examples_by_version:
+    8.1.2:
+    - gem "rails", "~> 8.1.2"
+    8.1.3:
+    - gem "rails", "~> 8.1.3"
+  operational_notes_by_version:
+    8.1.2:
+    - Runtime and catalog labels still point at the pre-patch Rails 8.1 baseline.
+    8.1.3:
+    - Runtime now uses the patched Rails 8.1.3 line; catalog data must preserve the
+      8.1.2 comparison baseline.

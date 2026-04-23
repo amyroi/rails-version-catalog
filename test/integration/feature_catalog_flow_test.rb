@@ -6,7 +6,7 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_includes response.body, "Rails Multi-Version UI Diff Catalog"
-    assert_includes response.body, "Rails 7.0 / Rails 8.0 / Rails 8.1.3 を UI で比較するカタログ"
+    assert_includes response.body, "Rails 7.0 / Rails 8.0 / Rails 8.1.2 / Rails 8.1.3 を UI で比較するカタログ"
     assert_includes response.body, "Interactive demos"
     assert_includes response.body, "Config / platform differences"
   end
@@ -78,7 +78,7 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "comparison feature renders multi-version matrix" do
-    get feature_path("active-job-continuations"), params: { compare: "7.0,8.0,8.1.3" }
+    get feature_path("active-job-continuations"), params: { compare: "7.0,8.0,8.1.2,8.1.3" }
 
     assert_response :success
     assert_includes response.body, "Version comparison matrix"
@@ -87,6 +87,7 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Code / config diff"
     assert_includes response.body, "Live demo (current runtime: Rails 8.1.3)"
     assert_includes response.body, "Upgrade notes"
+    assert_includes response.body, "Rails 8.1.2"
     assert_includes response.body, "Rails 8.1.3"
     assert_includes response.body, "ActiveJob::Continuable"
   end

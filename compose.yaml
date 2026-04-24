@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16
-    container_name: rails8_feature_catalog-db
+    container_name: rails_version_catalog-db
     restart: unless-stopped
     ports:
       - "${POSTGRES_PORT:-55432}:5432"

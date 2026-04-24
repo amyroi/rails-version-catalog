@@ -3,11 +3,11 @@ class CacheDemosController < ApplicationController
 
   def refresh
     CacheDemo::Refresh.call(force_refresh: true)
-    redirect_to feature_path("solid-cache"), notice: "Cache miss triggered and payload regenerated."
+    redirect_to feature_path("solid-cache", compare: params[:compare]), notice: "Cache miss triggered and payload regenerated."
   end
 
   def destroy
     CacheDemo::CacheAdapter.delete(CacheDemo::Refresh::KEY)
-    redirect_to feature_path("solid-cache"), notice: "Cache entry cleared."
+    redirect_to feature_path("solid-cache", compare: params[:compare]), notice: "Cache entry cleared."
   end
 end

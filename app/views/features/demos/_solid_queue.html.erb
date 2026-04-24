@@ -4,6 +4,7 @@
     <p class="mt-2 text-sm leading-6 text-slate-600">`Procfile.dev` に `jobs: bin/jobs start` を入れているため、ローカル起動時に worker も立ち上がります。</p>
 
     <%= form_with model: @queue_run, class: "mt-5 space-y-4" do |form| %>
+      <%= hidden_field_tag :compare, params[:compare] if params[:compare].present? %>
       <div>
         <%= form.label :input, "Job input", class: "text-sm text-slate-600" %>
         <%= form.text_field :input, class: "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900" %>

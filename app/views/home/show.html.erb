@@ -3,7 +3,7 @@
 <section class="grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
   <div class="rounded-3xl border border-sky-100 bg-gradient-to-br from-white via-sky-50 to-indigo-50 p-8 shadow-sm">
     <p class="mb-3 text-sm uppercase tracking-[0.2em] text-sky-600">Rails version catalog</p>
-    <h1 class="text-4xl font-semibold tracking-tight text-slate-900"><%= catalog_version_heading(@versions.map(&:key)) %> を UI で比較するカタログ</h1>
+    <h1 class="break-words text-4xl font-semibold tracking-tight text-slate-900"><%= catalog_version_heading(@versions.map(&:key)) %> を UI で比較するカタログ</h1>
     <p class="mt-4 max-w-3xl text-base leading-7 text-slate-600">
       この app は単一の before / after 比較ではなく、複数メジャーバージョンを横並びで比較できる構造を目指しています。
       初期対応は <%= catalog_version_heading(@versions.map(&:key)) %> で、将来 9.x を追加しやすいデータ構造に寄せています。
@@ -72,8 +72,8 @@
     <div class="space-y-4">
       <% @runtime_features.each do |feature| %>
         <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-          <div class="flex items-start justify-between gap-4">
-            <div>
+          <div class="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
+            <div class="min-w-0">
               <span class="<%= feature_badge_classes(feature) %>"><%= feature.category_label %></span>
               <h3 class="mt-3 text-lg font-semibold text-slate-900"><%= feature.title %></h3>
               <p class="mt-2 text-sm leading-6 text-slate-600"><%= feature.summary %></p>

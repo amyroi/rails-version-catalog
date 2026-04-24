@@ -2,7 +2,7 @@
 
 <div class="mb-8">
   <p class="text-sm uppercase tracking-[0.2em] text-sky-600">Feature Index</p>
-  <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-900"><%= catalog_version_heading(@comparison_versions.map(&:key)) %> の差分をカテゴリ別に一覧表示</h1>
+  <h1 class="mt-3 break-words text-3xl font-semibold tracking-tight text-slate-900"><%= catalog_version_heading(@comparison_versions.map(&:key)) %> の差分をカテゴリ別に一覧表示</h1>
   <p class="mt-3 max-w-3xl text-slate-600">比較対象バージョンを固定配列ではなく selector で扱い、将来 9.x を追加しやすい構造に寄せています。</p>
 </div>
 
@@ -18,7 +18,7 @@
 
 <section class="grid gap-8 lg:grid-cols-2">
   <div class="space-y-4">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap items-center justify-between gap-3">
       <div>
         <h2 class="text-xl font-semibold">Interactive demos</h2>
         <p class="mt-1 text-sm text-slate-600">現在の <%= current_runtime_label %> runtime 上で確認できる live demo です。</p>
@@ -43,7 +43,7 @@
   </div>
 
   <div class="space-y-4">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap items-center justify-between gap-3">
       <div>
         <h2 class="text-xl font-semibold">Config / platform differences</h2>
         <p class="mt-1 text-sm text-slate-600"><%= catalog_version_heading(@comparison_versions.map(&:key)) %> の設定・標準構成・運用差分を比較します。</p>

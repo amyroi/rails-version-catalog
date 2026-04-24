@@ -56,6 +56,30 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to feature_path("solid-queue")
   end
 
+  test "queue run preserves compare query on redirect" do
+    assert_difference("QueueRun.count", 1) do
+      post queue_runs_path, params: { compare: "7.0", queue_run: { input: "Test enqueue" } }
+    end
+
+    assert_redirected_to feature_path("solid-queue", compare: "7.0")
+  end
+
+  test "demo message preserves compare query on redirect" do
+    assert_difference("DemoMessage.count", 1) do
+      post demo_messages_path, params: { compare: "7.0", demo_message: { author: "Guest", body: "Hello" } }
+    end
+
+    assert_redirected_to feature_path("solid-cable", compare: "7.0")
+  end
+
+  test "cache demo actions preserve compare query on redirect" do
+    post refresh_cache_demo_path, params: { compare: "7.0" }
+    assert_redirected_to feature_path("solid-cache", compare: "7.0")
+
+    delete cache_demo_path, params: { compare: "7.0" }
+    assert_redirected_to feature_path("solid-cache", compare: "7.0")
+  end
+
   test "signup failure re-renders with validation message" do
     post users_path, params: {
       user: {
@@ -89,5 +113,14 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Upgrade notes"
     assert_includes response.body, "Rails 8.1.3"
     assert_includes response.body, "ActiveJob::Continuable"
+  end
+
+  test "feature detail renders compare controls with preserved compare query" do
+    get feature_path("solid-cache"), params: { compare: "7.0" }
+
+    assert_response :success
+    assert_includes response.body, 'action="/cache_demo/refresh?compare=7.0"'
+    assert_includes response.body, 'action="/cache_demo?compare=7.0"'
+    assert_includes response.body, 'href="/features/solid-cache?compare=7.0"'
   end
 end

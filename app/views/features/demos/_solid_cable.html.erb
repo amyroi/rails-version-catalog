@@ -4,6 +4,7 @@
     <p class="mt-2 text-sm leading-6 text-slate-600">別タブを開いたまま投稿すると、Turbo Stream 経由でメッセージ一覧が同期されます。</p>
 
     <%= form_with model: @demo_message, class: "mt-5 space-y-4" do |form| %>
+      <%= hidden_field_tag :compare, params[:compare] if params[:compare].present? %>
       <div>
         <%= form.label :author, class: "text-sm text-slate-600" %>
         <%= form.text_field :author, class: "mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900" %>

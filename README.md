@@ -1,7 +1,7 @@
-# Rails Multi-Version Feature Catalog
+# Rails Version Catalog
 
 Rails の**比較カタログ**を UI で確認できる app です。  
-現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.3** です。
+現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2 / Rails 8.1.3** です。
 
 ## 目的 ✨
 
@@ -63,7 +63,7 @@ Rails の**比較カタログ**を UI で確認できる app です。
 - Minitest
 
 > 補足: app runtime は現在この repo の Rails version で動いています。  
-> 比較データは **Rails 7.0 / 8.0 / 8.1.3** の公式情報を基準に整理しています。
+> 比較データは **Rails 7.0 / 8.0 / 8.1.2 / 8.1.3** の公式情報を基準に整理しています。
 
 ## Local setup
 

@@ -13,9 +13,9 @@ class DemoMessagesController < ApplicationController
         locals: { demo_message: @demo_message }
       )
 
-      redirect_to feature_path("solid-cable"), notice: "Message broadcast."
+      redirect_to feature_path("solid-cable", compare: params[:compare]), notice: "Message broadcast."
     else
-      redirect_to feature_path("solid-cable"), alert: @demo_message.errors.full_messages.to_sentence
+      redirect_to feature_path("solid-cable", compare: params[:compare]), alert: @demo_message.errors.full_messages.to_sentence
     end
   end
 

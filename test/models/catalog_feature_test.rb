@@ -21,6 +21,10 @@ class CatalogFeatureTest < ActiveSupport::TestCase
       upgrade_notes_by_version: { "8.0" => [ "start worker" ] },
       code_examples_by_version: { "8.0" => [ "bin/jobs start" ] },
       operational_notes_by_version: { "8.0" => [ "check queue worker" ] },
+      adoption_when: [ "when durable jobs are needed" ],
+      adoption_cautions: [ "when worker operations are not ready" ],
+      adoption_alternatives: [ "Sidekiq" ],
+      adoption_requirements: [ "worker process" ],
       live_demo_available: true
     )
 
@@ -29,6 +33,11 @@ class CatalogFeatureTest < ActiveSupport::TestCase
     assert_equal [ "start worker" ], feature.upgrade_notes_for("8.0")
     assert_equal [ "bin/jobs start" ], feature.code_examples_for("8.0")
     assert_equal [ "check queue worker" ], feature.operational_notes_for("8.0")
+    assert_equal [ "when durable jobs are needed" ], feature.adoption_when
+    assert_equal [ "when worker operations are not ready" ], feature.adoption_cautions
+    assert_equal [ "Sidekiq" ], feature.adoption_alternatives
+    assert_equal [ "worker process" ], feature.adoption_requirements
+    assert_predicate feature, :adoption_readiness_available?
     assert_predicate feature, :live_demo_available?
   end
 
@@ -54,6 +63,11 @@ class CatalogFeatureTest < ActiveSupport::TestCase
     assert_equal [], feature.upgrade_notes_for("8.0")
     assert_equal [], feature.code_examples_for("8.0")
     assert_equal [], feature.operational_notes_for("8.0")
+    assert_equal [], feature.adoption_when
+    assert_equal [], feature.adoption_cautions
+    assert_equal [], feature.adoption_alternatives
+    assert_equal [], feature.adoption_requirements
+    assert_not_predicate feature, :adoption_readiness_available?
     assert_not_predicate feature, :live_demo_available?
   end
 end

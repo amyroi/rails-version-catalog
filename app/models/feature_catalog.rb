@@ -18,6 +18,12 @@ class FeatureCatalog
     code_examples_by_version
     operational_notes_by_version
   ].freeze
+  OPTIONAL_ARRAY_KEYS = %w[
+    adoption_when
+    adoption_cautions
+    adoption_alternatives
+    adoption_requirements
+  ].freeze
   ALLOWED_DEMO_TYPES = %w[runtime_demo comparison_card].freeze
 
   class << self
@@ -57,6 +63,10 @@ class FeatureCatalog
             upgrade_notes_by_version: stringify_hash(attributes.fetch("upgrade_notes_by_version", {})),
             code_examples_by_version: stringify_hash(attributes.fetch("code_examples_by_version", {})),
             operational_notes_by_version: stringify_hash(attributes.fetch("operational_notes_by_version", {})),
+            adoption_when: attributes.fetch("adoption_when", []),
+            adoption_cautions: attributes.fetch("adoption_cautions", []),
+            adoption_alternatives: attributes.fetch("adoption_alternatives", []),
+            adoption_requirements: attributes.fetch("adoption_requirements", []),
             live_demo_available: attributes.fetch("live_demo_available", false)
           )
         end.tap { |features| validate_uniqueness!(features) }
@@ -82,6 +92,7 @@ class FeatureCatalog
         raise ArgumentError, "invalid feature demo_type: #{demo_type}" unless ALLOWED_DEMO_TYPES.include?(demo_type)
 
         validate_versioned_hashes!(attributes)
+        validate_optional_arrays!(attributes)
       end
 
       def validate_versioned_hashes!(attributes)
@@ -106,6 +117,15 @@ class FeatureCatalog
         end
 
         validate_live_demo_available!(attributes)
+      end
+
+      def validate_optional_arrays!(attributes)
+        OPTIONAL_ARRAY_KEYS.each do |key|
+          next unless attributes.key?(key)
+
+          value = attributes.fetch(key)
+          raise ArgumentError, "#{key} must be an array" unless value.is_a?(Array)
+        end
       end
 
       def validate_version_keys!(attribute_key, keys)

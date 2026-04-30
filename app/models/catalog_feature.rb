@@ -2,7 +2,8 @@ class CatalogFeature
   attr_reader :slug, :title, :category, :summary, :supported_versions, :notes_by_version,
               :highlights_by_version, :demo_type, :source_links_by_version, :status_by_version,
               :files_by_version, :upgrade_notes_by_version, :code_examples_by_version,
-              :operational_notes_by_version, :live_demo_available
+              :operational_notes_by_version, :adoption_when, :adoption_cautions,
+              :adoption_alternatives, :adoption_requirements, :live_demo_available
 
   def initialize(
     slug:,
@@ -19,6 +20,10 @@ class CatalogFeature
     upgrade_notes_by_version: {},
     code_examples_by_version: {},
     operational_notes_by_version: {},
+    adoption_when: [],
+    adoption_cautions: [],
+    adoption_alternatives: [],
+    adoption_requirements: [],
     live_demo_available: false
   )
     @slug = slug
@@ -35,6 +40,10 @@ class CatalogFeature
     @upgrade_notes_by_version = upgrade_notes_by_version
     @code_examples_by_version = code_examples_by_version
     @operational_notes_by_version = operational_notes_by_version
+    @adoption_when = adoption_when
+    @adoption_cautions = adoption_cautions
+    @adoption_alternatives = adoption_alternatives
+    @adoption_requirements = adoption_requirements
     @live_demo_available = live_demo_available
   end
 
@@ -94,6 +103,15 @@ class CatalogFeature
 
   def operational_notes_for(version_key)
     Array(operational_notes_by_version[version_key])
+  end
+
+  def adoption_readiness_available?
+    [
+      adoption_when,
+      adoption_cautions,
+      adoption_alternatives,
+      adoption_requirements
+    ].any?(&:any?)
   end
 
   def live_demo_available?

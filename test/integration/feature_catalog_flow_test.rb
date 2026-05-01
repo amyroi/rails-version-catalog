@@ -123,4 +123,72 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'action="/cache_demo?compare=7.0"'
     assert_includes response.body, 'href="/features/solid-cache?compare=7.0"'
   end
+
+  test "feature detail renders adoption readiness when metadata is configured" do
+    with_raw_features([
+      valid_feature_hash.merge(
+        "adoption_when" => [ "When durable jobs should be kept in the Rails app boundary." ],
+        "adoption_cautions" => [ "When worker process operations are not owned yet." ],
+        "adoption_alternatives" => [ "Sidekiq for existing Redis-backed job operations." ],
+        "adoption_requirements" => [ "A running worker process and queue database schema." ]
+      )
+    ]) do
+      get feature_path("solid-queue")
+    end
+
+    assert_response :success
+    assert_includes response.body, "Adoption readiness"
+    assert_includes response.body, "When to consider"
+    assert_includes response.body, "Cautions"
+    assert_includes response.body, "Alternatives"
+    assert_includes response.body, "Runtime requirements"
+    assert_includes response.body, "When durable jobs should be kept in the Rails app boundary."
+  end
+
+  test "feature detail hides adoption readiness when metadata is omitted" do
+    with_raw_features([ valid_feature_hash ]) do
+      get feature_path("solid-queue")
+    end
+
+    assert_response :success
+    assert_not_includes response.body, "Adoption readiness"
+  end
+
+  private
+    def valid_feature_hash
+      {
+        "slug" => "solid-queue",
+        "category" => "Interactive Demo",
+        "demo_type" => "runtime_demo",
+        "title" => "Solid Queue",
+        "summary" => "A feature used to exercise adoption readiness rendering.",
+        "notes_by_version" => {
+          "7.0" => "Rails 7 note",
+          "8.0" => "Rails 8 note",
+          "8.1.3" => "Rails 8.1 note"
+        },
+        "highlights_by_version" => {
+          "7.0" => "Rails 7 highlight",
+          "8.0" => "Rails 8 highlight",
+          "8.1.3" => "Rails 8.1 highlight"
+        },
+        "source_links_by_version" => {
+          "7.0" => "https://example.com/rails-7",
+          "8.0" => "https://example.com/rails-8",
+          "8.1.3" => "https://example.com/rails-8-1"
+        }
+      }
+    end
+
+    def with_raw_features(raw_features)
+      singleton_class = FeatureCatalog.singleton_class
+      original_method = singleton_class.instance_method(:raw_features)
+
+      singleton_class.send(:define_method, :raw_features) { raw_features }
+      FeatureCatalog.send(:reset_cache!)
+      yield
+    ensure
+      singleton_class.send(:define_method, :raw_features, original_method)
+      FeatureCatalog.send(:reset_cache!)
+    end
 end

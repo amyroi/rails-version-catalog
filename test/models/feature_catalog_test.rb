@@ -84,6 +84,11 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal [ "config/deploy.yml" ], kamal.code_examples_for("8.0")
     assert_equal [ "Verify the deploy image host, proxy, and secret settings together." ], kamal.operational_notes_for("8.0")
     assert_equal [ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ], kamal.files_for("8.1.3")
+    assert_includes kamal.adoption_when, "You want an app-centric deploy flow where container image, server inventory, proxy, and secrets are reviewed from the Rails repository."
+    assert_includes kamal.adoption_cautions, "Avoid treating Kamal as only a generated config file; server access, registry auth, proxy settings, and rollback behavior all need operational ownership."
+    assert_includes kamal.adoption_alternatives, "Capistrano remains a familiar option for SSH-based deployments without adopting Kamal's container workflow."
+    assert_includes kamal.adoption_requirements, "`config/deploy.yml` needs real server, image, proxy, and environment settings before it is production-ready."
+    assert_predicate kamal, :adoption_readiness_available?
     assert_predicate kamal, :live_demo_available?
   end
 

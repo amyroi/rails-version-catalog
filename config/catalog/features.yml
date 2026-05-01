@@ -265,6 +265,32 @@ features:
     - Confirm the cache database and retention settings match the workload.
     8.1.3:
     - Check cache warmup, invalidation, and the database footprint together.
+  adoption_when:
+  - You want a Rails-native durable cache option without introducing Redis only
+    for cache storage.
+  - The application can tolerate database-backed cache storage and has a clear
+    retention policy.
+  - Cache behavior should be reviewed through `Rails.cache` usage, keys, and the
+    app's runtime hit / miss behavior.
+  adoption_cautions:
+  - Avoid moving cache traffic into the database until capacity, retention, and
+    cleanup expectations are understood.
+  - Be careful when existing production operations already depend on Redis metrics,
+    eviction behavior, or cache-specific tooling.
+  - This catalog has not yet verified production cache pressure or rollback from
+    Solid Cache to Redis / memory store.
+  adoption_alternatives:
+  - Redis remains a good fit when the deployment already operates Redis and depends
+    on its eviction and observability model.
+  - "`memory_store` can still be enough for small development-only checks where
+    durability is not required."
+  adoption_requirements:
+  - "`config/cache.yml` needs to describe the intended cache database and store
+    behavior."
+  - Cache table size, expiration, and cleanup should be monitored before relying
+    on Solid Cache in production.
+  - Cache keys and invalidation paths should be rechecked when moving from Redis
+    or memory store.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html

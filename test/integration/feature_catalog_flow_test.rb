@@ -130,6 +130,16 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Redis remains a good fit"
   end
 
+  test "kamal detail renders adoption readiness" do
+    get feature_path("kamal")
+
+    assert_response :success
+    assert_includes response.body, "Adoption readiness"
+    assert_includes response.body, "You want an app-centric deploy flow"
+    assert_includes response.body, "Capistrano remains a familiar option"
+    assert_includes response.body, "RAILS_MASTER_KEY=$(cat config/master.key)"
+  end
+
   test "feature detail renders adoption readiness when metadata is configured" do
     with_raw_features([
       valid_feature_hash.merge(

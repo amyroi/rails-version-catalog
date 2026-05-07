@@ -43,6 +43,11 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal [ "config/cache.yml", "app/views/features/demos/_solid_cache.html.erb", "app/controllers/features_controller.rb" ], solid_cache.files_for("8.0")
     assert_equal [ "cache do" ], solid_cache.code_examples_for("8.0")
     assert_equal [ "Confirm the cache database and retention settings match the workload." ], solid_cache.operational_notes_for("8.0")
+    assert_includes solid_cache.adoption_when, "You want a Rails-native durable cache option without introducing Redis only for cache storage."
+    assert_includes solid_cache.adoption_cautions, "Avoid moving cache traffic into the database until capacity, retention, and cleanup expectations are understood."
+    assert_includes solid_cache.adoption_alternatives, "Redis remains a good fit when the deployment already operates Redis and depends on its eviction and observability model."
+    assert_includes solid_cache.adoption_requirements, "Cache table size, expiration, and cleanup should be monitored before relying on Solid Cache in production."
+    assert_predicate solid_cache, :adoption_readiness_available?
     assert_predicate solid_cache, :live_demo_available?
 
     assert_equal "DB-backed realtime enters the default stack", solid_cable.status_for("8.0")

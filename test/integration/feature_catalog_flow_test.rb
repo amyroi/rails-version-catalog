@@ -125,6 +125,9 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'action="/cache_demo/refresh?compare=7.0"'
     assert_includes response.body, 'action="/cache_demo?compare=7.0"'
     assert_includes response.body, 'href="/features/solid-cache?compare=7.0"'
+    assert_includes response.body, "Adoption readiness"
+    assert_includes response.body, "You want a Rails-native durable cache option"
+    assert_includes response.body, "Redis remains a good fit"
   end
 
   test "feature detail renders adoption readiness when metadata is configured" do

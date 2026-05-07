@@ -27,6 +27,11 @@ class FeatureCatalogTest < ActiveSupport::TestCase
     assert_equal "https://guides.rubyonrails.org/8_1_release_notes.html", feature.source_for("8.1.3")
     assert_equal "Durable queue with continuations baseline", feature.status_for("8.1.3")
     assert_equal [ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ], feature.files_for("8.1.3")
+    assert_includes feature.adoption_when, "You want Rails-native durable Active Job processing without adding a Redis-backed job system first."
+    assert_includes feature.adoption_cautions, "Avoid treating Solid Queue as a drop-in replacement until worker boot, queue schema, retries, and operational ownership are confirmed."
+    assert_includes feature.adoption_alternatives, "Sidekiq remains a strong option when the app already depends on Redis-backed job operations."
+    assert_includes feature.adoption_requirements, "`bin/jobs` or an equivalent worker command must be part of local and deploy process management."
+    assert_predicate feature, :adoption_readiness_available?
     assert_predicate feature, :live_demo_available?
   end
 

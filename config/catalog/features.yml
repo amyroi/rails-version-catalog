@@ -119,6 +119,32 @@ features:
     - Keep `bin/jobs start` or an equivalent worker command running.
     8.1.3:
     - Verify durable queue processing and turbo-stream updates together.
+  adoption_when:
+  - You want Rails-native durable Active Job processing without adding a Redis-backed
+    job system first.
+  - The application already accepts database-backed operational components and can
+    run a separate worker process.
+  - Queue behavior should be inspected through Rails app code, schema, and runtime
+    UI rather than only through release notes.
+  adoption_cautions:
+  - Avoid treating Solid Queue as a drop-in replacement until worker boot, queue
+    schema, retries, and operational ownership are confirmed.
+  - Be careful when migrating from an existing Sidekiq setup with mature queues,
+    middleware, dashboards, or Redis-based operational workflows.
+  - This catalog has not yet verified a production rollback from Solid Queue back
+    to another backend.
+  adoption_alternatives:
+  - Sidekiq remains a strong option when the app already depends on Redis-backed
+    job operations.
+  - The async adapter can still be enough for local-only or non-durable development
+    checks.
+  adoption_requirements:
+  - "`config/queue.yml` and `db/queue_schema.rb` need to match the intended queue
+    topology."
+  - "`bin/jobs` or an equivalent worker command must be part of local and deploy
+    process management."
+  - Monitoring should cover queued, working, failed, and completed job states before
+    relying on it for production work.
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html

@@ -22,6 +22,9 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Live demo (current runtime: Rails 8.1.3)"
     assert_includes response.body, "Upgrade notes"
     assert_includes response.body, "Recent jobs"
+    assert_includes response.body, "Adoption readiness"
+    assert_includes response.body, "You want Rails-native durable Active Job processing"
+    assert_includes response.body, "Sidekiq remains a strong option"
   end
 
   test "authentication generator detail renders" do

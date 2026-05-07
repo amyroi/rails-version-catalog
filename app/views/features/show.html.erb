@@ -3,6 +3,7 @@
 <div class="space-y-8">
   <%= render "features/detail_hero", feature: @feature, comparison_versions: @comparison_versions %>
   <%= render "features/comparison_matrix", feature: @feature, comparison_versions: @comparison_versions %>
+  <%= render "features/adoption_readiness", feature: @feature %>
   <%= render "features/code_config_diff", feature: @feature, comparison_versions: @comparison_versions %>
   <%= render "features/live_demo_section", feature: @feature %>
   <%= render "features/upgrade_notes_section", feature: @feature, comparison_versions: @comparison_versions %>

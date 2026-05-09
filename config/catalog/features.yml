@@ -555,9 +555,9 @@ features:
   adoption_requirements:
   - "`config/deploy.yml` needs real server, image, proxy, and environment settings
     before it is production-ready."
-  - "`.kamal/secrets` should read from ENV or a password manager; this repo still
-    shows `RAILS_MASTER_KEY=$(cat config/master.key)` as a point to clean up before
-    treating the deploy path as public-safe."
+  - "`.kamal/secrets` should read from ENV or a password manager instead of local
+    files such as `config/master.key` before treating the deploy path as
+    public-safe."
   - Registry credentials, `RAILS_MASTER_KEY`, and rollback commands should be tested
     together before relying on Kamal for production work.
   live_demo_available: true

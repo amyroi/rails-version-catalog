@@ -5,8 +5,8 @@ class FeatureCatalogFlowTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_response :success
-    assert_includes response.body, "Rails feature difference catalog with interactive demos"
-    assert_includes response.body, "Rails 7.0 / Rails 8.0 / Rails 8.1.3"
+    assert_includes response.body, "Rails Version Catalog"
+    assert_includes response.body, "Rails 7.0 / Rails 8.0 / Rails 8.1.3 を UI で比較するカタログ"
     assert_includes response.body, "Interactive demos"
     assert_includes response.body, "Config / platform differences"
   end

@@ -1,12 +1,13 @@
 # Rails Version Catalog
 
-Rails の**比較カタログ**を UI で確認できる app です。  
+Rails version 差分と default stack changes を、実際の Rails app 上で確認できる**比較カタログ**です。  
 現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2 / Rails 8.1.3** です。
 
 ## 目的 ✨
 
 - 単一の before / after ではなく、**複数 version を横並びで比較**する
 - **live demo** は current runtime の挙動確認、**version comparison** は version 間の差分確認、と役割を分ける
+- Solid Queue / Solid Cache / Kamal などは、採用判断・運用判断の論点も feature detail で確認できるようにする
 - feature ごとの比較 data を YAML で持ち、**データ追加中心で拡張**しやすくする
 - 将来 **Rails 9.0 / 9.2** などが出たときに、比較軸を増やしやすくする
 
@@ -40,6 +41,8 @@ Rails の**比較カタログ**を UI で確認できる app です。
   version ごとの status / summary / key changes / files / upgrade impact を並べて比較します。
 - **Live demo**  
   current runtime 上で実際に触れる操作や画面を確認します。
+- **Adoption readiness**  
+  採用を検討する条件、慎重になる条件、代替技術、runtime requirements をまとめます。
 - **Code / config diff**  
   version ごとの関連ファイル、設定、移行観点をまとめて確認します。
 
@@ -50,9 +53,10 @@ Rails の**比較カタログ**を UI で確認できる app です。
 - `FeatureCatalog`
   - feature ごとの version matrix を管理
   - `notes_by_version` / `highlights_by_version` / `source_links_by_version` に加えて、`status_by_version` / `files_by_version` / `upgrade_notes_by_version` などで比較 data を拡張できる
+  - `adoption_when` / `adoption_cautions` / `adoption_alternatives` / `adoption_requirements` で feature 単位の採用判断 data を扱う
 - UI
   - `compare` query param で表示対象 version を切替
-  - 詳細画面は **overview / comparison / live demo / upgrade notes** のように section を分けて表示
+  - 詳細画面は **overview / comparison / live demo / adoption readiness / upgrade notes** のように section を分けて表示
 
 ## Stack
 

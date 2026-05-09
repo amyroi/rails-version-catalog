@@ -1,7 +1,7 @@
-# Rails Version Catalog
+# Rails feature difference catalog with interactive demos
 
 Rails version 差分と default stack changes を、実際の Rails app 上で確認できる**比較カタログ**です。  
-現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2 / Rails 8.1.3** です。
+現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.3** です。
 
 ## 目的 ✨
 
@@ -67,7 +67,7 @@ Rails version 差分と default stack changes を、実際の Rails app 上で�
 - Minitest
 
 > 補足: app runtime は現在この repo の Rails version で動いています。  
-> 比較データは **Rails 7.0 / 8.0 / 8.1.2 / 8.1.3** の公式情報を基準に整理しています。
+> 比較データは **Rails 7.0 / 8.0 / 8.1.3** の公式情報を基準に整理しています。
 
 ## Local setup
 

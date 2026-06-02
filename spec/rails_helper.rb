@@ -36,7 +36,7 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 RSpec.configure do |config|
   config.fixture_paths = [
-    Rails.root.join('test/fixtures')
+    Rails.root.join('spec/fixtures')
   ]
   config.global_fixtures = :all
 

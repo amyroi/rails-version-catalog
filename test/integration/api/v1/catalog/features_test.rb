@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Api::V1::Catalog::FeaturesControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::Catalog::FeaturesTest < ActionDispatch::IntegrationTest
   test "index returns runtime demos and comparison cards as camelCase JSON" do
     get api_v1_catalog_features_url
 

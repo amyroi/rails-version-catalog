@@ -64,7 +64,7 @@ Rails version 差分と default stack changes を、実際の Rails app 上で�
 - PostgreSQL
 - Hotwire + Tailwind CSS
 - Solid Queue / Solid Cable / Solid Cache
-- Minitest
+- RSpec
 
 > 補足: app runtime は現在この repo の Rails version で動いています。  
 > 比較データは **Rails 7.0 / 8.0 / 8.1.2 / 8.1.3** の公式情報を基準に整理しています。
@@ -119,7 +119,7 @@ bin/dev
 1. catalog data
    - version metadata や feature 比較 data を追加
 2. 必要なら demo / comparison partial を追加
-3. `bin/rails test test/models/version_catalog_test.rb test/models/feature_catalog_test.rb test/integration/feature_catalog_flow_test.rb`
+3. `bundle exec rspec spec/models/version_catalog_spec.rb spec/models/feature_catalog_spec.rb spec/requests/feature_catalog_flow_spec.rb`
    - schema validation と画面回帰を確認
 
 大きな 2カラム UI 改修をせず、**YAML data の追加**を中心に広げる前提です。

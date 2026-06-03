@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      namespace :catalog do
+        resources :versions, only: :index
+      end
+    end
+  end
+
   resource :session, only: [ :new, :create, :destroy ]
   resources :passwords, only: [ :new, :create, :edit, :update ], param: :token
   resources :users, only: [ :new, :create ]

@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "FeatureCatalogFlow", type: :request do
+  fixtures :users
+
   describe "catalog pages and demos" do
     it "renders the home page" do
       get root_path

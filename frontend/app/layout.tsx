@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { Header } from "@/components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Rails Version Catalog",
-  description: "Frontend placeholder for the Rails multi-version feature catalog.",
+  title: "Rails Multi-Version Feature Catalog",
+  description: "Next.js frontend for the Rails multi-version feature catalog.",
 };
 
 export default function RootLayout({
@@ -13,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body className="overflow-x-hidden bg-slate-50 text-slate-900">
+        <Header />
+        <main className="mx-auto max-w-7xl px-6 py-8">{children}</main>
+      </body>
     </html>
   );
 }

@@ -11,8 +11,11 @@ if ! gem list foreman -i --silent; then
   gem install foreman
 fi
 
-# Default to APP_PORT / PORT / 3000
-export PORT="${PORT:-${APP_PORT:-3000}}"
+# Default Rails web port to APP_PORT / PORT / 3000.
+# Foreman increments PORT per process, so keep the Rails port separately
+# for other processes such as the Next.js frontend.
+export RAILS_PORT="${APP_PORT:-${PORT:-3000}}"
+export PORT="${RAILS_PORT}"
 
 # Let the debug gem allow remote connections,
 # but avoid loading until `debugger` is called

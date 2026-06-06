@@ -100,11 +100,14 @@ cp frontend/.env.local.example frontend/.env.local
 - `RAILS_API_URL`
   - Next.js server-side fetch 用
   - browser には公開しない前提
+  - local default は `http://127.0.0.1:3100`
 - `NEXT_PUBLIC_RAILS_URL`
   - browser-visible な Rails demo link 用
   - `NEXT_PUBLIC_` prefix のため client 側にも公開される
+  - local default は `http://127.0.0.1:3100`
 
 通常の local development では `bin/dev` が Rails と Next.js をまとめて起動します。
+`bin/dev` は `.env.example` の `APP_PORT=3100` を Rails port として使い、Next.js からの API fetch も同じ Rails port に向けます。
 Next.js は一部環境の file watcher 問題を避けるため、`npm run dev:polling --prefix frontend` 相当で起動します。
 
 ## Local setup

@@ -63,11 +63,52 @@ Rails version 差分と default stack changes を、実際の Rails app 上で�
 - Rails 8.1.3
 - PostgreSQL
 - Hotwire + Tailwind CSS
+- Next.js 15 + TypeScript
 - Solid Queue / Solid Cable / Solid Cache
 - RSpec
 
 > 補足: app runtime は現在この repo の Rails version で動いています。  
 > 比較データは **Rails 7.0 / 8.0 / 8.1.2 / 8.1.3** の公式情報を基準に整理しています。
+
+## Frontend architecture 🧭
+
+この repo は移行期間中、Rails と Next.js を並べて動かします。
+
+- Rails
+  - 既存の Rails app / interactive demo / catalog API を担当
+  - live demo はこの段階では Rails 側に残す
+- Next.js frontend
+  - catalog browsing UI を担当
+  - Rails API から catalog data を取得する
+  - App Router / Server Components を基本にする
+
+### Next.js page map
+
+- `/`
+  - version summary と feature overview
+- `/features`
+  - feature 一覧と compare version selector
+- `/features/[slug]`
+  - feature detail、comparison matrix、adoption readiness、code/config diff、live demo placeholder、upgrade notes
+
+### Frontend environment variables
+
+```bash
+cp frontend/.env.local.example frontend/.env.local
+```
+
+- `RAILS_API_URL`
+  - Next.js server-side fetch 用
+  - browser には公開しない前提
+  - local default は `http://127.0.0.1:3100`
+- `NEXT_PUBLIC_RAILS_URL`
+  - browser-visible な Rails demo link 用
+  - `NEXT_PUBLIC_` prefix のため client 側にも公開される
+  - local default は `http://127.0.0.1:3100`
+
+通常の local development では `bin/dev` が Rails と Next.js をまとめて起動します。
+`bin/dev` は `.env.example` の `APP_PORT=3100` を Rails port として使い、Next.js からの API fetch も同じ Rails port に向けます。
+Next.js は一部環境の file watcher 問題を避けるため、`npm run dev:polling --prefix frontend` 相当で起動します。
 
 ## Local setup
 
@@ -75,15 +116,17 @@ Rails version 差分と default stack changes を、実際の Rails app 上で�
 
 ```bash
 cp .env.example .env
+cp frontend/.env.local.example frontend/.env.local
 docker compose up -d db
 
+npm install --prefix frontend
 bin/rails db:prepare
 bin/rails db:seed
 bin/rails tailwindcss:build
 bin/dev
 ```
 
-`bin/dev` は `web` / `jobs` を起動します。  
+`bin/dev` は `web` / `jobs` / `next` を起動します。  
 `bin/dev` は `.env` を自動読込します。
 
 > Note:
@@ -96,6 +139,8 @@ bin/dev
 
 ```bash
 bundle install
+npm install --prefix frontend
+cp frontend/.env.local.example frontend/.env.local
 export PGUSER=your_postgres_user
 export PGPASSWORD=your_postgres_password
 bin/rails db:prepare
@@ -104,7 +149,7 @@ bin/rails tailwindcss:build
 bin/dev
 ```
 
-`bin/dev` は `web` / `jobs` を起動します。  
+`bin/dev` は `web` / `jobs` / `next` を起動します。  
 外部 DB を使う場合は、必要な環境変数を shell 側で export してください。
 
 ## Demo account
@@ -123,6 +168,10 @@ bin/dev
    - schema validation と画面回帰を確認
 
 大きな 2カラム UI 改修をせず、**YAML data の追加**を中心に広げる前提です。
+
+## Updating frontend API types
+
+When catalog API response shapes change, update the TypeScript types in `frontend/lib/types.ts` and the fetch helpers in `frontend/lib/api.ts` together.
 
 ## Sources
 

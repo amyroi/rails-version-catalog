@@ -39,3 +39,10 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Next.js frontend
+/frontend/.env.local
+/frontend/.env*.local
+/frontend/.next/
+/frontend/node_modules/
+/frontend/tsconfig.tsbuildinfo

@@ -10,6 +10,17 @@ class Api::V1::Catalog::FeaturesController < Api::V1::BaseController
     }
   end
 
+  def show
+    feature = FeatureCatalog.fetch!(params[:slug])
+
+    render json: Api::V1::Catalog::FeatureDetailResource.new(
+      feature,
+      params: { latest_highlight: feature.highlight_for(feature.latest_version_key) }
+    ).as_json
+  rescue ActionController::RoutingError => _error
+    render json: { error: "not_found" }, status: :not_found
+  end
+
   private
     def feature_summary_json(features, latest_highlights:)
       Api::V1::Catalog::FeatureSummaryResource.new(features, params: { latest_highlights: }).as_json

@@ -51,6 +51,42 @@ RSpec.describe "Api::V1::Catalog::Features", type: :request do
     end
   end
 
+  describe "GET /api/v1/catalog/features/:slug" do
+    it "returns feature detail as camelCase JSON" do
+      get api_v1_catalog_feature_path("solid-queue")
+
+      expect(response).to have_http_status(:ok)
+
+      feature = JSON.parse(response.body)
+      expect(feature.fetch("slug")).to eq("solid-queue")
+      expect(feature.keys.sort).to eq(expected_detail_keys)
+      expect(feature.fetch("demoType")).to eq("runtime_demo")
+      expect(feature.fetch("liveDemoAvailable")).to be(true)
+      expect(feature.fetch("notesByVersion")).to be_a(Hash)
+      expect(feature.fetch("highlightsByVersion")).to be_a(Hash)
+      expect(feature.fetch("sourceLinksByVersion")).to be_a(Hash)
+      expect(feature.fetch("filesByVersion")).to be_a(Hash)
+      expect(feature.fetch("adoptionWhen")).to be_an(Array)
+    end
+
+    it "returns JSON 404 for unknown slug" do
+      get api_v1_catalog_feature_path("no-such-feature")
+
+      expect(response).to have_http_status(:not_found)
+      expect(JSON.parse(response.body)).to eq({ "error" => "not_found" })
+    end
+
+    it "does not include runtime demo record collections" do
+      get api_v1_catalog_feature_path("solid-queue")
+
+      expect(response).to have_http_status(:ok)
+
+      feature = JSON.parse(response.body)
+      expect(feature.keys).not_to include("queueRuns")
+      expect(feature.keys).not_to include("demoMessages")
+    end
+  end
+
   def expected_summary_keys
     %w[
       category
@@ -62,6 +98,32 @@ RSpec.describe "Api::V1::Catalog::Features", type: :request do
       summary
       supportedVersions
       title
+    ].sort
+  end
+
+  def expected_detail_keys
+    %w[
+      adoptionAlternatives
+      adoptionCautions
+      adoptionRequirements
+      adoptionWhen
+      category
+      codeExamplesByVersion
+      demoType
+      filesByVersion
+      highlightsByVersion
+      latestHighlight
+      latestVersionKey
+      liveDemoAvailable
+      notesByVersion
+      operationalNotesByVersion
+      slug
+      sourceLinksByVersion
+      statusByVersion
+      summary
+      supportedVersions
+      title
+      upgradeNotesByVersion
     ].sort
   end
 end

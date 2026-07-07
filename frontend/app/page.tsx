@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <main className="min-h-screen px-6 py-12 sm:px-10 lg:px-16">
+    <section className="px-0 py-4 sm:py-8">
       <section className="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
         <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           Next.js Frontend
@@ -16,6 +16,6 @@ export default function Home() {
           Development server: <code className="font-mono text-slate-900">localhost:3001</code>
         </div>
       </section>
-    </main>
+    </section>
   );
 }

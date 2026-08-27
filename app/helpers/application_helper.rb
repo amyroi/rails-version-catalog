@@ -8,7 +8,9 @@ module ApplicationHelper
   end
 
   def current_runtime_label
-    "Rails #{Rails.gem_version}"
+    catalog_version = Rails.gem_version.segments.first(3).join(".")
+
+    "Rails #{catalog_version}"
   end
 
   def version_chip_classes(version, active: false)

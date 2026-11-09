@@ -7,7 +7,7 @@ RSpec.describe VersionCatalog, type: :model do
 
   describe "catalog behavior" do
     it "loads default compare keys from yaml" do
-      expect(described_class.default_compare_keys).to eq([ "7.0", "8.0", "8.1.3" ])
+      expect(described_class.default_compare_keys).to eq([ "7.0", "8.0", "8.1.4" ])
     end
 
     it "fetches a configured version" do
@@ -24,7 +24,7 @@ RSpec.describe VersionCatalog, type: :model do
 
     it "returns the position of a configured version" do
       expect(described_class.index_for("7.0")).to eq(0)
-      expect(described_class.index_for("8.1.3")).to eq(2)
+      expect(described_class.index_for("8.1.4")).to eq(2)
       expect(described_class.index_for("9.0")).to eq(-1)
     end
 
@@ -46,15 +46,15 @@ RSpec.describe VersionCatalog, type: :model do
     it "raises when version keys are duplicated" do
       duplicate_versions = [
         {
-          "key" => "8.1.3",
-          "label" => "Rails 8.1.3",
+          "key" => "8.1.4",
+          "label" => "Rails 8.1.4",
           "release_date" => "March 24, 2026",
           "status" => "latest",
           "release_notes_url" => "https://guides.rubyonrails.org/8_1_release_notes.html"
         },
         {
-          "key" => "8.1.3",
-          "label" => "Rails 8.1.3 duplicate",
+          "key" => "8.1.4",
+          "label" => "Rails 8.1.4 duplicate",
           "release_date" => "January 9, 2026",
           "status" => "supported",
           "release_notes_url" => "https://example.com/duplicate"

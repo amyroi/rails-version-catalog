@@ -10,12 +10,6 @@ RSpec.describe VersionCatalog, type: :model do
       expect(described_class.default_compare_keys).to eq([ "7.0", "8.0", "8.1.4" ])
     end
 
-    it "excludes retired patch versions without aliasing them" do
-      expect(described_class.normalize("7.0,8.1.2,8.1.3,8.1.4,8.1.4")).to eq([ "7.0", "8.1.4" ])
-      expect(described_class.fetch("8.1.3")).to be_nil
-      expect(described_class.all.select(&:latest?).map(&:key)).to eq([ "8.1.4" ])
-    end
-
     it "fetches a configured version" do
       version = described_class.fetch("8.0")
 

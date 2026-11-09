@@ -132,7 +132,6 @@ bin/dev
   https://guides.rubyonrails.org/8_0_release_notes.html
 - Rails 8.1 Release Notes  
   https://guides.rubyonrails.org/8_1_release_notes.html
-- [Rails 8.1.4 Release](https://github.com/rails/rails/releases/tag/v8.1.4)
 - Upgrading Ruby on Rails  
   https://guides.rubyonrails.org/upgrading_ruby_on_rails.html
 

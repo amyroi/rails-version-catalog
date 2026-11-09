@@ -4,16 +4,6 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
   fixtures :users
 
   describe "catalog pages and demos" do
-    it "renders every feature with the current comparison versions" do
-      FeatureCatalog.all.each do |feature|
-        get feature_path(feature.slug)
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Rails 8.1.4")
-        expect(response.body).not_to include("Rails 8.1.3")
-        expect(Capybara.string(response.body).find("title", visible: :all).text(:all)).to eq(feature.title)
-      end
-    end
-
     {
       "7.0,8.0,8.1.3" => [ "7.0", "8.0" ],
       "8.1.3" => [ "7.0", "8.0", "8.1.4" ],

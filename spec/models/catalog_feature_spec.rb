@@ -8,14 +8,14 @@ RSpec.describe CatalogFeature, type: :model do
         title: "Solid Queue",
         category: "Interactive Demo",
         summary: "summary",
-        supported_versions: %w[7.0 8.0 8.1.3],
-        notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.3" => "note 8.1.3" },
-        highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.3" => "h813" },
+        supported_versions: %w[7.0 8.0 8.1.4],
+        notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.4" => "note 8.1.4" },
+        highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.4" => "h813" },
         demo_type: :runtime_demo,
         source_links_by_version: {
           "7.0" => "https://example.com/7",
           "8.0" => "https://example.com/8",
-          "8.1.3" => "https://example.com/813"
+          "8.1.4" => "https://example.com/813"
         },
         status_by_version: { "8.0" => "default" },
         files_by_version: { "8.0" => [ "config/queue.yml" ] },
@@ -48,14 +48,14 @@ RSpec.describe CatalogFeature, type: :model do
         title: "Propshaft",
         category: "Config / Platform Differences",
         summary: "summary",
-        supported_versions: %w[7.0 8.0 8.1.3],
-        notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.3" => "note 8.1.3" },
-        highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.3" => "h813" },
+        supported_versions: %w[7.0 8.0 8.1.4],
+        notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.4" => "note 8.1.4" },
+        highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.4" => "h813" },
         demo_type: :comparison_card,
         source_links_by_version: {
           "7.0" => "https://example.com/7",
           "8.0" => "https://example.com/8",
-          "8.1.3" => "https://example.com/813"
+          "8.1.4" => "https://example.com/813"
         }
       )
 

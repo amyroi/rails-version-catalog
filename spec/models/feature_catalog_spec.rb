@@ -1,6 +1,19 @@
 require "rails_helper"
 
 RSpec.describe FeatureCatalog, type: :model do
+  it "keeps all feature version maps aligned with the catalog" do
+    features = YAML.safe_load_file(FeatureCatalog::DATA_PATH, aliases: false).fetch("features")
+    expected_keys = VersionCatalog.default_compare_keys
+
+    features.each do |feature|
+      FeatureCatalog::VERSIONED_KEYS.each do |key|
+        expect(feature.fetch(key).keys).to match_array(expected_keys), "#{feature.fetch('slug')}: #{key}"
+      end
+      FeatureCatalog::OPTIONAL_VERSIONED_KEYS.each do |key|
+        expect(feature.fetch(key, {}).keys - expected_keys).to be_empty, "#{feature.fetch('slug')}: #{key}"
+      end
+    end
+  end
   after do
     described_class.send(:reset_cache!)
   end
@@ -22,14 +35,14 @@ RSpec.describe FeatureCatalog, type: :model do
 
       expect(feature.title).to eq("Solid Queue")
       expect(feature.demo_type).to eq(:runtime_demo)
-      expect(feature.highlight_for("8.1.3")).to eq("Continuations-ready durable queue")
+      expect(feature.highlight_for("8.1.4")).to eq("Continuations-ready durable queue")
       expect(feature.status_for("8.0")).to eq("Production default durable queue")
       expect(feature.files_for("8.0")).to eq([ "config/queue.yml", "db/queue_schema.rb", "bin/jobs" ])
       expect(feature.code_examples_for("8.0")).to eq([ "config.active_job.queue_adapter = :solid_queue" ])
       expect(feature.operational_notes_for("8.0")).to eq([ "Keep `bin/jobs start` or an equivalent worker command running." ])
-      expect(feature.source_for("8.1.3")).to eq("https://guides.rubyonrails.org/8_1_release_notes.html")
-      expect(feature.status_for("8.1.3")).to eq("Durable queue with continuations baseline")
-      expect(feature.files_for("8.1.3")).to eq([ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ])
+      expect(feature.source_for("8.1.4")).to eq("https://guides.rubyonrails.org/8_1_release_notes.html")
+      expect(feature.status_for("8.1.4")).to eq("Durable queue with continuations baseline")
+      expect(feature.files_for("8.1.4")).to eq([ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ])
       expect(feature.adoption_when).to include("You want Rails-native durable Active Job processing without adding a Redis-backed job system first.")
       expect(feature.adoption_cautions).to include("Avoid treating Solid Queue as a drop-in replacement until worker boot, queue schema, retries, and operational ownership are confirmed.")
       expect(feature.adoption_alternatives).to include("Sidekiq remains a strong option when the app already depends on Redis-backed job operations.")
@@ -68,7 +81,7 @@ RSpec.describe FeatureCatalog, type: :model do
       expect(feature.files_for("8.0")).to eq([ "app/models/user.rb", "app/models/session.rb", "app/controllers/sessions_controller.rb", "app/controllers/passwords_controller.rb" ])
       expect(feature.code_examples_for("7.0")).to eq([ "bin/rails generate authentication" ])
       expect(feature.operational_notes_for("8.0")).to eq([ "Confirm password reset mail delivery and signed session cookies." ])
-      expect(feature.files_for("8.1.3")).to eq([ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ])
+      expect(feature.files_for("8.1.4")).to eq([ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ])
       expect(feature).to be_live_demo_available
     end
 
@@ -86,7 +99,7 @@ RSpec.describe FeatureCatalog, type: :model do
       expect(kamal.files_for("8.0")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
       expect(kamal.code_examples_for("8.0")).to eq([ "config/deploy.yml" ])
       expect(kamal.operational_notes_for("8.0")).to eq([ "Verify the deploy image host, proxy, and secret settings together." ])
-      expect(kamal.files_for("8.1.3")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
+      expect(kamal.files_for("8.1.4")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
       expect(kamal.adoption_when).to include("You want an app-centric deploy flow where container image, server inventory, proxy, and secrets are reviewed from the Rails repository.")
       expect(kamal.adoption_cautions).to include("Avoid treating Kamal as only a generated config file; server access, registry auth, proxy settings, and rollback behavior all need operational ownership.")
       expect(kamal.adoption_alternatives).to include("Capistrano remains a familiar option for SSH-based deployments without adopting Kamal's container workflow.")
@@ -103,14 +116,14 @@ RSpec.describe FeatureCatalog, type: :model do
         title: "Sample",
         category: "Interactive Demo",
         summary: "summary",
-        supported_versions: %w[7.0 8.0 8.1.3],
-        notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.3" => "note 8.1.3" },
-        highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.3" => "h813" },
+        supported_versions: %w[7.0 8.0 8.1.4],
+        notes_by_version: { "7.0" => "note 7", "8.0" => "note 8", "8.1.4" => "note 8.1.4" },
+        highlights_by_version: { "7.0" => "h7", "8.0" => "h8", "8.1.4" => "h813" },
         demo_type: :runtime_demo,
         source_links_by_version: {
           "7.0" => "https://example.com/7",
           "8.0" => "https://example.com/8",
-          "8.1.3" => "https://example.com/813"
+          "8.1.4" => "https://example.com/813"
         }
       )
 
@@ -151,9 +164,9 @@ RSpec.describe FeatureCatalog, type: :model do
           "demo_type" => "runtime_demo",
           "title" => "Feature A",
           "summary" => "Summary A",
-          "notes_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.3" => "A" },
-          "highlights_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.3" => "A" },
-          "source_links_by_version" => { "7.0" => "https://example.com/a", "8.0" => "https://example.com/a", "8.1.3" => "https://example.com/a" }
+          "notes_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.4" => "A" },
+          "highlights_by_version" => { "7.0" => "A", "8.0" => "A", "8.1.4" => "A" },
+          "source_links_by_version" => { "7.0" => "https://example.com/a", "8.0" => "https://example.com/a", "8.1.4" => "https://example.com/a" }
         },
         {
           "slug" => "same-slug",
@@ -161,9 +174,9 @@ RSpec.describe FeatureCatalog, type: :model do
           "demo_type" => "comparison_card",
           "title" => "Feature B",
           "summary" => "Summary B",
-          "notes_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.3" => "B" },
-          "highlights_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.3" => "B" },
-          "source_links_by_version" => { "7.0" => "https://example.com/b", "8.0" => "https://example.com/b", "8.1.3" => "https://example.com/b" }
+          "notes_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.4" => "B" },
+          "highlights_by_version" => { "7.0" => "B", "8.0" => "B", "8.1.4" => "B" },
+          "source_links_by_version" => { "7.0" => "https://example.com/b", "8.0" => "https://example.com/b", "8.1.4" => "https://example.com/b" }
         }
       ]
 
@@ -300,17 +313,17 @@ RSpec.describe FeatureCatalog, type: :model do
       "notes_by_version" => {
         "7.0" => "note 7",
         "8.0" => "note 8",
-        "8.1.3" => "note 8.1.3"
+        "8.1.4" => "note 8.1.4"
       },
       "highlights_by_version" => {
         "7.0" => "highlight 7",
         "8.0" => "highlight 8",
-        "8.1.3" => "highlight 8.1.3"
+        "8.1.4" => "highlight 8.1.4"
       },
       "source_links_by_version" => {
         "7.0" => "https://example.com/7",
         "8.0" => "https://example.com/8",
-        "8.1.3" => "https://example.com/8-1-3"
+        "8.1.4" => "https://example.com/8-1-4"
       }
     }
   end

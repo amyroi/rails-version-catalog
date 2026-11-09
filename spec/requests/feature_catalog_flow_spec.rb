@@ -4,12 +4,39 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
   fixtures :users
 
   describe "catalog pages and demos" do
+    it "renders every feature with the current comparison versions" do
+      FeatureCatalog.all.each do |feature|
+        get feature_path(feature.slug)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Rails 8.1.4")
+        expect(response.body).not_to include("Rails 8.1.3")
+        expect(Capybara.string(response.body).find("title", visible: :all).text(:all)).to eq(feature.title)
+      end
+    end
+
+    {
+      "7.0,8.0,8.1.3" => [ "7.0", "8.0" ],
+      "8.1.3" => [ "7.0", "8.0", "8.1.4" ],
+      "8.1.2" => [ "7.0", "8.0", "8.1.4" ],
+      "8.1.4" => [ "8.1.4" ],
+      "" => [ "7.0", "8.0", "8.1.4" ],
+      "unknown" => [ "7.0", "8.0", "8.1.4" ]
+    }.each do |compare, expected_keys|
+      it "normalizes compare=#{compare.inspect} safely" do
+        get features_path, params: { compare: compare }
+        expect(response).to have_http_status(:ok)
+        heading = Capybara.string(response.body).find("h1").text
+        expect(heading).to include(expected_keys.map { |key| "Rails #{key}" }.join(" / "))
+        expect(heading).not_to include("Rails 8.1.3", "Rails 8.1.2")
+      end
+    end
+
     it "renders the home page" do
       get root_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Rails Version Catalog")
-      expect(response.body).to include("Rails 7.0 / Rails 8.0 / Rails 8.1.3 を UI で比較するカタログ")
+      expect(Capybara.string(response.body).find("title", visible: :all).text(:all)).to eq("Rails Version Catalog")
+      expect(response.body).to include("Rails 7.0 / Rails 8.0 / Rails 8.1.4 を UI で比較するカタログ")
       expect(response.body).to include("Interactive demos")
       expect(response.body).to include("Config / platform differences")
     end
@@ -22,7 +49,7 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       expect(response.body).to include("Overview")
       expect(response.body).to include("Version comparison matrix")
       expect(response.body).to include("Code / config diff")
-      expect(response.body).to include("Live demo (current runtime: Rails 8.1.3)")
+      expect(response.body).to include("Live demo (current runtime: Rails 8.1.4)")
       expect(response.body).to include("Upgrade notes")
       expect(response.body).to include("Recent jobs")
       expect(response.body).to include("Adoption readiness")
@@ -109,16 +136,16 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
     end
 
     it "renders comparison feature with a multi-version matrix" do
-      get feature_path("active-job-continuations"), params: { compare: "7.0,8.0,8.1.3" }
+      get feature_path("active-job-continuations"), params: { compare: "7.0,8.0,8.1.4" }
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Version comparison matrix")
       expect(response.body).to include("Summary")
       expect(response.body).to include("Key changes")
       expect(response.body).to include("Code / config diff")
-      expect(response.body).to include("Live demo (current runtime: Rails 8.1.3)")
+      expect(response.body).to include("Live demo (current runtime: Rails 8.1.4)")
       expect(response.body).to include("Upgrade notes")
-      expect(response.body).to include("Rails 8.1.3")
+      expect(response.body).to include("Rails 8.1.4")
       expect(response.body).to include("ActiveJob::Continuable")
     end
 
@@ -185,17 +212,17 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       "notes_by_version" => {
         "7.0" => "Rails 7 note",
         "8.0" => "Rails 8 note",
-        "8.1.3" => "Rails 8.1 note"
+        "8.1.4" => "Rails 8.1 note"
       },
       "highlights_by_version" => {
         "7.0" => "Rails 7 highlight",
         "8.0" => "Rails 8 highlight",
-        "8.1.3" => "Rails 8.1 highlight"
+        "8.1.4" => "Rails 8.1 highlight"
       },
       "source_links_by_version" => {
         "7.0" => "https://example.com/rails-7",
         "8.0" => "https://example.com/rails-8",
-        "8.1.3" => "https://example.com/rails-8-1"
+        "8.1.4" => "https://example.com/rails-8-1"
       }
     }
   end

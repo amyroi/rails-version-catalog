@@ -1,7 +1,7 @@
 # Rails Version Catalog
 
 Rails version 差分と default stack changes を、実際の Rails app 上で確認できる**比較カタログ**です。  
-現在の初期比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.2 / Rails 8.1.3** です。
+現在の比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.4** です。
 
 ## 目的 ✨
 
@@ -60,14 +60,14 @@ Rails version 差分と default stack changes を、実際の Rails app 上で�
 
 ## Stack
 
-- Rails 8.1.3
+- Rails 8.1.4
 - PostgreSQL
 - Hotwire + Tailwind CSS
 - Solid Queue / Solid Cable / Solid Cache
 - RSpec
 
 > 補足: app runtime は現在この repo の Rails version で動いています。  
-> 比較データは **Rails 7.0 / 8.0 / 8.1.2 / 8.1.3** の公式情報を基準に整理しています。
+> 比較データは **Rails 7.0 / 8.0 / 8.1.4** の公式情報を基準に整理しています。
 
 ## Local setup
 

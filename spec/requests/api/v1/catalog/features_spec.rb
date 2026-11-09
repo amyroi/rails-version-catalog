@@ -17,7 +17,7 @@ RSpec.describe "Api::V1::Catalog::Features", type: :request do
       expect(runtime_demo.fetch("demoType")).to eq("runtime_demo")
       expect(runtime_demo.fetch("liveDemoAvailable")).to be(true)
       expect(runtime_demo.fetch("supportedVersions")).to be_an(Array)
-      expect(runtime_demo.fetch("latestVersionKey")).to eq("8.1.3")
+      expect(runtime_demo.fetch("latestVersionKey")).to eq("8.1.4")
       expect(runtime_demo.fetch("latestHighlight")).to be_a(String)
     end
 

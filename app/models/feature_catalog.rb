@@ -67,7 +67,8 @@ class FeatureCatalog
             adoption_cautions: attributes.fetch("adoption_cautions", []),
             adoption_alternatives: attributes.fetch("adoption_alternatives", []),
             adoption_requirements: attributes.fetch("adoption_requirements", []),
-            live_demo_available: attributes.fetch("live_demo_available", false)
+            live_demo_available: attributes.fetch("live_demo_available", false),
+            demo_notes: attributes.fetch("demo_notes", {})
           )
         end.tap { |features| validate_uniqueness!(features) }
       end
@@ -85,6 +86,10 @@ class FeatureCatalog
       end
 
       def validate_feature!(attributes)
+        demo_notes = attributes.fetch("demo_notes", {})
+        unless demo_notes.is_a?(Hash) && demo_notes.all? { |key, value| key.is_a?(String) && value.is_a?(String) && value.present? }
+          raise ArgumentError, "demo_notes must contain named, non-empty text entries"
+        end
         missing_keys = REQUIRED_KEYS.reject { |key| attributes[key].present? }
         raise ArgumentError, "feature entry is missing keys: #{missing_keys.join(', ')}" if missing_keys.any?
 

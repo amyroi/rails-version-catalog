@@ -39,13 +39,13 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       get feature_path("solid-queue")
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Queue with Solid Queue")
+      expect(response.body).to include("キューに登録")
       expect(response.body).to include("概要")
       expect(response.body).to include("バージョン別の比較")
       expect(response.body).to include("コード・設定の比較")
       expect(response.body).to include("操作デモ（実行環境：Rails 8.1.4）")
       expect(response.body).to include("移行時の注意")
-      expect(response.body).to include("Recent jobs")
+      expect(response.body).to include("最近のジョブ")
       expect(response.body).to include("採用の判断")
       expect(response.body).to include("Redis ベースのジョブ基盤を先に追加せず")
       expect(response.body).to include("Sidekiq も有力な選択肢")
@@ -55,9 +55,9 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       get feature_path("authentication-generator")
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Authentication flow")
-      expect(response.body).to include("Quick try")
-      expect(response.body).to include("Current status")
+      expect(response.body).to include("認証フロー")
+      expect(response.body).to include("操作に必要な情報")
+      expect(response.body).to include("現在の状態")
     end
 
     it "redirects auth lab when unauthenticated" do
@@ -151,8 +151,8 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       expect(response.body).to include('action="/cache_demo?compare=7.0"')
       expect(response.body).to include('href="/features/solid-cache?compare=7.0"')
       expect(response.body).to include("採用の判断")
-      expect(response.body).to include("You want a Rails-native durable cache option")
-      expect(response.body).to include("Redis remains a good fit")
+      expect(response.body).to include("キャッシュの保存だけを目的に Redis を追加せず")
+      expect(response.body).to include("Redis を運用していて")
     end
 
     it "renders adoption readiness for kamal detail" do
@@ -160,9 +160,9 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("採用の判断")
-      expect(response.body).to include("You want an app-centric deploy flow")
-      expect(response.body).to include("Capistrano remains a familiar option")
-      expect(response.body).to include("instead of local files such as")
+      expect(response.body).to include("コンテナイメージ、サーバー一覧、プロキシ、シークレット")
+      expect(response.body).to include("Capistrano も選択肢")
+      expect(response.body).to include("ローカルファイルではなく")
     end
 
     it "renders adoption readiness when metadata is configured" do
@@ -203,6 +203,7 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       "demo_type" => "runtime_demo",
       "title" => "Solid Queue",
       "summary" => "A feature used to exercise adoption readiness rendering.",
+      "demo_notes" => { "description" => "Demo description" },
       "notes_by_version" => {
         "7.0" => "Rails 7 note",
         "8.0" => "Rails 8 note",

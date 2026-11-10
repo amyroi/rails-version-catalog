@@ -1,43 +1,43 @@
 <div class="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
   <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-    <h3 class="text-lg font-semibold">Current cache snapshot</h3>
+    <h3 class="text-lg font-semibold"><%= t("demos.cache") %></h3>
     <div class="mt-4 inline-flex rounded-full px-3 py-1 text-xs font-semibold <%= cache_state_classes(@cache_snapshot[:hit]) %>">
       <%= @cache_snapshot[:hit] ? "Cache hit" : "Cache miss" %>
     </div>
 
     <dl class="mt-5 space-y-3 text-sm">
       <div>
-        <dt class="text-slate-500">Store</dt>
+        <dt class="text-slate-500"><%= t("demos.store") %></dt>
         <dd class="mt-1 text-slate-900"><%= @cache_snapshot[:store] %></dd>
       </div>
       <div>
-        <dt class="text-slate-500">Key</dt>
+        <dt class="text-slate-500"><%= t("demos.key") %></dt>
         <dd class="mt-1 break-all font-mono text-slate-900"><%= @cache_snapshot[:key] %></dd>
       </div>
       <div>
-        <dt class="text-slate-500">Generated at</dt>
+        <dt class="text-slate-500"><%= t("demos.generated_at") %></dt>
         <dd class="mt-1 text-slate-900"><%= @cache_snapshot[:payload][:generated_at] %></dd>
       </div>
       <div>
-        <dt class="text-slate-500">Checksum</dt>
+        <dt class="text-slate-500"><%= t("demos.checksum") %></dt>
         <dd class="mt-1 font-mono text-slate-900"><%= @cache_snapshot[:payload][:checksum] %></dd>
       </div>
     </dl>
   </div>
 
   <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-    <h3 class="text-lg font-semibold">Try it</h3>
-    <p class="mt-2 text-sm leading-6 text-slate-600">Refresh forces a miss and re-generates durable payload. Clear removes the key entirely.</p>
+    <h3 class="text-lg font-semibold"><%= t("demos.try") %></h3>
+    <p class="mt-2 text-sm leading-6 text-slate-600"><%= t("demos.cache_help") %></p>
 
     <div class="mt-5 flex flex-wrap gap-3">
-      <%= button_to "Force refresh", refresh_cache_demo_path(compare: params[:compare]), method: :post, class: "rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700" %>
-      <%= button_to "Clear cache", cache_demo_path(compare: params[:compare]), method: :delete, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
-      <%= link_to "Reload page", feature_path("solid-cache", compare: params[:compare]), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
+      <%= button_to t("demos.refresh"), refresh_cache_demo_path(compare: params[:compare]), method: :post, class: "rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700" %>
+      <%= button_to t("demos.clear"), cache_demo_path(compare: params[:compare]), method: :delete, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
+      <%= link_to t("demos.reload"), feature_path("solid-cache", compare: params[:compare]), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
     </div>
 
     <div class="mt-5 rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700">
-      <p class="font-semibold text-slate-900">Payload explanation</p>
-      <p class="mt-2"><%= @cache_snapshot[:payload][:explanation] %></p>
+      <p class="font-semibold text-slate-900"><%= t("demos.payload") %></p>
+      <p class="mt-2"><%= feature.demo_notes.fetch("description") %></p>
     </div>
   </div>
 </div>

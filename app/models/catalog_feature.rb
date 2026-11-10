@@ -3,7 +3,7 @@ class CatalogFeature
               :highlights_by_version, :demo_type, :source_links_by_version, :status_by_version,
               :files_by_version, :upgrade_notes_by_version, :code_examples_by_version,
               :operational_notes_by_version, :adoption_when, :adoption_cautions,
-              :adoption_alternatives, :adoption_requirements, :live_demo_available
+              :adoption_alternatives, :adoption_requirements, :live_demo_available, :demo_notes
 
   def initialize(
     slug:,
@@ -24,7 +24,8 @@ class CatalogFeature
     adoption_cautions: [],
     adoption_alternatives: [],
     adoption_requirements: [],
-    live_demo_available: false
+    live_demo_available: false,
+    demo_notes: {}
   )
     @slug = slug
     @title = title
@@ -45,6 +46,7 @@ class CatalogFeature
     @adoption_alternatives = adoption_alternatives
     @adoption_requirements = adoption_requirements
     @live_demo_available = live_demo_available
+    @demo_notes = demo_notes
   end
 
   def runtime_demo?

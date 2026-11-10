@@ -27,4 +27,29 @@ RSpec.describe "Japanese controls", type: :request do
     expect(response).to have_http_status(:unprocessable_content)
     expect(response.body).to include("メールアドレスを入力してください")
   end
+
+  it "renders changed catalog demo prose and escapes embedded markup" do
+    features = YAML.safe_load_file(FeatureCatalog::DATA_PATH).fetch("features")
+    feature = features.find { |item| item.fetch("slug") == "local-ci" }
+    feature.fetch("demo_notes")["description"] = 'カタログからの説明 <img src=x onerror="alert(1)">'
+
+    with_raw_features(features) do
+      get feature_path("local-ci")
+    end
+
+    page = Capybara.string(response.body)
+    expect(response).to have_http_status(:ok)
+    expect(page).to have_text("カタログからの説明")
+    expect(page).not_to have_css("img[onerror]", visible: :all)
+    expect(response.body).to include("&lt;img")
+  end
+
+  it "rejects invalid demo prose before rendering" do
+    features = YAML.safe_load_file(FeatureCatalog::DATA_PATH).fetch("features")
+    features.first["demo_notes"] = { "description" => [] }
+
+    with_raw_features(features) do
+      expect { FeatureCatalog.all }.to raise_error(ArgumentError, /demo_notes/)
+    end
+  end
 end

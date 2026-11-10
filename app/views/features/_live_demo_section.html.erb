@@ -4,5 +4,5 @@
     <a href="<%= feature.source_url %>" target="_blank" rel="noreferrer" class="text-sm text-sky-700 underline underline-offset-4"><%= t("ui.source") %></a>
   </div>
 
-  <%= render "features/demos/#{feature.partial_name}" %>
+  <%= render "features/demos/#{feature.partial_name}", feature: feature %>
 </section>

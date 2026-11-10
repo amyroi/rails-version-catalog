@@ -62,6 +62,12 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: このアプリでは Rails 8 の認証ジェネレータで作成した Current.session、パスワード再設定、署名付き Cookie を利用しています。
+    detail_2: "• bin/rails generate authentication を使用"
+    detail_3: "• Current.session と署名付き Cookie を利用"
+    detail_4: "• User モデルで normalizes :email_address を利用"
+    detail_5: "• SessionsController に rate_limit を生成"
 - slug: solid-queue
   category: Interactive Demo
   demo_type: runtime_demo
@@ -136,6 +142,8 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: 'Procfile.dev に jobs: bin/jobs start を指定しているため、ローカル起動時にワーカーも起動します。'
 - slug: solid-cable
   category: Interactive Demo
   demo_type: runtime_demo
@@ -195,6 +203,8 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: 別タブを開いたまま投稿すると、Turbo Stream 経由でメッセージ一覧が同期されます。
 - slug: solid-cache
   category: Interactive Demo
   demo_type: runtime_demo
@@ -250,32 +260,27 @@ features:
     8.1.4:
     - キャッシュの事前生成・無効化と、データベース使用量をまとめて確認します。
   adoption_when:
-  - You want a Rails-native durable cache option without introducing Redis only for cache storage.
-  - The application can tolerate database-backed cache storage and has a clear retention policy.
-  - >-
-    Cache behavior should be reviewed through `Rails.cache` usage, keys, and the app's runtime hit / miss behavior.
+  - キャッシュの保存だけを目的に Redis を追加せず、Rails の構成でキャッシュを永続化したい場合。
+  - データベースをキャッシュの保存先にでき、保持期間の方針が明確な場合。
+  - Rails.cache の呼び出し、キー、実行時のヒット・ミスからキャッシュの挙動を確認したい場合。
   adoption_cautions:
-  - >-
-    Avoid moving cache traffic into the database until capacity, retention, and cleanup expectations are understood.
-  - >-
-    Be careful when existing production operations already depend on Redis metrics, eviction behavior, or cache-specific
-    tooling.
-  - >-
-    This catalog has not yet verified production cache pressure or rollback from Solid Cache to Redis / memory store.
+  - データベースの容量、保持期間、削除処理を把握するまでは、キャッシュのアクセスをデータベースに移さないでください。
+  - Redis の指標、メモリ不足時の削除動作、キャッシュ専用ツールに本番運用が依存する場合は注意が必要です。
+  - このカタログでは、本番のキャッシュ負荷や、Solid Cache から Redis・memory_store への切り戻しは未検証です。
   adoption_alternatives:
-  - >-
-    Redis remains a good fit when the deployment already operates Redis and depends on its eviction and observability
-    model.
-  - "`memory_store` can still be enough for small development-only checks where durability is not required."
+  - Redis を運用していて、そのメモリ管理や監視の仕組みに依存する場合は Redis も適しています。
+  - 永続性が不要な小規模の開発用確認では、memory_store で足りる場合があります。
   adoption_requirements:
-  - "`config/cache.yml` needs to describe the intended cache database and store behavior."
-  - Cache table size, expiration, and cleanup should be monitored before relying on Solid Cache in production.
-  - Cache keys and invalidation paths should be rechecked when moving from Redis or memory store.
+  - config/cache.yml に、想定するキャッシュ用データベースと保存方法を定義します。
+  - 本番利用前に、キャッシュ用テーブルの容量、有効期限、削除処理を監視できるようにします。
+  - Redis やメモリから移行する際は、キャッシュキーと無効化の経路を再確認します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: 保存データはキャッシュミスが起きたときだけ再生成されます。
 - slug: runtime-stack
   category: Interactive Demo
   demo_type: runtime_demo
@@ -293,6 +298,8 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: この画面では Rails 8 の標準構成が、このアプリでどう使われているかを確認できます。認証、Solid Queue、Solid Cable、Solid Cache、デプロイの比較ページもあわせて確認してください。
 - slug: active-job-continuations
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -310,6 +317,10 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: >-
+      Rails 8.1 では ActiveJob::Continuable で長いジョブをステップに分け、中断後に再開できます。Rails 7.0 では再開位置の管理を独自に実装することが多く、Rails 8.0 では永続キューはあっても継続処理の
+      API は未同梱でした。
 - slug: structured-event-reporting
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -327,6 +338,10 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: >-
+      Rails 8.1 では Rails.event で構造化イベントを発行・購読できます。Rails 7.0・8.0 では ActiveSupport::Notifications や独自のログ設計に分散しがちだった処理です。
+    detail_2: 監視・分析用のイベントデータを、アプリのコードから統一して送信しやすくなります。
 - slug: markdown-rendering
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -344,6 +359,9 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: 'Rails 8.1 のリリースノートでは、render markdown: を使う方法が紹介されています。それ以前は Markdown を返すために gem や独自のレンダラを追加することが多くありました。'
+    detail_2: このアプリではバージョンの比較例として紹介しています。Markdown を実際にレンダリングするデモではありません。
 - slug: local-ci
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -361,6 +379,8 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: Rails 7.0 ではクラウド CI、Rails 8.0 では生成したワークフローが中心でした。Rails 8.1 では config/ci.rb と bin/ci によるローカル実行の手順が加わります。
 - slug: credentials-fetching
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -378,6 +398,8 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: rails credentials:fetch で、暗号化した credentials をデプロイ用ツールから取得できます。Kamal のシークレットの取得経路を整理するための変更です。
 - slug: deprecated-associations
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -395,6 +417,8 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: Rails 8.1 では関連自体を非推奨と宣言できます。スキーマの移行や API の整理中に、どの関連がまだ参照されているかをアプリで検出しやすくなります。
 - slug: propshaft
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -409,9 +433,9 @@ features:
     '8.0': Propshaft が標準に
     8.1.4: Propshaft の標準採用を継続
   status_by_version:
-    '7.0': Sprockets is still the common comparison point
-    '8.0': Propshaft becomes the default asset story
-    8.1.4: Propshaft remains the baseline
+    '7.0': Sprockets が主要な比較対象
+    '8.0': アセットパイプラインの標準は Propshaft
+    8.1.4: Propshaft の標準採用を継続
   files_by_version:
     '7.0':
     - config/importmap.rb
@@ -427,14 +451,14 @@ features:
     - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-    - Trim Sprockets-specific assumptions before adopting Propshaft.
-    - Check how asset fingerprinting and importmap fit together.
+    - Propshaft を採用する前に、Sprockets 固有の前提を整理します。
+    - アセットのフィンガープリントと importmap の組み合わせを確認します。
     '8.0':
-    - Make sure the new default asset pipeline is wired into app boot and deploy.
-    - Review any Sprockets-specific helper or asset config before migrating.
+    - 標準のアセットパイプラインが、アプリの起動とデプロイに組み込まれているか確認します。
+    - 移行前に、Sprockets 固有のヘルパーや設定を確認します。
     8.1.4:
-    - Keep importmap and Propshaft aligned when updating assets.
-    - Re-check fingerprinted asset behavior after each release upgrade.
+    - アセットの更新時は、importmap と Propshaft の設定を揃えます。
+    - Rails の更新ごとに、フィンガープリント付きアセットの挙動を再確認します。
   code_examples_by_version:
     '7.0':
     - config/importmap.rb
@@ -444,16 +468,21 @@ features:
     - importmap + Propshaft
   operational_notes_by_version:
     '7.0':
-    - Audit any Sprockets assumptions in helpers and asset loading paths.
+    - ヘルパーやアセットの読み込み経路に、Sprockets 固有の前提がないか確認します。
     '8.0':
-    - Confirm asset precompilation and fingerprinted file handling still work.
+    - アセットの事前コンパイルと、フィンガープリント付きファイルの処理を確認します。
     8.1.4:
-    - Re-test asset delivery after deploy or cache invalidation changes.
+    - デプロイやキャッシュ無効化の変更後に、アセットの配信を再確認します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: Rails 8 の新規アプリでは Propshaft が標準のアセットパイプラインです。
+    detail_2: "• Sprockets 固有の複雑さを削減"
+    detail_3: "• フィンガープリントとダイジェストの前提は維持"
+    detail_4: "• importmap と Propshaft を組み合わせ"
 - slug: kamal
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -468,9 +497,9 @@ features:
     '8.0': Kamal を統合
     8.1.4: レジストリなしの Kamal デプロイ
   status_by_version:
-    '7.0': Custom deploy pipelines dominate
-    '8.0': Kamal becomes part of the default deploy story
-    8.1.4: Registry-free deploy is available
+    '7.0': 独自のデプロイ経路が中心
+    '8.0': Kamal が標準のデプロイ構成に追加
+    8.1.4: レジストリなしのデプロイが利用可能
   files_by_version:
     '7.0':
     - config/deploy.yml
@@ -486,14 +515,14 @@ features:
     - app/views/features/demos/_kamal.html.erb
   upgrade_notes_by_version:
     '7.0':
-    - Replace bespoke deploy pipelines with a repeatable app-centric deploy flow.
-    - Review secrets handling before moving to Kamal.
+    - 独自のデプロイ経路から、アプリを中心に再現できる手順への移行を検討します。
+    - Kamal へ移行する前に、シークレットの扱いを確認します。
     '8.0':
-    - Keep `config/deploy.yml` and `.kamal/secrets` in sync with the deploy target.
-    - Decide whether the new deploy story should own registry and proxy settings.
+    - config/deploy.yml と .kamal/secrets をデプロイ先に合わせます。
+    - コンテナレジストリとプロキシの設定を、新しいデプロイ経路で管理するか決めます。
     8.1.4:
-    - Check registry-free deploy and production defaults before rolling forward.
-    - Revisit secret and image host handling as part of the upgrade.
+    - 更新前に、レジストリなしのデプロイと本番の標準設定を確認します。
+    - 更新の一環として、シークレットとイメージの保存先を見直します。
   code_examples_by_version:
     '7.0':
     - bin/kamal deploy
@@ -503,44 +532,34 @@ features:
     - rails credentials:fetch
   operational_notes_by_version:
     '7.0':
-    - Keep deploy secrets and server inventory separately documented.
+    - デプロイ用シークレットとサーバー一覧を、分けて文書化します。
     '8.0':
-    - Verify the deploy image host, proxy, and secret settings together.
+    - イメージの保存先、プロキシ、シークレットの設定をまとめて確認します。
     8.1.4:
-    - Re-check registry-free deploy assumptions before production rollout.
+    - 本番配備前に、レジストリなしでデプロイするための前提を再確認します。
   adoption_when:
-  - >-
-    You want an app-centric deploy flow where container image, server inventory, proxy, and secrets are reviewed
-    from the Rails repository.
-  - The team is comfortable owning self-hosted deployment operations instead of relying entirely on a PaaS.
-  - >-
-    Deploy behavior should be inspected through `config/deploy.yml`, `.kamal/secrets`, Docker image settings, and
-    runtime commands.
+  - コンテナイメージ、サーバー一覧、プロキシ、シークレットを Rails のリポジトリから確認できるデプロイを求める場合。
+  - PaaS にすべてを任せず、チームでサーバーへのデプロイを運用できる場合。
+  - config/deploy.yml、.kamal/secrets、Docker イメージの設定、実行コマンドからデプロイの挙動を確認したい場合。
   adoption_cautions:
-  - >-
-    Avoid treating Kamal as only a generated config file; server access, registry auth, proxy settings, and rollback
-    behavior all need operational ownership.
-  - >-
-    Be careful when existing Capistrano, PaaS, or CI/CD deploy flows already encode environment-specific safety
-    checks.
-  - This catalog has not yet verified a production rollback or registry-free deploy flow end to end.
+  - 生成した設定ファイルだけで運用できるとは考えないでください。サーバー接続、レジストリの認証、プロキシ、切り戻しにも運用責任が必要です。
+  - 既存の Capistrano・PaaS・CI/CD に環境固有の安全確認がある場合は、移行時に注意が必要です。
+  - このカタログでは、本番の切り戻しやレジストリなしのデプロイを、一連の操作としては検証していません。
   adoption_alternatives:
-  - Capistrano remains a familiar option for SSH-based deployments without adopting Kamal's container workflow.
-  - PaaS platforms can still be preferable when the team wants less server and proxy ownership.
-  - Existing CI/CD pipelines may remain the safer path if they already cover secrets, approvals, and rollback.
+  - Kamal のコンテナ構成を採用せず SSH でデプロイしたい場合は、Capistrano も選択肢です。
+  - サーバーとプロキシの管理負担を減らしたい場合は、PaaS が適することもあります。
+  - 既存の CI/CD がシークレット、承認、切り戻しを網羅している場合は、それを維持する方が安全なこともあります。
   adoption_requirements:
-  - "`config/deploy.yml` needs real server, image, proxy, and environment settings before it is production-ready."
-  - >-
-    `.kamal/secrets` should read from ENV or a password manager instead of local files such as `config/master.key`
-    before treating the deploy path as public-safe.
-  - >-
-    Registry credentials, `RAILS_MASTER_KEY`, and rollback commands should be tested together before relying on
-    Kamal for production work.
+  - 本番利用前に、config/deploy.yml に実際のサーバー・イメージ・プロキシ・環境設定を指定します。
+  - 公開しても安全なデプロイ経路にするには、.kamal/secrets で config/master.key などのローカルファイルではなく、環境変数やパスワードマネージャを参照します。
+  - 本番で Kamal に依存する前に、レジストリの認証情報、RAILS_MASTER_KEY、切り戻しコマンドをまとめて検証します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: Rails 8.0 で標準構成に加わった Kamal は、Rails 8.1 ではレジストリなしのデプロイにも対応します。デプロイ方式を個別に設計することが多かった Rails 7.0 と比較できます。
 - slug: thruster
   category: Config / Platform Differences
   demo_type: comparison_card
@@ -558,3 +577,5 @@ features:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
     8.1.4: https://guides.rubyonrails.org/8_1_release_notes.html
+  demo_notes:
+    description: Rails 8 ではリバースプロキシや配信の高速化を含む本番構成を、アプリの生成直後から確認できます。

@@ -59,10 +59,10 @@ RSpec.describe FeatureCatalog, type: :model do
       expect(solid_cache.files_for("8.0")).to eq([ "config/cache.yml", "app/views/features/demos/_solid_cache.html.erb", "app/controllers/features_controller.rb" ])
       expect(solid_cache.code_examples_for("8.0")).to eq([ "cache do" ])
       expect(solid_cache.operational_notes_for("8.0")).to eq([ "キャッシュ用データベースと保持期間を、実際の負荷に合わせます。" ])
-      expect(solid_cache.adoption_when).to include("You want a Rails-native durable cache option without introducing Redis only for cache storage.")
-      expect(solid_cache.adoption_cautions).to include("Avoid moving cache traffic into the database until capacity, retention, and cleanup expectations are understood.")
-      expect(solid_cache.adoption_alternatives).to include("Redis remains a good fit when the deployment already operates Redis and depends on its eviction and observability model.")
-      expect(solid_cache.adoption_requirements).to include("Cache table size, expiration, and cleanup should be monitored before relying on Solid Cache in production.")
+      expect(solid_cache.adoption_when).to include("キャッシュの保存だけを目的に Redis を追加せず、Rails の構成でキャッシュを永続化したい場合。")
+      expect(solid_cache.adoption_cautions).to include("データベースの容量、保持期間、削除処理を把握するまでは、キャッシュのアクセスをデータベースに移さないでください。")
+      expect(solid_cache.adoption_alternatives).to include("Redis を運用していて、そのメモリ管理や監視の仕組みに依存する場合は Redis も適しています。")
+      expect(solid_cache.adoption_requirements).to include("本番利用前に、キャッシュ用テーブルの容量、有効期限、削除処理を監視できるようにします。")
       expect(solid_cache).to be_adoption_readiness_available
       expect(solid_cache).to be_live_demo_available
 
@@ -89,21 +89,21 @@ RSpec.describe FeatureCatalog, type: :model do
       propshaft = described_class.fetch!("propshaft")
       kamal = described_class.fetch!("kamal")
 
-      expect(propshaft.status_for("8.0")).to eq("Propshaft becomes the default asset story")
+      expect(propshaft.status_for("8.0")).to eq("アセットパイプラインの標準は Propshaft")
       expect(propshaft.files_for("8.0")).to eq([ "config/importmap.rb", "app/views/features/demos/_propshaft.html.erb", "app/controllers/features_controller.rb" ])
       expect(propshaft.code_examples_for("8.0")).to eq([ "Propshaft enabled" ])
-      expect(propshaft.operational_notes_for("8.0")).to eq([ "Confirm asset precompilation and fingerprinted file handling still work." ])
+      expect(propshaft.operational_notes_for("8.0")).to eq([ "アセットの事前コンパイルと、フィンガープリント付きファイルの処理を確認します。" ])
       expect(propshaft).to be_live_demo_available
 
-      expect(kamal.status_for("8.0")).to eq("Kamal becomes part of the default deploy story")
+      expect(kamal.status_for("8.0")).to eq("Kamal が標準のデプロイ構成に追加")
       expect(kamal.files_for("8.0")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
       expect(kamal.code_examples_for("8.0")).to eq([ "config/deploy.yml" ])
-      expect(kamal.operational_notes_for("8.0")).to eq([ "Verify the deploy image host, proxy, and secret settings together." ])
+      expect(kamal.operational_notes_for("8.0")).to eq([ "イメージの保存先、プロキシ、シークレットの設定をまとめて確認します。" ])
       expect(kamal.files_for("8.1.4")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
-      expect(kamal.adoption_when).to include("You want an app-centric deploy flow where container image, server inventory, proxy, and secrets are reviewed from the Rails repository.")
-      expect(kamal.adoption_cautions).to include("Avoid treating Kamal as only a generated config file; server access, registry auth, proxy settings, and rollback behavior all need operational ownership.")
-      expect(kamal.adoption_alternatives).to include("Capistrano remains a familiar option for SSH-based deployments without adopting Kamal's container workflow.")
-      expect(kamal.adoption_requirements).to include("`config/deploy.yml` needs real server, image, proxy, and environment settings before it is production-ready.")
+      expect(kamal.adoption_when).to include("コンテナイメージ、サーバー一覧、プロキシ、シークレットを Rails のリポジトリから確認できるデプロイを求める場合。")
+      expect(kamal.adoption_cautions).to include("生成した設定ファイルだけで運用できるとは考えないでください。サーバー接続、レジストリの認証、プロキシ、切り戻しにも運用責任が必要です。")
+      expect(kamal.adoption_alternatives).to include("Kamal のコンテナ構成を採用せず SSH でデプロイしたい場合は、Capistrano も選択肢です。")
+      expect(kamal.adoption_requirements).to include("本番利用前に、config/deploy.yml に実際のサーバー・イメージ・プロキシ・環境設定を指定します。")
       expect(kamal).to be_adoption_readiness_available
       expect(kamal).to be_live_demo_available
     end

@@ -1,0 +1,24 @@
+ja:
+  messages:
+    retry_later: しばらく待ってから再度お試しください。
+    invalid_credentials: メールアドレスまたはパスワードを確認してください。
+    account_ready: デモ用アカウントを作成しました。
+    reset_sent: 登録済みのメールアドレスであれば、パスワード再設定の案内を送信しました。
+    reset_done: パスワードを再設定しました。
+    passwords_mismatch: パスワードが一致しているか、入力内容を確認してください。
+    reset_invalid: 再設定リンクが無効か、有効期限が切れています。
+    queued: Solid Queue のデモ用ジョブをキューに登録しました。
+    broadcast: メッセージを配信しました。
+    refreshed: キャッシュを無効化し、データを再生成しました。
+    cleared: キャッシュを削除しました。
+  passwords_mailer:
+    reset:
+      subject: パスワードの再設定
+      instruction: 次のリンクから15分以内にパスワードを再設定してください。
+      link: パスワードを再設定する
+  seeds:
+    message: Solid Cable の配信デモです。2つのタブを開いて画面の更新を確認してください。
+    input: キューの処理結果を確認するサンプル
+  defaults:
+    queue_input: 選択した Rails バージョンのキューの標準構成を比較します
+    guest: ゲスト

@@ -27,7 +27,7 @@
       <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div class="min-w-0">
           <%= link_to "Rails Multi-Version Feature Catalog", root_path, class: "block text-lg font-semibold tracking-tight break-words text-slate-900" %>
-          <p class="text-sm break-words text-slate-500"><%= catalog_version_heading %> を UI で比較し、将来の 9.x 追加にも備えるカタログです。</p>
+          <p class="text-sm break-words text-slate-500"><%= t("pages.nav_help", versions: catalog_version_heading) %></p>
         </div>
 
         <nav class="flex flex-wrap items-center gap-3 text-sm">
@@ -44,7 +44,7 @@
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-6 py-8">
+    <main class="mx-auto max-w-7xl px-6 py-8 [overflow-wrap:anywhere]">
       <% if flash.any? %>
         <div class="mb-6 space-y-3">
           <% flash.each do |type, message| %>

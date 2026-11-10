@@ -10,9 +10,9 @@ module Rails8FeatureCatalog
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
-    # Accept jobs from the forthcoming Japanese release without changing this
-    # release's display language. Active Job restores the locale in its payload.
-    config.i18n.default_locale = :en
+    # Deploy the locale compatibility release to all workers before switching
+    # the default. Retain English for already-persisted job payloads.
+    config.i18n.default_locale = :ja
     config.i18n.available_locales = %i[en ja]
     config.i18n.fallbacks = [ :ja ]
 

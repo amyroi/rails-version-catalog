@@ -14,8 +14,8 @@ RSpec.describe "Persisted job locale compatibility", type: :job do
     ActiveJob::Base.queue_adapter = previous_adapter
   end
 
-  it "keeps English as the default while accepting Japanese job payloads" do
-    expect(I18n.default_locale).to eq(:en)
+  it "uses Japanese while accepting previously persisted English payloads" do
+    expect(I18n.default_locale).to eq(:ja)
     expect(I18n.available_locales).to include(:en, :ja)
   end
 
@@ -36,7 +36,7 @@ RSpec.describe "Persisted job locale compatibility", type: :job do
         expect(run.reload.status).to eq("completed")
         expect(run.output).to start_with("Processed at ")
         expect(streams.join).to include("working", "completed")
-        expect(I18n.locale).to eq(:en)
+        expect(I18n.locale).to eq(:ja)
       end
 
       it "renders a Cable broadcast serialized before the worker changed" do
@@ -68,7 +68,7 @@ RSpec.describe "Persisted job locale compatibility", type: :job do
 
         mail = ActionMailer::Base.deliveries.last
         expect(mail.to).to eq([ user.email_address ])
-        expect(mail.subject).to eq("Reset your password")
+        expect(mail.subject).to eq("パスワードの再設定")
         expect(mail.html_part.body.decoded).to include("/passwords/")
         expect(mail.text_part.body.decoded).to include("/passwords/")
       end

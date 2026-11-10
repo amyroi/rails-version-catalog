@@ -62,7 +62,7 @@ class CatalogFeature
   end
 
   def category_label
-    runtime_demo? ? "Interactive Demo" : "Config / Platform Differences"
+    I18n.t(runtime_demo? ? "pages.interactive" : "pages.platform")
   end
 
   def available_versions

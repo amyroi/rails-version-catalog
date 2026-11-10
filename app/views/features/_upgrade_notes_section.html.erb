@@ -9,7 +9,7 @@
     </p>
   </div>
 
-  <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))]">
+  <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))]">
     <% comparison_versions.each do |version| %>
       <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
         <h3 class="text-lg font-semibold text-slate-900"><%= version.label %></h3>

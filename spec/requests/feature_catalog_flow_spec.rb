@@ -30,9 +30,9 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(Capybara.string(response.body).find("title", visible: :all).text(:all)).to eq("Rails Version Catalog")
-      expect(response.body).to include("Rails 7.0 / Rails 8.0 / Rails 8.1.4 を UI で比較するカタログ")
-      expect(response.body).to include("Interactive demos")
-      expect(response.body).to include("Config / platform differences")
+      expect(response.body).to include("Rails 7.0 / Rails 8.0 / Rails 8.1.4 を比較して学ぶ")
+      expect(response.body).to include("操作デモ")
+      expect(response.body).to include("設定・標準構成の比較")
     end
 
     it "renders the feature detail page" do
@@ -126,7 +126,7 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
 
       expect(response).to redirect_to(new_password_path)
       follow_redirect!
-      expect(response.body).to include("Password reset link is invalid or has expired.")
+      expect(response.body).to include("再設定リンクが無効か、有効期限が切れています。")
     end
 
     it "renders comparison feature with a multi-version matrix" do

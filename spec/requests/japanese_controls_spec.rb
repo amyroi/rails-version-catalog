@@ -28,6 +28,19 @@ RSpec.describe "Japanese controls", type: :request do
     expect(response.body).to include("メールアドレスを入力してください")
   end
 
+  it "explains duplicate addresses and password failures in Japanese" do
+    User.create!(email_address: "duplicate@example.com", password: "valid-password")
+    [
+      [ { email_address: "duplicate@example.com", password: "valid-password", password_confirmation: "valid-password" }, "メールアドレスはすでに使用されています" ],
+      [ { email_address: "mismatch@example.com", password: "valid-password", password_confirmation: "different" }, "一致しません" ],
+      [ { email_address: "bytes@example.com", password: "あ" * 25, password_confirmation: "あ" * 25 }, "72バイト以内" ]
+    ].each do |attributes, message|
+      post users_path, params: { user: attributes }
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(response.body).to include(message)
+    end
+  end
+
   it "renders changed catalog demo prose and escapes embedded markup" do
     features = YAML.safe_load_file(FeatureCatalog::DATA_PATH).fetch("features")
     feature = features.find { |item| item.fetch("slug") == "local-ci" }

@@ -1,14 +1,14 @@
 <div class="grid gap-4 md:grid-cols-2">
-  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+  <article class="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-5">
     <p class="text-sm text-slate-500"><%= t("demos.facts") %></p>
     <ul class="mt-4 space-y-3 text-sm text-slate-700">
-      <li>Thruster Gem: <strong><%= @repo_facts[:thruster] ? "present" : "missing" %></strong></li>
+      <li><%= t("demos.thruster_gem") %> <strong><%= @repo_facts[:thruster] ? "present" : "missing" %></strong></li>
       <li><code>bin/thrust</code>: <strong><%= @repo_facts[:bin_thrust] ? "present" : "missing" %></strong></li>
       <li>Dockerfile: <strong><%= @repo_facts[:dockerfile] ? "present" : "missing" %></strong></li>
     </ul>
   </article>
 
-  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+  <article class="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-5">
     <p class="text-sm text-slate-500"><%= t("demos.why") %></p>
     <p class="mt-2 text-sm leading-7 text-slate-700"><%= feature.demo_notes.fetch("description") %></p>
   </article>

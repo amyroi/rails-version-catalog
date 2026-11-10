@@ -11,7 +11,7 @@ class QueueRunsController < ApplicationController
     )
     QueueRunJob.perform_later(queue_run.id)
 
-    redirect_to feature_path("solid-queue", compare: params[:compare]), notice: "Queued a Solid Queue demo job."
+    redirect_to feature_path("solid-queue", compare: params[:compare]), notice: I18n.t("messages.queued")
   rescue ActiveRecord::RecordInvalid => error
     redirect_to feature_path("solid-queue", compare: params[:compare]), alert: error.record.errors.full_messages.to_sentence
   end

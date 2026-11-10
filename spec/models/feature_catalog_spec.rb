@@ -35,18 +35,18 @@ RSpec.describe FeatureCatalog, type: :model do
 
       expect(feature.title).to eq("Solid Queue")
       expect(feature.demo_type).to eq(:runtime_demo)
-      expect(feature.highlight_for("8.1.4")).to eq("Continuations-ready durable queue")
-      expect(feature.status_for("8.0")).to eq("Production default durable queue")
+      expect(feature.highlight_for("8.1.4")).to eq("ジョブの継続処理と組み合わせ")
+      expect(feature.status_for("8.0")).to eq("本番環境の標準は永続キュー")
       expect(feature.files_for("8.0")).to eq([ "config/queue.yml", "db/queue_schema.rb", "bin/jobs" ])
       expect(feature.code_examples_for("8.0")).to eq([ "config.active_job.queue_adapter = :solid_queue" ])
-      expect(feature.operational_notes_for("8.0")).to eq([ "Keep `bin/jobs start` or an equivalent worker command running." ])
+      expect(feature.operational_notes_for("8.0")).to eq([ "bin/jobs start または同等のコマンドでワーカーを常時稼働させます。" ])
       expect(feature.source_for("8.1.4")).to eq("https://guides.rubyonrails.org/8_1_release_notes.html")
-      expect(feature.status_for("8.1.4")).to eq("Durable queue with continuations baseline")
+      expect(feature.status_for("8.1.4")).to eq("永続キューと継続処理の基盤を利用")
       expect(feature.files_for("8.1.4")).to eq([ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ])
-      expect(feature.adoption_when).to include("You want Rails-native durable Active Job processing without adding a Redis-backed job system first.")
-      expect(feature.adoption_cautions).to include("Avoid treating Solid Queue as a drop-in replacement until worker boot, queue schema, retries, and operational ownership are confirmed.")
-      expect(feature.adoption_alternatives).to include("Sidekiq remains a strong option when the app already depends on Redis-backed job operations.")
-      expect(feature.adoption_requirements).to include("`bin/jobs` or an equivalent worker command must be part of local and deploy process management.")
+      expect(feature.adoption_when).to include("Redis ベースのジョブ基盤を先に追加せず、Rails の Active Job でジョブを永続化したい場合。")
+      expect(feature.adoption_cautions).to include("ワーカーの起動、キューのスキーマ、再試行、運用責任を確認するまでは、そのまま置き換えられると考えないでください。")
+      expect(feature.adoption_alternatives).to include("Redis を使ったジョブ運用が定着している場合は、Sidekiq も有力な選択肢です。")
+      expect(feature.adoption_requirements).to include("bin/jobs または同等のワーカー起動コマンドを、開発・デプロイのプロセス管理に組み込みます。")
       expect(feature).to be_adoption_readiness_available
       expect(feature).to be_live_demo_available
     end
@@ -55,10 +55,10 @@ RSpec.describe FeatureCatalog, type: :model do
       solid_cache = described_class.fetch!("solid-cache")
       solid_cable = described_class.fetch!("solid-cable")
 
-      expect(solid_cache.status_for("8.0")).to eq("DB-backed cache enters the default stack")
+      expect(solid_cache.status_for("8.0")).to eq("データベースを使うキャッシュを標準構成に追加")
       expect(solid_cache.files_for("8.0")).to eq([ "config/cache.yml", "app/views/features/demos/_solid_cache.html.erb", "app/controllers/features_controller.rb" ])
       expect(solid_cache.code_examples_for("8.0")).to eq([ "cache do" ])
-      expect(solid_cache.operational_notes_for("8.0")).to eq([ "Confirm the cache database and retention settings match the workload." ])
+      expect(solid_cache.operational_notes_for("8.0")).to eq([ "キャッシュ用データベースと保持期間を、実際の負荷に合わせます。" ])
       expect(solid_cache.adoption_when).to include("You want a Rails-native durable cache option without introducing Redis only for cache storage.")
       expect(solid_cache.adoption_cautions).to include("Avoid moving cache traffic into the database until capacity, retention, and cleanup expectations are understood.")
       expect(solid_cache.adoption_alternatives).to include("Redis remains a good fit when the deployment already operates Redis and depends on its eviction and observability model.")
@@ -66,21 +66,21 @@ RSpec.describe FeatureCatalog, type: :model do
       expect(solid_cache).to be_adoption_readiness_available
       expect(solid_cache).to be_live_demo_available
 
-      expect(solid_cable.status_for("8.0")).to eq("DB-backed realtime enters the default stack")
+      expect(solid_cable.status_for("8.0")).to eq("データベースによる配信が標準構成に追加")
       expect(solid_cable.files_for("8.0")).to eq([ "config/cable.yml", "app/views/features/demos/_solid_cable.html.erb", "app/controllers/features_controller.rb" ])
       expect(solid_cable.code_examples_for("8.0")).to eq([ "adapter: solid_cable" ])
-      expect(solid_cable.operational_notes_for("8.0")).to eq([ "Keep the cable database migrated and reachable in development and production." ])
+      expect(solid_cable.operational_notes_for("8.0")).to eq([ "開発・本番の両方で、配信用データベースのスキーマと接続を維持します。" ])
       expect(solid_cable).to be_live_demo_available
     end
 
     it "loads authentication generator metadata from yaml" do
       feature = described_class.fetch!("authentication-generator")
 
-      expect(feature.highlight_for("8.0")).to eq("First-party authentication generator")
-      expect(feature.status_for("8.0")).to eq("First-party generator baseline")
+      expect(feature.highlight_for("8.0")).to eq("標準の認証ジェネレータを追加")
+      expect(feature.status_for("8.0")).to eq("標準ジェネレータを利用可能")
       expect(feature.files_for("8.0")).to eq([ "app/models/user.rb", "app/models/session.rb", "app/controllers/sessions_controller.rb", "app/controllers/passwords_controller.rb" ])
       expect(feature.code_examples_for("7.0")).to eq([ "bin/rails generate authentication" ])
-      expect(feature.operational_notes_for("8.0")).to eq([ "Confirm password reset mail delivery and signed session cookies." ])
+      expect(feature.operational_notes_for("8.0")).to eq([ "再設定メールの配送と、署名付きセッション Cookie を確認します。" ])
       expect(feature.files_for("8.1.4")).to eq([ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ])
       expect(feature).to be_live_demo_available
     end

@@ -47,8 +47,8 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       expect(response.body).to include("移行時の注意")
       expect(response.body).to include("Recent jobs")
       expect(response.body).to include("採用の判断")
-      expect(response.body).to include("You want Rails-native durable Active Job processing")
-      expect(response.body).to include("Sidekiq remains a strong option")
+      expect(response.body).to include("Redis ベースのジョブ基盤を先に追加せず")
+      expect(response.body).to include("Sidekiq も有力な選択肢")
     end
 
     it "renders the authentication generator detail page" do

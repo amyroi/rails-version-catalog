@@ -1,5 +1,5 @@
 class CatalogFeature
-  attr_reader :slug, :title, :category, :summary, :supported_versions, :notes_by_version,
+  attr_reader :demo_notes, :slug, :title, :category, :summary, :supported_versions, :notes_by_version,
               :highlights_by_version, :demo_type, :source_links_by_version, :status_by_version,
               :files_by_version, :upgrade_notes_by_version, :code_examples_by_version,
               :operational_notes_by_version, :adoption_when, :adoption_cautions,
@@ -15,6 +15,7 @@ class CatalogFeature
     highlights_by_version:,
     demo_type:,
     source_links_by_version:,
+    demo_notes: {},
     status_by_version: {},
     files_by_version: {},
     upgrade_notes_by_version: {},
@@ -26,6 +27,7 @@ class CatalogFeature
     adoption_requirements: [],
     live_demo_available: false
   )
+    @demo_notes = demo_notes
     @slug = slug
     @title = title
     @category = category
@@ -60,7 +62,7 @@ class CatalogFeature
   end
 
   def category_label
-    runtime_demo? ? "Interactive Demo" : "Config / Platform Differences"
+    I18n.t(runtime_demo? ? "common.runtime_demos" : "common.platform_differences")
   end
 
   def available_versions

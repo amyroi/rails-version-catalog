@@ -35,18 +35,18 @@ RSpec.describe FeatureCatalog, type: :model do
 
       expect(feature.title).to eq("Solid Queue")
       expect(feature.demo_type).to eq(:runtime_demo)
-      expect(feature.highlight_for("8.1.4")).to eq("Continuations-ready durable queue")
-      expect(feature.status_for("8.0")).to eq("Production default durable queue")
+      expect(feature.highlight_for("8.1.4")).to eq("継続処理と組み合わせられる永続キュー")
+      expect(feature.status_for("8.0")).to eq("本番環境で永続キューが標準に")
       expect(feature.files_for("8.0")).to eq([ "config/queue.yml", "db/queue_schema.rb", "bin/jobs" ])
       expect(feature.code_examples_for("8.0")).to eq([ "config.active_job.queue_adapter = :solid_queue" ])
-      expect(feature.operational_notes_for("8.0")).to eq([ "Keep `bin/jobs start` or an equivalent worker command running." ])
+      expect(feature.operational_notes_for("8.0")).to eq([ "`bin/jobs start` または同等のワーカー起動コマンドを実行し続けます。" ])
       expect(feature.source_for("8.1.4")).to eq("https://guides.rubyonrails.org/8_1_release_notes.html")
-      expect(feature.status_for("8.1.4")).to eq("Durable queue with continuations baseline")
+      expect(feature.status_for("8.1.4")).to eq("継続処理の土台となる永続キュー")
       expect(feature.files_for("8.1.4")).to eq([ "app/views/features/demos/_solid_queue.html.erb", "app/models/queue_run.rb", "app/jobs/queue_run_job.rb" ])
-      expect(feature.adoption_when).to include("You want Rails-native durable Active Job processing without adding a Redis-backed job system first.")
-      expect(feature.adoption_cautions).to include("Avoid treating Solid Queue as a drop-in replacement until worker boot, queue schema, retries, and operational ownership are confirmed.")
-      expect(feature.adoption_alternatives).to include("Sidekiq remains a strong option when the app already depends on Redis-backed job operations.")
-      expect(feature.adoption_requirements).to include("`bin/jobs` or an equivalent worker command must be part of local and deploy process management.")
+      expect(feature.adoption_when).to include("Redis を使うジョブシステムを先に追加せず、Rails 標準に沿った永続的な Active Job 処理を使いたい場合。")
+      expect(feature.adoption_cautions).to include("ワーカー起動・キューのスキーマ・リトライ・運用責任を確認するまでは、既存基盤をそのまま置き換えられると考えないでください。")
+      expect(feature.adoption_alternatives).to include("Redis を使ったジョブ運用にすでに依存している場合は、Sidekiq も有力な選択肢です。")
+      expect(feature.adoption_requirements).to include("`bin/jobs` または同等のワーカー起動コマンドを、ローカル・デプロイ両方のプロセス管理に含める必要があります。")
       expect(feature).to be_adoption_readiness_available
       expect(feature).to be_live_demo_available
     end
@@ -55,32 +55,32 @@ RSpec.describe FeatureCatalog, type: :model do
       solid_cache = described_class.fetch!("solid-cache")
       solid_cable = described_class.fetch!("solid-cable")
 
-      expect(solid_cache.status_for("8.0")).to eq("DB-backed cache enters the default stack")
+      expect(solid_cache.status_for("8.0")).to eq("データベースを使ったキャッシュが標準構成に")
       expect(solid_cache.files_for("8.0")).to eq([ "config/cache.yml", "app/views/features/demos/_solid_cache.html.erb", "app/controllers/features_controller.rb" ])
       expect(solid_cache.code_examples_for("8.0")).to eq([ "cache do" ])
-      expect(solid_cache.operational_notes_for("8.0")).to eq([ "Confirm the cache database and retention settings match the workload." ])
-      expect(solid_cache.adoption_when).to include("You want a Rails-native durable cache option without introducing Redis only for cache storage.")
-      expect(solid_cache.adoption_cautions).to include("Avoid moving cache traffic into the database until capacity, retention, and cleanup expectations are understood.")
-      expect(solid_cache.adoption_alternatives).to include("Redis remains a good fit when the deployment already operates Redis and depends on its eviction and observability model.")
-      expect(solid_cache.adoption_requirements).to include("Cache table size, expiration, and cleanup should be monitored before relying on Solid Cache in production.")
+      expect(solid_cache.operational_notes_for("8.0")).to eq([ "キャッシュ用データベースと保持設定が、負荷に合っているか確認します。" ])
+      expect(solid_cache.adoption_when).to include("キャッシュ保存のためだけに Redis を導入せず、Rails 標準に沿った永続キャッシュを使いたい場合。")
+      expect(solid_cache.adoption_cautions).to include("容量・保持期間・削除処理の見通しが立つまでは、キャッシュへのアクセスをデータベースに移さないでください。")
+      expect(solid_cache.adoption_alternatives).to include("すでに Redis を運用し、追い出し動作や監視の仕組みに依存している場合は、Redis も適しています。")
+      expect(solid_cache.adoption_requirements).to include("本番利用前に、キャッシュテーブルのサイズ・有効期限・削除処理を監視します。")
       expect(solid_cache).to be_adoption_readiness_available
       expect(solid_cache).to be_live_demo_available
 
-      expect(solid_cable.status_for("8.0")).to eq("DB-backed realtime enters the default stack")
+      expect(solid_cable.status_for("8.0")).to eq("データベースを使ったリアルタイム通信が標準構成に")
       expect(solid_cable.files_for("8.0")).to eq([ "config/cable.yml", "app/views/features/demos/_solid_cable.html.erb", "app/controllers/features_controller.rb" ])
       expect(solid_cable.code_examples_for("8.0")).to eq([ "adapter: solid_cable" ])
-      expect(solid_cable.operational_notes_for("8.0")).to eq([ "Keep the cable database migrated and reachable in development and production." ])
+      expect(solid_cable.operational_notes_for("8.0")).to eq([ "開発・本番環境で、通信用データベースのマイグレーション実施と接続性を維持します。" ])
       expect(solid_cable).to be_live_demo_available
     end
 
     it "loads authentication generator metadata from yaml" do
       feature = described_class.fetch!("authentication-generator")
 
-      expect(feature.highlight_for("8.0")).to eq("First-party authentication generator")
-      expect(feature.status_for("8.0")).to eq("First-party generator baseline")
+      expect(feature.highlight_for("8.0")).to eq("公式の認証ジェネレーターが登場")
+      expect(feature.status_for("8.0")).to eq("公式ジェネレーターによる認証の土台")
       expect(feature.files_for("8.0")).to eq([ "app/models/user.rb", "app/models/session.rb", "app/controllers/sessions_controller.rb", "app/controllers/passwords_controller.rb" ])
       expect(feature.code_examples_for("7.0")).to eq([ "bin/rails generate authentication" ])
-      expect(feature.operational_notes_for("8.0")).to eq([ "Confirm password reset mail delivery and signed session cookies." ])
+      expect(feature.operational_notes_for("8.0")).to eq([ "パスワード再設定メールの配送と署名付きセッション Cookie を確認します。" ])
       expect(feature.files_for("8.1.4")).to eq([ "app/models/current.rb", "app/models/session.rb", "app/views/auth_labs/show.html.erb", "app/views/passwords/edit.html.erb" ])
       expect(feature).to be_live_demo_available
     end
@@ -89,21 +89,21 @@ RSpec.describe FeatureCatalog, type: :model do
       propshaft = described_class.fetch!("propshaft")
       kamal = described_class.fetch!("kamal")
 
-      expect(propshaft.status_for("8.0")).to eq("Propshaft becomes the default asset story")
+      expect(propshaft.status_for("8.0")).to eq("Propshaft が標準のアセット構成に")
       expect(propshaft.files_for("8.0")).to eq([ "config/importmap.rb", "app/views/features/demos/_propshaft.html.erb", "app/controllers/features_controller.rb" ])
       expect(propshaft.code_examples_for("8.0")).to eq([ "Propshaft enabled" ])
-      expect(propshaft.operational_notes_for("8.0")).to eq([ "Confirm asset precompilation and fingerprinted file handling still work." ])
+      expect(propshaft.operational_notes_for("8.0")).to eq([ "アセットの事前コンパイルとフィンガープリント付きファイルの処理を確認します。" ])
       expect(propshaft).to be_live_demo_available
 
-      expect(kamal.status_for("8.0")).to eq("Kamal becomes part of the default deploy story")
+      expect(kamal.status_for("8.0")).to eq("Kamal が標準デプロイ構成の一部に")
       expect(kamal.files_for("8.0")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
       expect(kamal.code_examples_for("8.0")).to eq([ "config/deploy.yml" ])
-      expect(kamal.operational_notes_for("8.0")).to eq([ "Verify the deploy image host, proxy, and secret settings together." ])
+      expect(kamal.operational_notes_for("8.0")).to eq([ "デプロイするイメージの配信先・プロキシ・シークレットの設定をまとめて検証します。" ])
       expect(kamal.files_for("8.1.4")).to eq([ "config/deploy.yml", ".kamal/secrets", "app/views/features/demos/_kamal.html.erb" ])
-      expect(kamal.adoption_when).to include("You want an app-centric deploy flow where container image, server inventory, proxy, and secrets are reviewed from the Rails repository.")
-      expect(kamal.adoption_cautions).to include("Avoid treating Kamal as only a generated config file; server access, registry auth, proxy settings, and rollback behavior all need operational ownership.")
-      expect(kamal.adoption_alternatives).to include("Capistrano remains a familiar option for SSH-based deployments without adopting Kamal's container workflow.")
-      expect(kamal.adoption_requirements).to include("`config/deploy.yml` needs real server, image, proxy, and environment settings before it is production-ready.")
+      expect(kamal.adoption_when).to include("コンテナーイメージ・サーバー一覧・プロキシ・シークレットを Rails リポジトリで確認できる、アプリ中心のデプロイ手順を使いたい場合。")
+      expect(kamal.adoption_cautions).to include("Kamal を生成済み設定ファイルだけと捉えないでください。サーバーアクセス・レジストリ認証・プロキシ設定・切り戻しには運用責任が必要です。")
+      expect(kamal.adoption_alternatives).to include("Kamal のコンテナー構成を採用せず SSH でデプロイしたい場合は、Capistrano も馴染みのある選択肢です。")
+      expect(kamal.adoption_requirements).to include("本番利用前に、`config/deploy.yml` に実際のサーバー・イメージ・プロキシ・環境設定を記載する必要があります。")
       expect(kamal).to be_adoption_readiness_available
       expect(kamal).to be_live_demo_available
     end
@@ -326,5 +326,26 @@ RSpec.describe FeatureCatalog, type: :model do
         "8.1.4" => "https://example.com/8-1-4"
       }
     }
+  end
+end
+
+RSpec.describe "Catalog language policy" do
+  it "keeps all learning prose in Japanese while allowing official names and code" do
+    features = YAML.safe_load_file(FeatureCatalog::DATA_PATH, aliases: false).fetch("features")
+    fields = %w[summary notes_by_version highlights_by_version status_by_version upgrade_notes_by_version operational_notes_by_version adoption_when adoption_cautions adoption_alternatives adoption_requirements]
+    flatten = lambda do |value|
+      case value
+      when Hash then value.values.flat_map { |item| flatten.call(item) }
+      when Array then value.flat_map { |item| flatten.call(item) }
+      else [ value ]
+      end
+    end
+    features.each do |feature|
+      fields.each do |field|
+        flatten.call(feature.fetch(field, [])).each do |text|
+          expect(text).to match(/[\p{Hiragana}\p{Katakana}\p{Han}]/), "#{feature.fetch('slug')}: #{field}: #{text}"
+        end
+      end
+    end
   end
 end

@@ -53,6 +53,7 @@ class FeatureCatalog
             title: attributes.fetch("title"),
             category: attributes.fetch("category"),
             summary: attributes.fetch("summary"),
+            demo_notes: attributes.fetch("demo_notes", {}),
             supported_versions: VersionCatalog.default_compare_keys,
             notes_by_version: stringify_hash(attributes.fetch("notes_by_version")),
             highlights_by_version: stringify_hash(attributes.fetch("highlights_by_version")),
@@ -90,6 +91,11 @@ class FeatureCatalog
 
         demo_type = attributes.fetch("demo_type")
         raise ArgumentError, "invalid feature demo_type: #{demo_type}" unless ALLOWED_DEMO_TYPES.include?(demo_type)
+
+        notes = attributes.fetch("demo_notes", {})
+        unless notes.is_a?(Hash) && notes.values.all? { |text| text.is_a?(String) && text.present? }
+          raise ArgumentError, "demo_notes must map names to non-empty strings"
+        end
 
         validate_versioned_hashes!(attributes)
         validate_optional_arrays!(attributes)

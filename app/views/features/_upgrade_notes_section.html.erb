@@ -1,15 +1,15 @@
 <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
   <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
     <div>
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Upgrade notes</p>
-      <h2 class="mt-1 text-xl font-semibold text-slate-900">What to check before upgrading</h2>
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">移行時の注意</p>
+      <h2 class="mt-1 text-xl font-semibold text-slate-900">更新前に確認すること</h2>
     </div>
     <p class="max-w-2xl text-sm leading-6 text-slate-600">
-      This section keeps migration guidance separate from the comparison matrix so the upgrade path is easier to scan.
+      更新時に確認する項目を、バージョン別にまとめます。
     </p>
   </div>
 
-  <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))]">
+  <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr))]">
     <% comparison_versions.each do |version| %>
       <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm">
         <h3 class="text-lg font-semibold text-slate-900"><%= version.label %></h3>
@@ -21,7 +21,7 @@
             <% end %>
           </ul>
         <% else %>
-          <p class="mt-3 text-sm text-slate-500">No upgrade notes are configured yet.</p>
+          <p class="mt-3 text-sm text-slate-500">移行時の注意は未登録です。</p>
         <% end %>
 
         <% if feature.note_for(version.key).present? %>

@@ -26,10 +26,10 @@ class FeaturesController < ApplicationController
       case @feature.slug
       when "solid-queue"
         @queue_runs = QueueRun.recent.limit(8)
-        @queue_run = QueueRun.new(input: "Compare queue defaults across the selected Rails versions")
+        @queue_run = QueueRun.new(input: "選択した Rails バージョンのキューの標準構成を比較します")
       when "solid-cable"
         @demo_messages = DemoMessage.recent.limit(12)
-        @demo_message = DemoMessage.new(author: Current.session&.user&.email_address || "Guest")
+        @demo_message = DemoMessage.new(author: Current.session&.user&.email_address || "ゲスト")
       when "solid-cache"
         @cache_snapshot = CacheDemo::Snapshot.call
       when "runtime-stack"

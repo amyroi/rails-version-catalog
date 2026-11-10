@@ -1,50 +1,50 @@
 <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
   <div class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-    <h3 class="text-lg font-semibold">Authentication flow</h3>
-    <p class="mt-2 text-sm leading-6 text-slate-600">Rails 8 の generator が作る Current session, password reset, secure cookie をこの app でそのまま使っています。</p>
+    <h3 class="text-lg font-semibold">認証フロー</h3>
+    <p class="mt-2 text-sm leading-6 text-slate-600">このアプリでは Rails 8 の認証ジェネレータで作成した Current.session、パスワード再設定、署名付き Cookie を利用しています。</p>
 
     <div class="mt-5 grid gap-4 md:grid-cols-2">
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
-        <p class="text-sm text-slate-500">Current status</p>
+        <p class="text-sm text-slate-500">現在の状態</p>
         <% if @current_user %>
-          <p class="mt-2 text-lg font-semibold text-emerald-700">Signed in as <%= @current_user.email_address %></p>
-          <p class="mt-2 text-sm text-slate-600">Open the protected page to confirm the before_action based auth flow.</p>
-          <%= link_to "Open protected auth lab", auth_lab_path, class: "mt-4 inline-flex rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500" %>
+          <p class="mt-2 text-lg font-semibold text-emerald-700"><%= @current_user.email_address %> でログイン中</p>
+          <p class="mt-2 text-sm text-slate-600">保護ページを開き、認証が必要な画面へのアクセスを確認できます。</p>
+          <%= link_to "保護ページを開く", auth_lab_path, class: "mt-4 inline-flex rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500" %>
         <% else %>
-          <p class="mt-2 text-lg font-semibold text-amber-700">Not signed in</p>
-          <p class="mt-2 text-sm text-slate-600">Try the generated session form or create a demo user.</p>
+          <p class="mt-2 text-lg font-semibold text-amber-700">ログインしていません</p>
+          <p class="mt-2 text-sm text-slate-600">ログインフォームを使うか、デモ用アカウントを作成してください。</p>
           <div class="mt-4 flex flex-wrap gap-3">
-            <%= link_to "Sign in", new_session_path, class: "rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700" %>
-            <%= link_to "Create account", new_user_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
+            <%= link_to "ログイン", new_session_path, class: "rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700" %>
+            <%= link_to "アカウントを作成", new_user_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100" %>
           </div>
         <% end %>
       </div>
 
       <div class="rounded-2xl border border-slate-200 bg-white p-4">
-        <p class="text-sm text-slate-500">What changed in code</p>
+        <p class="text-sm text-slate-500">コードの変更点</p>
         <ul class="mt-3 space-y-2 text-sm text-slate-700">
-          <li>• `bin/rails generate authentication` を使用</li>
-          <li>• `Current.session` と signed cookie を利用</li>
-          <li>• `normalizes :email_address` を User model で利用</li>
-          <li>• `rate_limit` が SessionsController に生成済み</li>
+          <li>• bin/rails generate authentication を使用</li>
+          <li>• Current.session と署名付き Cookie を利用</li>
+          <li>• User モデルで normalizes :email_address を利用</li>
+          <li>• SessionsController に rate_limit を生成</li>
         </ul>
       </div>
     </div>
   </div>
 
   <aside class="rounded-2xl border border-slate-200 bg-white p-5">
-    <h3 class="text-lg font-semibold">Quick try</h3>
+    <h3 class="text-lg font-semibold">操作に必要な情報</h3>
     <dl class="mt-4 space-y-4 text-sm">
       <div>
-        <dt class="text-slate-500">Demo account</dt>
+        <dt class="text-slate-500">サンプルアカウント</dt>
         <dd class="mt-1 font-mono text-slate-900">demo@example.com / password123</dd>
       </div>
       <div>
-        <dt class="text-slate-500">Protected destination</dt>
+        <dt class="text-slate-500">保護ページのパス</dt>
         <dd class="mt-1 text-slate-700"><code>/auth_lab</code></dd>
       </div>
       <div>
-        <dt class="text-slate-500">Related files</dt>
+        <dt class="text-slate-500">関連ファイル</dt>
         <dd class="mt-1 text-slate-700">User, Session, Authentication concern, PasswordsMailer</dd>
       </div>
     </dl>

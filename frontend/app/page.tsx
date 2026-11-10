@@ -1,54 +1,14 @@
 import Link from "next/link";
-import { FeatureBadge } from "@/components/FeatureBadge";
+import { FeatureCard } from "@/components/FeatureCard";
 import { StatCard } from "@/components/StatCard";
 import { VersionChip } from "@/components/VersionChip";
 import { fetchFeatures, fetchVersions } from "@/lib/api";
-import type { CatalogFeatureSummary, CatalogVersion } from "@/lib/types";
+import type { CatalogVersion } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 function catalogVersionHeading(versions: CatalogVersion[]) {
   return versions.map((version) => version.label).join(" / ");
-}
-
-function featureHref(feature: CatalogFeatureSummary, versions: CatalogVersion[]) {
-  const compare = versions.map((version) => version.key).join(",");
-  return `/features/${feature.slug}?compare=${compare}`;
-}
-
-function FeaturePreviewCard({
-  feature,
-  versions,
-  actionLabel,
-}: {
-  feature: CatalogFeatureSummary;
-  versions: CatalogVersion[];
-  actionLabel: string;
-}) {
-  const supportedVersions = versions.filter((version) => feature.supportedVersions.includes(version.key));
-
-  return (
-    <article className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-      <div className="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
-        <div className="min-w-0">
-          <FeatureBadge demoType={feature.demoType} category={feature.category} />
-          <h3 className="mt-3 text-lg font-semibold text-slate-900">{feature.title}</h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{feature.summary}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {supportedVersions.map((version) => (
-              <VersionChip key={version.key} version={version} active={version.status === "latest"} />
-            ))}
-          </div>
-        </div>
-        <Link
-          href={featureHref(feature, versions)}
-          className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
-        >
-          {actionLabel}
-        </Link>
-      </div>
-    </article>
-  );
 }
 
 export default async function Home() {
@@ -123,7 +83,13 @@ export default async function Home() {
 
           <div className="space-y-4">
             {features.runtimeDemos.map((feature) => (
-              <FeaturePreviewCard key={feature.slug} feature={feature} versions={versions} actionLabel="Open" />
+              <FeatureCard
+                key={feature.slug}
+                feature={feature}
+                versions={versions}
+                actionLabel="Open"
+                variant="preview"
+              />
             ))}
           </div>
         </div>
@@ -139,7 +105,13 @@ export default async function Home() {
 
           <div className="space-y-4">
             {features.comparisonCards.map((feature) => (
-              <FeaturePreviewCard key={feature.slug} feature={feature} versions={versions} actionLabel="Compare" />
+              <FeatureCard
+                key={feature.slug}
+                feature={feature}
+                versions={versions}
+                actionLabel="Compare"
+                variant="preview"
+              />
             ))}
           </div>
         </div>

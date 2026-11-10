@@ -1,0 +1,8 @@
+---
+ja:
+  passwords_mailer:
+    reset:
+      body_html: "%{link}から、15分以内にパスワードを再設定できます。"
+      link: パスワード再設定ページ
+      text: 次のページから、15分以内にパスワードを再設定できます。
+      subject: パスワードの再設定

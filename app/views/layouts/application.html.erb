@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <title><%= content_for(:title) || "Rails Multi-Version Feature Catalog" %></title>
+    <title><%= content_for(:title) || t("common.site_name") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -26,25 +26,25 @@
     <header class="border-b border-slate-200 bg-white/95 backdrop-blur">
       <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
         <div class="min-w-0">
-          <%= link_to "Rails Multi-Version Feature Catalog", root_path, class: "block text-lg font-semibold tracking-tight break-words text-slate-900" %>
-          <p class="text-sm break-words text-slate-500"><%= catalog_version_heading %> を UI で比較し、将来の 9.x 追加にも備えるカタログです。</p>
+          <%= link_to t("common.site_name"), root_path, class: "block text-lg font-semibold tracking-tight break-words text-slate-900" %>
+          <p class="text-sm break-words text-slate-500"><%= t("layout.description", versions: catalog_version_heading) %></p>
         </div>
 
         <nav class="flex flex-wrap items-center gap-3 text-sm">
-          <%= link_to "Overview", root_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
-          <%= link_to "All Features", features_path(compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
+          <%= link_to t("common.overview"), root_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
+          <%= link_to t("features.index.title"), features_path(compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
           <% if Current.session %>
-            <%= link_to "Auth Lab", auth_lab_path, class: "rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 hover:bg-emerald-100" %>
-            <%= button_to "Sign out", session_path, method: :delete, class: "rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-rose-700 hover:bg-rose-100" %>
+            <%= link_to t("common.auth_lab"), auth_lab_path, class: "rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 hover:bg-emerald-100" %>
+            <%= button_to t("common.sign_out"), session_path, method: :delete, class: "rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-rose-700 hover:bg-rose-100" %>
           <% else %>
-            <%= link_to "Sign in", new_session_path, class: "rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100" %>
-            <%= link_to "Sign up", new_user_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
+            <%= link_to t("common.sign_in"), new_session_path, class: "rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100" %>
+            <%= link_to t("common.sign_up"), new_user_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
           <% end %>
         </nav>
       </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-6 py-8">
+    <main class="mx-auto max-w-7xl px-6 py-8 [overflow-wrap:anywhere]">
       <% if flash.any? %>
         <div class="mb-6 space-y-3">
           <% flash.each do |type, message| %>

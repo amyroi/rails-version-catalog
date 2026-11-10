@@ -1,4 +1,9 @@
 module ApplicationHelper
+  def catalog_note(feature, key)
+    parts = feature.demo_notes.fetch(key).split(/(`[^`]+`)/)
+    safe_join(parts.map { |part| part.start_with?("`") && part.end_with?("`") ? tag.code(part[1...-1]) : part })
+  end
+
   def compare_query_value(keys)
     Array(keys).join(",")
   end
@@ -32,6 +37,10 @@ module ApplicationHelper
     base = "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
     tone = feature.runtime_demo? ? "bg-blue-100 text-blue-700" : "bg-violet-100 text-violet-700"
     "#{base} #{tone}"
+  end
+
+  def queue_status_label(queue_run)
+    I18n.t(queue_run.status, scope: "queue_runs.statuses")
   end
 
   def queue_status_classes(queue_run)

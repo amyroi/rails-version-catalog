@@ -24,7 +24,7 @@ class CacheDemo::Refresh
         {
           generated_at: Time.current.iso8601,
           checksum: SecureRandom.hex(4),
-          explanation: "This payload is intentionally regenerated only on cache miss."
+          explanation: I18n.t("cache_demo.explanation")
         }
       end
   end

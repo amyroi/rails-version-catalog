@@ -1,12 +1,10 @@
 <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
   <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
     <div>
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Code / config diff</p>
-      <h2 class="mt-1 text-xl font-semibold text-slate-900">What changes in files and examples</h2>
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500"><%= t("features.code.title") %></p>
+      <h2 class="mt-1 text-xl font-semibold text-slate-900"><%= t("features.code.heading") %></h2>
     </div>
-    <p class="max-w-2xl text-sm leading-6 text-slate-600">
-      This section groups the version-specific files, snippets, and operational notes so the comparison stays separate from the live demo below.
-    </p>
+    <p class="max-w-2xl text-sm leading-6 text-slate-600"><%= t("features.code.description") %></p>
   </div>
 
   <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))]">
@@ -16,17 +14,17 @@
           <div>
             <h3 class="text-lg font-semibold text-slate-900"><%= version.label %></h3>
             <% if (status = feature.status_for(version.key)).present? %>
-              <p class="mt-1 text-sm text-slate-600">Status: <%= status %></p>
+              <p class="mt-1 text-sm text-slate-600"><%= t("features.status_value", status: status) %></p>
             <% end %>
           </div>
           <% if feature.highlight_for(version.key).present? %>
-            <span class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-slate-600">Focused</span>
+            <span class="rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-slate-600"><%= t("features.focus") %></span>
           <% end %>
         </div>
 
         <div class="mt-4 space-y-4 text-sm text-slate-700">
           <div>
-            <p class="font-semibold text-slate-900">Files / config involved</p>
+            <p class="font-semibold text-slate-900"><%= t("features.files") %></p>
             <% if feature.files_for(version.key).any? %>
               <ul class="mt-2 space-y-1">
                 <% feature.files_for(version.key).each do |file| %>
@@ -34,12 +32,12 @@
                 <% end %>
               </ul>
             <% else %>
-              <p class="mt-2 text-slate-500">No version-specific file list yet.</p>
+              <p class="mt-2 text-slate-500"><%= t("features.code.empty_files") %></p>
             <% end %>
           </div>
 
           <div>
-            <p class="font-semibold text-slate-900">Code examples</p>
+            <p class="font-semibold text-slate-900"><%= t("features.examples") %></p>
             <% if feature.code_examples_for(version.key).any? %>
               <ul class="mt-2 space-y-1">
                 <% feature.code_examples_for(version.key).each do |example| %>
@@ -47,13 +45,13 @@
                 <% end %>
               </ul>
             <% else %>
-              <p class="mt-2 text-slate-500">No code example is configured yet.</p>
+              <p class="mt-2 text-slate-500"><%= t("features.code.empty_examples") %></p>
             <% end %>
           </div>
 
           <% if feature.operational_notes_for(version.key).any? %>
             <div>
-              <p class="font-semibold text-slate-900">Operational notes</p>
+              <p class="font-semibold text-slate-900"><%= t("features.operational_notes") %></p>
               <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
                 <% feature.operational_notes_for(version.key).each do |note| %>
                   <li><%= note %></li>

@@ -1,0 +1,108 @@
+---
+ja:
+  auth_lab:
+    protected: ログインが必要なページ
+    heading: 保護ページにアクセスできました
+    description: このページを開くにはログインが必要です。
+    current_user: 現在のユーザー
+    current_session: 現在のセッション ID
+  features:
+    adoption:
+      title: 採用判断
+      heading: 採用前に検討すること
+      description: この機能を採用する際の判断材料を、バージョン別の移行・運用上の注意とは分けてまとめています。
+      when: 採用を検討する条件
+      cautions: 注意点
+      alternatives: 代替案
+      requirements: 実行環境の必要条件
+    code:
+      title: コード・設定の違い
+      heading: 関連ファイルとコード例の違い
+      description: バージョン別の関連ファイル・コード例・運用上の注意をまとめています。下の体験デモとは分けて比較してください。
+      empty_files: このバージョンの関連ファイルはまだ登録されていません。
+      empty_examples: コード例はまだ登録されていません。
+    status_value: '状態: %{status}'
+    focus: 注目点
+    files: 関連ファイル・設定
+    examples: コード例
+    operational_notes: 運用上の注意
+    comparison: バージョン比較
+    selected_versions: "%{count} バージョンを選択中"
+    latest: 比較対象の最新版
+    status: 状態
+    summary: 説明
+    changes: 主な変更点
+    upgrade_impact: 移行の影響
+    notes: 補足
+    latest_highlight: 最新の比較対象の注目点
+    demo_heading: '体験デモ（現在の実行環境: %{runtime}）'
+    upgrade:
+      title: 移行時の注意
+      heading: 移行前に確認すること
+      description: 移行の流れを把握しやすいように、比較表とは分けて移行時の確認事項をまとめています。
+      empty: 移行時の注意はまだ登録されていません。
+    index:
+      title: 機能一覧
+      heading: "%{versions} の差分をカテゴリ別に一覧表示"
+      description: バージョンを選んで、機能ごとの違いを確認できます。
+      compare: '比較するバージョン:'
+      runtime_description: 現在の %{runtime} 実行環境上で確認できる体験デモです。
+      open_feature: 機能の詳細を見る
+      platform_description: "%{versions} の設定・標準構成・運用差分を比較します。"
+      open_comparison: 比較の詳細を見る
+    highlight_value_html: <strong class="text-slate-900">%{label}:</strong> %{highlight}
+  common:
+    official_source: 公式資料（英語）↗
+    overview: 概要
+    show_all: すべて表示
+    sign_in: ログイン
+    create_account: アカウントを作成
+    try_it: 試してみる
+    demo_account: デモアカウント
+    related_files: 関連ファイル
+    jobs_count: ジョブの記録数
+    messages_count: メッセージの記録数
+    shown_count: "%{count} 件を表示"
+    runtime_demos: 体験デモ
+    entry_count: "%{count} 件"
+    platform_differences: 設定・基盤の違い
+    open: 詳細を見る
+    compare: 比較する
+    auth_lab: 認証の保護ページ
+    sign_out: ログアウト
+    sign_up: アカウント作成
+    save: 保存
+    present: あり
+    missing: なし
+    'yes': はい
+    'no': いいえ
+    site_name: Rails Multi-Version Feature Catalog
+    short_site_name: Rails Version Catalog
+    credential_html: "%{label}: <code>%{value}</code>"
+  home:
+    heading: "%{versions} を UI で比較するカタログ"
+    description: "%{versions} の標準構成を機能ごとに比較できます。"
+    features: 機能一覧を見る
+    authentication: 認証デモ
+    continuations: Active Job の継続処理
+    coverage: カタログの収録内容
+    config_differences: 設定の違い
+    versions: 比較対象バージョン
+    runtime_description: 現在の %{runtime} 実行環境上で、実際に操作して挙動を確認できるデモです。
+    platform_description: "%{versions} の設定・標準構成・運用差分を比較するカードです。"
+  layout:
+    description: "%{versions} の機能と設定を比較できます。"
+  passwords:
+    edit:
+      title: パスワードの更新
+    new:
+      title: パスワードの再設定
+      submit: 再設定メールを送信
+  sessions:
+    description: Rails 8 の認証ジェネレーターによるログイン、または登録済みのデモアカウントを試せます。
+    forgot_password: パスワードを忘れた場合
+    demo_account_html: "%{label}: <code>%{email}</code> / <code>%{password}</code>"
+  users:
+    new:
+      title: デモアカウントの作成
+      description: メールアドレスとパスワードを入力して、デモアカウントを作成してください。

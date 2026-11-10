@@ -1,0 +1,10 @@
+---
+ja:
+  jobs:
+    queue_run:
+      completed: "%{time} に %{adapter} で処理しました。"
+      failed: '処理に失敗しました（%{error_class}: %{message}）'
+  seeds:
+    message: Solid Cable のデモです。2つのタブを開いてリアルタイム更新を比較してください。
+    job_input: 初期データのキューデモ
+    job_output: 初めてジョブを投入する前に画面を確認できるよう、初期データで作成した記録です。

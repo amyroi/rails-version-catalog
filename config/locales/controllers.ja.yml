@@ -1,0 +1,20 @@
+---
+ja:
+  controllers:
+    sessions:
+      rate_limited: しばらく待ってから、もう一度お試しください。
+      invalid_credentials: "%{email}または%{password}を確認してください。"
+    users:
+      created: デモアカウントを作成しました。
+    passwords:
+      instructions_sent: 該当するアカウントが存在する場合、パスワード再設定の案内を送信しました。
+      updated: パスワードを再設定しました。
+      update_failed: パスワードを更新できませんでした。入力内容を確認してください。
+      invalid_token: パスワード再設定リンクが無効か、有効期限が切れています。
+    queue_runs:
+      created: Solid Queue のデモジョブを投入しました。
+    demo_messages:
+      created: メッセージを配信しました。
+    cache_demos:
+      refreshed: キャッシュミスを発生させ、保存データを再生成しました。
+      cleared: キャッシュを削除しました。

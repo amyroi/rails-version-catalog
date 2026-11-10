@@ -3,11 +3,11 @@ demo_user.password = "password123"
 demo_user.password_confirmation = "password123"
 demo_user.save!
 
-DemoMessage.find_or_create_by!(author: "System", body: "Solid Cable demo ready. Open two tabs to compare live updates.")
+DemoMessage.find_or_create_by!(author: "System", body: I18n.t("seeds.message"))
 
-QueueRun.find_or_create_by!(input: "Seeded queue demo example") do |run|
+QueueRun.find_or_create_by!(input: I18n.t("seeds.job_input")) do |run|
   run.status = :completed
-  run.output = "Seed data created this record to show the queue UI before your first enqueue."
+  run.output = I18n.t("seeds.job_output")
   run.started_at = Time.current
   run.finished_at = Time.current
 end

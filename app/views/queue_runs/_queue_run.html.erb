@@ -1,12 +1,12 @@
 <article id="<%= dom_id(queue_run) %>" class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
   <div class="flex items-start justify-between gap-4">
     <div>
-      <p class="text-sm text-slate-500"><%= queue_run.created_at.strftime("%Y-%m-%d %H:%M:%S") %></p>
+      <p class="text-sm text-slate-500"><%= l(queue_run.created_at, format: :catalog) %></p>
       <p class="mt-2 text-sm font-medium text-slate-900"><%= queue_run.input %></p>
       <% if queue_run.output.present? %>
         <p class="mt-2 text-sm text-slate-600"><%= queue_run.output %></p>
       <% end %>
     </div>
-    <span class="<%= queue_status_classes(queue_run) %>"><%= queue_run.status %></span>
+    <span class="<%= queue_status_classes(queue_run) %>"><%= queue_status_label(queue_run) %></span>
   </div>
 </article>

@@ -27,33 +27,33 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       expect(response).to have_http_status(:ok)
       expect(Capybara.string(response.body).find("title", visible: :all).text(:all)).to eq("Rails Version Catalog")
       expect(response.body).to include("Rails 7.0 / Rails 8.0 / Rails 8.1.4 を UI で比較するカタログ")
-      expect(response.body).to include("Interactive demos")
-      expect(response.body).to include("Config / platform differences")
+      expect(response.body).to include("体験デモ")
+      expect(response.body).to include("設定・基盤の違い")
     end
 
     it "renders the feature detail page" do
       get feature_path("solid-queue")
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Queue with Solid Queue")
-      expect(response.body).to include("Overview")
-      expect(response.body).to include("Version comparison matrix")
-      expect(response.body).to include("Code / config diff")
-      expect(response.body).to include("Live demo (current runtime: Rails 8.1.4)")
-      expect(response.body).to include("Upgrade notes")
-      expect(response.body).to include("Recent jobs")
-      expect(response.body).to include("Adoption readiness")
-      expect(response.body).to include("You want Rails-native durable Active Job processing")
-      expect(response.body).to include("Sidekiq remains a strong option")
+      expect(response.body).to include("Solid Queue に投入")
+      expect(response.body).to include("概要")
+      expect(response.body).to include("バージョン比較")
+      expect(response.body).to include("コード・設定の違い")
+      expect(response.body).to include("体験デモ（現在の実行環境: Rails 8.1.4）")
+      expect(response.body).to include("移行時の注意")
+      expect(response.body).to include("最近のジョブ")
+      expect(response.body).to include("採用判断")
+      expect(response.body).to include("Rails 標準に沿った永続的な Active Job 処理")
+      expect(response.body).to include("Sidekiq も有力な選択肢")
     end
 
     it "renders the authentication generator detail page" do
       get feature_path("authentication-generator")
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Authentication flow")
-      expect(response.body).to include("Quick try")
-      expect(response.body).to include("Current status")
+      expect(response.body).to include("認証の流れ")
+      expect(response.body).to include("試してみる")
+      expect(response.body).to include("現在の状態")
     end
 
     it "redirects auth lab when unauthenticated" do
@@ -90,7 +90,7 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
 
     it "preserves compare query on demo message redirect" do
       expect do
-        post demo_messages_path, params: { compare: "7.0", demo_message: { author: "Guest", body: "Hello" } }
+        post demo_messages_path, params: { compare: "7.0", demo_message: { author: "ゲスト", body: "Hello" } }
       end.to change(DemoMessage, :count).by(1)
 
       expect(response).to redirect_to(feature_path("solid-cable", compare: "7.0"))
@@ -114,7 +114,7 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       }
 
       expect(response).to have_http_status(:unprocessable_content)
-      expect(response.body).to include("Email address can&#39;t be blank")
+      expect(response.body).to include("メールアドレスを入力してください")
     end
 
     it "redirects invalid password reset token to the request form" do
@@ -122,19 +122,19 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
 
       expect(response).to redirect_to(new_password_path)
       follow_redirect!
-      expect(response.body).to include("Password reset link is invalid or has expired.")
+      expect(response.body).to include("パスワード再設定リンクが無効か、有効期限が切れています。")
     end
 
     it "renders comparison feature with a multi-version matrix" do
       get feature_path("active-job-continuations"), params: { compare: "7.0,8.0,8.1.4" }
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Version comparison matrix")
-      expect(response.body).to include("Summary")
-      expect(response.body).to include("Key changes")
-      expect(response.body).to include("Code / config diff")
-      expect(response.body).to include("Live demo (current runtime: Rails 8.1.4)")
-      expect(response.body).to include("Upgrade notes")
+      expect(response.body).to include("バージョン比較")
+      expect(response.body).to include("説明")
+      expect(response.body).to include("主な変更点")
+      expect(response.body).to include("コード・設定の違い")
+      expect(response.body).to include("体験デモ（現在の実行環境: Rails 8.1.4）")
+      expect(response.body).to include("移行時の注意")
       expect(response.body).to include("Rails 8.1.4")
       expect(response.body).to include("ActiveJob::Continuable")
     end
@@ -146,19 +146,30 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       expect(response.body).to include('action="/cache_demo/refresh?compare=7.0"')
       expect(response.body).to include('action="/cache_demo?compare=7.0"')
       expect(response.body).to include('href="/features/solid-cache?compare=7.0"')
-      expect(response.body).to include("Adoption readiness")
-      expect(response.body).to include("You want a Rails-native durable cache option")
-      expect(response.body).to include("Redis remains a good fit")
+      expect(response.body).to include("採用判断")
+      expect(response.body).to include("Rails 標準に沿った永続キャッシュ")
+      expect(response.body).to include("Redis も適しています")
     end
 
     it "renders adoption readiness for kamal detail" do
       get feature_path("kamal")
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Adoption readiness")
-      expect(response.body).to include("You want an app-centric deploy flow")
-      expect(response.body).to include("Capistrano remains a familiar option")
-      expect(response.body).to include("instead of local files such as")
+      expect(response.body).to include("採用判断")
+      expect(response.body).to include("アプリ中心のデプロイ手順")
+      expect(response.body).to include("Capistrano も馴染みのある選択肢")
+      expect(response.body).to include("ローカルファイルではなく")
+    end
+
+    it "renders demo explanations from catalog data, escaping prose and inline code" do
+      with_raw_features([ valid_feature_hash.merge("demo_notes" => { "description" => "Catalog <b>note</b>: `<unsafe>`" }) ]) do
+        get feature_path("solid-queue")
+      end
+
+      page = Capybara.string(response.body)
+      expect(page).to have_css("p", text: "Catalog <b>note</b>: <unsafe>")
+      expect(page).to have_css("p code", text: "<unsafe>")
+      expect(page).not_to have_css("p b", text: "note")
     end
 
     it "renders adoption readiness when metadata is configured" do
@@ -174,11 +185,11 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       end
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Adoption readiness")
-      expect(response.body).to include("When to consider")
-      expect(response.body).to include("Cautions")
-      expect(response.body).to include("Alternatives")
-      expect(response.body).to include("Runtime requirements")
+      expect(response.body).to include("採用判断")
+      expect(response.body).to include("採用を検討する条件")
+      expect(response.body).to include("注意点")
+      expect(response.body).to include("代替案")
+      expect(response.body).to include("実行環境の必要条件")
       expect(response.body).to include("When durable jobs should be kept in the Rails app boundary.")
     end
 
@@ -188,7 +199,7 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       end
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).not_to include("Adoption readiness")
+      expect(response.body).not_to include("採用判断")
     end
   end
 
@@ -198,11 +209,12 @@ RSpec.describe "FeatureCatalogFlow", type: :request do
       "category" => "Interactive Demo",
       "demo_type" => "runtime_demo",
       "title" => "Solid Queue",
+      "demo_notes" => { "description" => "Queue demo instructions" },
       "summary" => "A feature used to exercise adoption readiness rendering.",
       "notes_by_version" => {
         "7.0" => "Rails 7 note",
         "8.0" => "Rails 8 note",
-        "8.1.4" => "Rails 8.1 note"
+        "8.1.4" => "Rails 8.1 の補足"
       },
       "highlights_by_version" => {
         "7.0" => "Rails 7 highlight",

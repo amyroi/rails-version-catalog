@@ -15,3 +15,15 @@ RSpec.describe ApplicationHelper do
     end
   end
 end
+
+RSpec.describe ApplicationHelper, type: :helper do
+  describe "queue status labels" do
+    { queued: "待機中", working: "処理中", completed: "完了", failed: "失敗" }.each do |status, label|
+      it "labels #{status} in Japanese without changing the stored status" do
+        queue_run = QueueRun.new(status: status)
+        expect(helper.queue_status_label(queue_run)).to eq(label)
+        expect(queue_run.status).to eq(status.to_s)
+      end
+    end
+  end
+end

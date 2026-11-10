@@ -13,7 +13,7 @@ class DemoMessagesController < ApplicationController
         locals: { demo_message: @demo_message }
       )
 
-      redirect_to feature_path("solid-cable", compare: params[:compare]), notice: "Message broadcast."
+      redirect_to feature_path("solid-cable", compare: params[:compare]), notice: I18n.t("controllers.demo_messages.created")
     else
       redirect_to feature_path("solid-cable", compare: params[:compare]), alert: @demo_message.errors.full_messages.to_sentence
     end

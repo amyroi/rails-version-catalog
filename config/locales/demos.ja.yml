@@ -1,0 +1,91 @@
+---
+ja:
+  demos:
+    why: この機能の意義
+    concept: 実装イメージ
+    auth:
+      heading: 認証の流れ
+      status: 現在の状態
+      signed_in: 'ログイン中: %{email}'
+      protected_description: 保護ページを開いて、before_action による認証の流れを確認してください。
+      open_protected: 認証の保護ページを開く
+      signed_out: 未ログイン
+      sign_in_description: ログインフォームを試すか、デモ用ユーザーを作成してください。
+      code_changes: コードの変更点
+      destination: ログイン後の保護ページ
+    related_facts: 関連ファイルの有無
+    facts:
+      kamal_config_html: 'Kamal 設定: <strong>%{state}</strong>'
+      kamal_secrets_html: 'Kamal シークレットファイル: <strong>%{state}</strong>'
+      dockerfile_html: 'Dockerfile: <strong>%{state}</strong>'
+      github_actions_html: 'GitHub Actions CI: <strong>%{state}</strong>'
+      kamal_deploy_html: 'Kamal デプロイ設定: <strong>%{state}</strong>'
+      kamal_gem_html: 'Kamal の gem: <strong>%{state}</strong>'
+      deploy_file_html: "<code>config/deploy.yml</code>: <strong>%{state}</strong>"
+      secrets_file_html: "<code>.kamal/secrets</code>: <strong>%{state}</strong>"
+      deploy_file_plain_html: 'config/deploy.yml: <strong>%{state}</strong>'
+      secrets_file_plain_html: ".kamal/secrets: <strong>%{state}</strong>"
+      workflow_html: 'GitHub Actions ワークフロー: <strong>%{state}</strong>'
+      ci_file_html: "<code>config/ci.rb</code>: <strong>%{state}</strong>"
+      ci_command_html: "<code>bin/ci</code>: <strong>%{state}</strong>"
+      thruster_gem_html: 'Thruster の gem: <strong>%{state}</strong>'
+      thrust_file_html: "<code>bin/thrust</code>: <strong>%{state}</strong>"
+    credentials:
+      heading: Rails 8.1 での意義
+    associations:
+      heading: 移行の支援
+    example: 実装例
+    docker:
+      heading: Rails 8 が生成するファイル
+      comparison: 7.0 → 8.0 の変化の意味
+    app_facts: 現在のアプリの構成
+    kamal:
+      rails8_heading: Rails 8 での意義
+    repo_facts: 現在のリポジトリの構成
+    takeaway: 比較の要点
+    markdown:
+      heading: Rails 8.1 の補足
+      example: Markdown の例
+      future: この画面では Markdown の記述例を確認できます。
+    gem_presence: gem の有無
+    propshaft:
+      comparison: 比較するポイント
+      present: Propshaft あり
+      missing: Propshaft なし
+    stack:
+      job_adapter: Active Job アダプター
+      cache_store: キャッシュストア
+      cable_adapter: Action Cable アダプター
+      authentication: 認証の共通処理を組み込み済み
+      description: この画面は「Rails 8 の標準構成が1つのアプリにどう組み込まれるか」を俯瞰するための入口です。認証・キュー・リアルタイム通信・キャッシュ・デプロイのカードを横断して比較してください。
+    cable:
+      heading: メッセージを配信する
+      description: 別タブを開いたまま投稿すると、Turbo Stream 経由でメッセージ一覧が同期されます。
+      submit: Solid Cable で配信
+      timeline: リアルタイムの投稿一覧
+      database: データベースを使った通信デモ
+      guest: ゲスト
+    cache:
+      heading: 現在のキャッシュの状態
+      hit: キャッシュヒット
+      miss: キャッシュミス
+      store: 保存先
+      key: キー
+      generated_at: 生成日時
+      checksum: チェックサム
+      instructions: "「%{refresh}」はキャッシュミスを発生させて保存データを再生成します。「%{clear}」はキーを削除します。"
+      refresh: 強制更新
+      clear: キャッシュを削除
+      reload: ページを再読み込み
+      explanation: 保存データの説明
+    queue:
+      heading: 永続キューにジョブを投入する
+      submit: Solid Queue に投入
+      instructions: 確認するポイント
+      enqueue: "• ボタンを押してジョブを投入"
+      working_html: "• 行が表示され、状態が変わります: <code>queued</code> / <code>working</code>"
+      completed_html: "• 処理が完了します: <code>completed</code> 結果も永続化されます"
+      recent: 最近のジョブ
+      default_input: 選択した Rails バージョンのキューの標準構成を比較します
+    events:
+      heading: 変更点

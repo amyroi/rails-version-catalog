@@ -1,15 +1,15 @@
 <div class="grid gap-4 md:grid-cols-2">
-  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-    <p class="text-sm text-slate-500">Current app facts</p>
+  <article class="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500"><%= t("demos.app_facts") %></p>
     <ul class="mt-4 space-y-3 text-sm text-slate-700">
-      <li>Thruster Gem: <strong><%= @repo_facts[:thruster] ? "present" : "missing" %></strong></li>
-      <li><code>bin/thrust</code>: <strong><%= @repo_facts[:bin_thrust] ? "present" : "missing" %></strong></li>
-      <li>Dockerfile: <strong><%= @repo_facts[:dockerfile] ? "present" : "missing" %></strong></li>
+      <li><%= t("demos.facts.thruster_gem_html", state: @repo_facts[:thruster] ? t("common.present") : t("common.missing")) %></li>
+      <li><%= t("demos.facts.thrust_file_html", state: @repo_facts[:bin_thrust] ? t("common.present") : t("common.missing")) %></li>
+      <li><%= t("demos.facts.dockerfile_html", state: @repo_facts[:dockerfile] ? t("common.present") : t("common.missing")) %></li>
     </ul>
   </article>
 
-  <article class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-    <p class="text-sm text-slate-500">Why it matters</p>
-    <p class="mt-2 text-sm leading-7 text-slate-700">Rails 8 の production story では、 reverse proxy / acceleration の前提が app 生成直後から見えるようになっています。</p>
+  <article class="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 p-5">
+    <p class="text-sm text-slate-500"><%= t("demos.why") %></p>
+    <p class="mt-2 text-sm leading-7 text-slate-700"><%= catalog_note(feature, "description") %></p>
   </article>
 </div>

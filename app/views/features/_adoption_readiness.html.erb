@@ -2,20 +2,20 @@
   <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
       <div>
-        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">Adoption readiness</p>
-        <h2 class="mt-1 text-xl font-semibold text-slate-900">What to consider before adopting</h2>
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500"><%= t("ui.adoption") %></p>
+        <h2 class="mt-1 text-xl font-semibold text-slate-900"><%= t("ui.consider") %></h2>
       </div>
       <p class="max-w-2xl text-sm leading-6 text-slate-600">
-        This section keeps feature-level adoption judgment separate from version-specific upgrade and operational notes.
+        <%= t("ui.adoption_help") %>
       </p>
     </div>
 
     <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(14rem,1fr))]">
       <% [
-        [ "When to consider", feature.adoption_when ],
-        [ "Cautions", feature.adoption_cautions ],
-        [ "Alternatives", feature.adoption_alternatives ],
-        [ "Runtime requirements", feature.adoption_requirements ]
+        [ t("ui.when"), feature.adoption_when ],
+        [ t("ui.cautions"), feature.adoption_cautions ],
+        [ t("ui.alternatives"), feature.adoption_alternatives ],
+        [ t("ui.requirements"), feature.adoption_requirements ]
       ].each do |heading, items| %>
         <% next if items.blank? %>
 

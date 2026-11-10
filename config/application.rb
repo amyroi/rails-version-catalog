@@ -14,6 +14,7 @@ module Rails8FeatureCatalog
     # release's display language. Active Job restores the locale in its payload.
     config.i18n.default_locale = :en
     config.i18n.available_locales = %i[en ja]
+    config.i18n.fallbacks = [ :ja ]
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

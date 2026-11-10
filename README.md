@@ -3,6 +3,10 @@
 Rails version 差分と default stack changes を、実際の Rails app 上で確認できる**比較カタログ**です。  
 現在の比較対象は **Rails 7.0 / Rails 8.0 / Rails 8.1.4** です。
 
+日本語で Rails のバージョン差を学習するためのサイトです。製品名・API 名は公式表記を維持し、
+ジョブの状態値・実行結果は英語のまま表示します。
+文言を変更する前に [共有言語ポリシー](docs/content-language-policy.md) を確認してください。
+
 ## 目的 ✨
 
 - 単一の before / after ではなく、**複数 version を横並びで比較**する

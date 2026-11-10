@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
     <title><%= content_for(:title) || "Rails Multi-Version Feature Catalog" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -31,14 +31,14 @@
         </div>
 
         <nav class="flex flex-wrap items-center gap-3 text-sm">
-          <%= link_to "Overview", root_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
-          <%= link_to "All Features", features_path(compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
+          <%= link_to t("ui.overview"), root_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
+          <%= link_to t("ui.all_features"), features_path(compare: compare_query_value(VersionCatalog.default_compare_keys)), class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
           <% if Current.session %>
-            <%= link_to "Auth Lab", auth_lab_path, class: "rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 hover:bg-emerald-100" %>
-            <%= button_to "Sign out", session_path, method: :delete, class: "rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-rose-700 hover:bg-rose-100" %>
+            <%= link_to t("ui.auth_lab"), auth_lab_path, class: "rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-emerald-700 hover:bg-emerald-100" %>
+            <%= button_to t("ui.signout"), session_path, method: :delete, class: "rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-rose-700 hover:bg-rose-100" %>
           <% else %>
-            <%= link_to "Sign in", new_session_path, class: "rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100" %>
-            <%= link_to "Sign up", new_user_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
+            <%= link_to t("ui.signin"), new_session_path, class: "rounded-full border border-sky-200 bg-sky-50 px-4 py-2 text-sky-700 hover:bg-sky-100" %>
+            <%= link_to t("ui.signup"), new_user_path, class: "rounded-full border border-slate-200 bg-white px-4 py-2 text-slate-700 hover:bg-slate-100" %>
           <% end %>
         </nav>
       </div>

@@ -3,21 +3,20 @@ features:
 - slug: authentication-generator
   category: Interactive Demo
   demo_type: runtime_demo
-  title: Authentication generator
-  summary: Rails の標準認証 story がどう変わったかを、サインアップ・ログイン・保護ページで確認できます。
+  title: 認証ジェネレータ
+  summary: Rails の標準認証機能の変化を、アカウント登録・ログイン・保護ページで確認できます。
   notes_by_version:
-    '7.0': 標準認証 generator は未同梱で、Devise などの外部ライブラリか手作業実装に寄りがちでした。
-    '8.0': generate authentication で Users / Sessions / Password reset の土台をすぐに作れるようになりました。
-    8.1.4: 認証 generator は Rails 8 系の標準導線として定着し、Current session・rate limit・password
-      reset と一緒に学びやすくなっています.
+    '7.0': 標準の認証ジェネレータはなく、Devise などのライブラリや独自実装が必要でした。
+    '8.0': 認証ジェネレータで、ユーザー・セッション・パスワード再設定の土台を作成できるようになりました。
+    8.1.4: Rails 8 系の標準認証を、Current.session、リクエストの頻度制限、パスワード再設定とあわせて学習できます。
   highlights_by_version:
-    '7.0': No first-party auth generator
-    '8.0': First-party authentication generator
-    8.1.4: Stable Rails 8 auth baseline
+    '7.0': 標準の認証ジェネレータは未同梱
+    '8.0': 標準の認証ジェネレータを追加
+    8.1.4: Rails 8 系の認証機能を継続
   status_by_version:
-    '7.0': Hand-rolled or third-party auth
-    '8.0': First-party generator baseline
-    8.1.4: Stable Rails auth stack
+    '7.0': 独自実装または外部ライブラリを選択
+    '8.0': 標準ジェネレータを利用可能
+    8.1.4: Rails の標準認証を利用可能
   files_by_version:
     '7.0':
     - app/controllers/concerns/authentication.rb
@@ -36,15 +35,14 @@ features:
     - app/views/passwords/edit.html.erb
   upgrade_notes_by_version:
     '7.0':
-    - Replace ad hoc auth with generated sessions, password reset, and signed cookies.
-    - Audit custom sign-in and reset flows before adopting the generator.
+    - 独自の認証を、生成したセッション・パスワード再設定・署名付き Cookie に置き換える範囲を検討します。
+    - ジェネレータを採用する前に、独自のログイン・再設定の経路を確認します。
     '8.0':
-    - Wire the generated controllers into the existing sign-in and password reset
-      screens.
-    - Keep unauthenticated access boundaries explicit around protected pages.
+    - 生成したコントローラを、既存のログイン・再設定画面に接続します。
+    - 保護ページでは、未認証でアクセスできる範囲を明確にします。
     8.1.4:
-    - Keep `Current.session` and `rate_limit` behavior in mind when upgrading.
-    - Verify redirects to the protected page still match the app's auth flow.
+    - 更新時は Current.session と rate_limit の挙動を確認します。
+    - 保護ページへのリダイレクトが既存の認証フローと一致するか確認します。
   code_examples_by_version:
     '7.0':
     - bin/rails generate authentication
@@ -54,11 +52,11 @@ features:
     - start_new_session_for user
   operational_notes_by_version:
     '7.0':
-    - Check custom auth and reset endpoints for gaps before switching.
+    - 切り替え前に、独自の認証・再設定用エンドポイントを確認します。
     '8.0':
-    - Confirm password reset mail delivery and signed session cookies.
+    - 再設定メールの配送と、署名付きセッション Cookie を確認します。
     8.1.4:
-    - Re-test protected pages, rate limits, and session expiry together.
+    - 保護ページ、リクエストの頻度制限、セッションの有効期限をまとめて再確認します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -68,19 +66,19 @@ features:
   category: Interactive Demo
   demo_type: runtime_demo
   title: Solid Queue
-  summary: Active Job backend の変化を、enqueue と状態遷移の UI で確認できます。
+  summary: Active Job のバックエンドの変化を、キューへの登録とジョブの状態遷移で確認できます。
   notes_by_version:
-    '7.0': デフォルトは in-process / non-durable backend で、永続 queue は別途選定が必要でした。
-    '8.0': Solid Queue が production default story に入り、DB-backed queue を採用しやすくなりました。
-    8.1.4: Continuations と組み合わせやすい durable backend として、Rails 8.1 系の新機能の土台にもなります。
+    '7.0': 標準ではプロセス内のメモリにジョブを保持します。再起動後も残す場合は別のバックエンドを選びます。
+    '8.0': 新規アプリの本番構成では Solid Queue が標準となり、ジョブをデータベースに保存しやすくなりました。
+    8.1.4: ジョブをデータベースに保存する Solid Queue を、Rails 8.1 系の Active Job Continuations と組み合わせられます。
   highlights_by_version:
-    '7.0': Async / external queue choice
-    '8.0': Solid Queue arrives
-    8.1.4: Continuations-ready durable queue
+    '7.0': 非同期処理や外部キューを選択
+    '8.0': Solid Queue を標準構成に採用
+    8.1.4: ジョブの継続処理と組み合わせ
   status_by_version:
-    '7.0': In-process or external queue choice
-    '8.0': Production default durable queue
-    8.1.4: Durable queue with continuations baseline
+    '7.0': プロセス内の処理か外部キューを選択
+    '8.0': 本番環境の標準は永続キュー
+    8.1.4: 永続キューと継続処理の基盤を利用
   files_by_version:
     '7.0':
     - app/controllers/queue_runs_controller.rb
@@ -96,15 +94,14 @@ features:
     - app/jobs/queue_run_job.rb
   upgrade_notes_by_version:
     '7.0':
-    - Move from in-process or external queue choices to a durable queue backend.
-    - Add a worker boot command before relying on background processing.
+    - プロセス内の処理や外部キューから、ジョブを永続化するバックエンドへの移行を検討します。
+    - バックグラウンド処理に依存する前に、ワーカーの起動コマンドを用意します。
     '8.0':
-    - Confirm `config/queue.yml` and `bin/jobs` are wired into local development and
-      deploy.
-    - Treat Solid Queue as the default backend story rather than an add-on.
+    - config/queue.yml と bin/jobs が開発環境・デプロイの起動経路につながっているか確認します。
+    - Solid Queue を追加機能ではなく、標準のバックエンドとして扱います。
     8.1.4:
-    - Review continuations, queue durability, and worker concurrency together.
-    - Validate queue visibility and completion reporting after the upgrade.
+    - 継続処理、ジョブの永続性、ワーカーの並列実行数をまとめて確認します。
+    - 更新後にキューの状態を確認でき、完了結果が表示されるか検証します。
   code_examples_by_version:
     '7.0':
     - bin/jobs start
@@ -114,37 +111,26 @@ features:
     - QueueRunJob.perform_later(queue_run.id)
   operational_notes_by_version:
     '7.0':
-    - Check whether a separate worker process is needed before enabling jobs.
+    - ジョブを有効にする前に、独立したワーカープロセスが必要か確認します。
     '8.0':
-    - Keep `bin/jobs start` or an equivalent worker command running.
+    - bin/jobs start または同等のコマンドでワーカーを常時稼働させます。
     8.1.4:
-    - Verify durable queue processing and turbo-stream updates together.
+    - 保存したジョブの実行と Turbo Stream による画面更新を一緒に確認します。
   adoption_when:
-  - You want Rails-native durable Active Job processing without adding a Redis-backed
-    job system first.
-  - The application already accepts database-backed operational components and can
-    run a separate worker process.
-  - Queue behavior should be inspected through Rails app code, schema, and runtime
-    UI rather than only through release notes.
+  - Redis ベースのジョブ基盤を先に追加せず、Rails の Active Job でジョブを永続化したい場合。
+  - データベースに運用用データを保存でき、独立したワーカープロセスを稼働できる場合。
+  - リリースノートだけでなく、アプリのコード・スキーマ・実行画面からキューの挙動を確認したい場合。
   adoption_cautions:
-  - Avoid treating Solid Queue as a drop-in replacement until worker boot, queue
-    schema, retries, and operational ownership are confirmed.
-  - Be careful when migrating from an existing Sidekiq setup with mature queues,
-    middleware, dashboards, or Redis-based operational workflows.
-  - This catalog has not yet verified a production rollback from Solid Queue back
-    to another backend.
+  - ワーカーの起動、キューのスキーマ、再試行、運用責任を確認するまでは、そのまま置き換えられると考えないでください。
+  - Sidekiq のキュー、ミドルウェア、監視画面、Redis に依存する運用がある場合は移行に注意が必要です。
+  - このカタログでは、本番で Solid Queue から別のバックエンドへ切り戻す手順は未検証です。
   adoption_alternatives:
-  - Sidekiq remains a strong option when the app already depends on Redis-backed
-    job operations.
-  - The async adapter can still be enough for local-only or non-durable development
-    checks.
+  - Redis を使ったジョブ運用が定着している場合は、Sidekiq も有力な選択肢です。
+  - ローカルだけの確認や永続性が不要な開発用途では、async アダプタで足りる場合があります。
   adoption_requirements:
-  - "`config/queue.yml` and `db/queue_schema.rb` need to match the intended queue
-    topology."
-  - "`bin/jobs` or an equivalent worker command must be part of local and deploy
-    process management."
-  - Monitoring should cover queued, working, failed, and completed job states before
-    relying on it for production work.
+  - config/queue.yml と db/queue_schema.rb を、想定するキュー構成に合わせます。
+  - bin/jobs または同等のワーカー起動コマンドを、開発・デプロイのプロセス管理に組み込みます。
+  - 本番利用前に queued、working、failed、completed の各状態を監視できるようにします。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -154,19 +140,19 @@ features:
   category: Interactive Demo
   demo_type: runtime_demo
   title: Solid Cable
-  summary: Turbo Stream と DB-backed cable story の違いを、ライブ更新 UI で確認できます。
+  summary: Turbo Stream の画面更新を操作し、データベースを使う Action Cable の構成を比較できます。
   notes_by_version:
-    '7.0': Action Cable は Redis 構成が一般的で、DB-backed cable は標準の主流ではありませんでした。
-    '8.0': Solid Cable が Rails 8 の default stack に入り、DB-backed realtime の選択肢が近くなりました。
-    8.1.4: Solid 系 stack とあわせて、single-app で queue / cache / cable を揃えやすい構成が続いています。
+    '7.0': Action Cable は Redis を使う構成が一般的で、データベースを使う構成は標準では主流でありませんでした。
+    '8.0': Solid Cable が Rails 8 の標準構成に入り、データベースによるリアルタイム配信を選びやすくなりました。
+    8.1.4: Solid Queue・Solid Cache とあわせ、1つのアプリでキュー・キャッシュ・リアルタイム配信を揃えやすい構成を継続しています。
   highlights_by_version:
-    '7.0': Redis-first realtime setups
-    '8.0': Solid Cable default story
-    8.1.4: DB-backed realtime remains first-class
+    '7.0': Redis を中心とする配信構成
+    '8.0': Solid Cable を標準構成に採用
+    8.1.4: データベースによる配信を継続
   status_by_version:
-    '7.0': Redis-backed realtime or custom cable setup
-    '8.0': DB-backed realtime enters the default stack
-    8.1.4: Durable realtime stays first-class
+    '7.0': Redis または独自の Action Cable 構成
+    '8.0': データベースによる配信が標準構成に追加
+    8.1.4: データベースによる配信を継続
   files_by_version:
     '7.0':
     - config/cable.yml
@@ -182,16 +168,14 @@ features:
     - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-    - Move away from Redis-first assumptions if you want the app to stay in the default
-      Rails stack.
-    - Review whether realtime streams can be backed by the database in your environment.
+    - Rails の標準構成を使う場合、Redis が必要という前提を見直します。
+    - 利用環境で配信をデータベースに移せるか確認します。
     '8.0':
-    - Confirm `config/cable.yml` and the cable database are configured together.
-    - Re-test broadcast flows after switching to the DB-backed adapter.
+    - config/cable.yml と配信用データベースの設定をあわせて確認します。
+    - アダプタの切り替え後に配信経路を再確認します。
     8.1.4:
-    - Verify turbo-stream updates, message retention, and database-backed cable polling
-      together.
-    - Keep the cable database and runtime worker story aligned.
+    - Turbo Stream の更新、メッセージの保持期間、データベースのポーリングをまとめて確認します。
+    - 配信用データベースと実行プロセスの構成を揃えます。
   code_examples_by_version:
     '7.0':
     - config/cable.yml
@@ -201,11 +185,11 @@ features:
     - Turbo::StreamsChannel.broadcast_append_to
   operational_notes_by_version:
     '7.0':
-    - Check Redis dependencies and custom cable deployments before migrating.
+    - 移行前に Redis への依存と独自の配信構成を確認します。
     '8.0':
-    - Keep the cable database migrated and reachable in development and production.
+    - 開発・本番の両方で、配信用データベースのスキーマと接続を維持します。
     8.1.4:
-    - Confirm cable polling and retention settings still match the app's usage pattern.
+    - ポーリングと保持期間の設定が利用状況に合っているか確認します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -215,19 +199,19 @@ features:
   category: Interactive Demo
   demo_type: runtime_demo
   title: Solid Cache
-  summary: Cache hit / miss を通じて、durable cache story の違いを比較できます。
+  summary: キャッシュのヒット・ミスを操作して、データを永続化するキャッシュの構成を比較できます。
   notes_by_version:
-    '7.0': memory_store や Redis を環境ごとに選ぶことが多く、durable cache は標準同梱ではありませんでした。
-    '8.0': Solid Cache が標準 stack に入り、DB-backed cache を採用しやすくなりました。
-    8.1.4: Solid Cache は Rails 8.1 系でも durable stack の一部として継続し、queue / cable と一緒に理解しやすくなっています.
+    '7.0': memory_store や Redis を環境ごとに選ぶことが多く、永続化するキャッシュは標準同梱ではありませんでした。
+    '8.0': Solid Cache が標準構成に入り、データベースを使うキャッシュを採用しやすくなりました。
+    8.1.4: Rails 8.1 系でも Solid Cache を標準構成の一部として継続し、Solid Queue・Solid Cable とあわせて学習できます。
   highlights_by_version:
-    '7.0': Choose cache backend yourself
-    '8.0': Solid Cache arrives
-    8.1.4: Durable stack remains cohesive
+    '7.0': キャッシュの保存先を個別に選択
+    '8.0': Solid Cache を標準構成に採用
+    8.1.4: 永続化する標準構成を継続
   status_by_version:
-    '7.0': Memory or Redis cache configuration
-    '8.0': DB-backed cache enters the default stack
-    8.1.4: Durable cache remains part of the stack
+    '7.0': メモリまたは Redis のキャッシュ構成
+    '8.0': データベースを使うキャッシュを標準構成に追加
+    8.1.4: 永続キャッシュを標準構成として継続
   files_by_version:
     '7.0':
     - config/cache.yml
@@ -243,14 +227,14 @@ features:
     - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-    - Revisit cache backend selection if you are moving from Redis or memory store.
-    - Check database capacity before shifting cache traffic into Solid Cache.
+    - Redis やメモリから移行する際は、保存先の選択を見直します。
+    - キャッシュのアクセスを Solid Cache に移す前に、データベースの容量を確認します。
     '8.0':
-    - Align `config/cache.yml` with the new durable cache story.
-    - Validate cache hit / miss behavior in development and deploy environments.
+    - config/cache.yml を永続キャッシュの構成に合わせます。
+    - 開発環境とデプロイ先で、キャッシュのヒット・ミスを確認します。
     8.1.4:
-    - Keep cache retention, database size, and runtime expectations aligned.
-    - Re-check the app's cache keys after the upgrade.
+    - 保持期間、データベースの容量、実行時の要件を揃えます。
+    - 更新後にアプリのキャッシュキーを再確認します。
   code_examples_by_version:
     '7.0':
     - config/cache.yml
@@ -260,37 +244,26 @@ features:
     - Rails.cache.fetch
   operational_notes_by_version:
     '7.0':
-    - Review whether existing Redis assumptions still fit the deployment.
+    - 既存の Redis を前提とした運用が、移行先にも適しているか確認します。
     '8.0':
-    - Confirm the cache database and retention settings match the workload.
+    - キャッシュ用データベースと保持期間を、実際の負荷に合わせます。
     8.1.4:
-    - Check cache warmup, invalidation, and the database footprint together.
+    - キャッシュの事前生成・無効化と、データベース使用量をまとめて確認します。
   adoption_when:
-  - You want a Rails-native durable cache option without introducing Redis only
-    for cache storage.
-  - The application can tolerate database-backed cache storage and has a clear
-    retention policy.
-  - Cache behavior should be reviewed through `Rails.cache` usage, keys, and the
-    app's runtime hit / miss behavior.
+  - キャッシュの保存だけを目的に Redis を追加せず、Rails の構成でキャッシュを永続化したい場合。
+  - データベースをキャッシュの保存先にでき、保持期間の方針が明確な場合。
+  - Rails.cache の呼び出し、キー、実行時のヒット・ミスからキャッシュの挙動を確認したい場合。
   adoption_cautions:
-  - Avoid moving cache traffic into the database until capacity, retention, and
-    cleanup expectations are understood.
-  - Be careful when existing production operations already depend on Redis metrics,
-    eviction behavior, or cache-specific tooling.
-  - This catalog has not yet verified production cache pressure or rollback from
-    Solid Cache to Redis / memory store.
+  - データベースの容量、保持期間、削除処理を把握するまでは、キャッシュのアクセスをデータベースに移さないでください。
+  - Redis の指標、メモリ不足時の削除動作、キャッシュ専用ツールに本番運用が依存する場合は注意が必要です。
+  - このカタログでは、本番のキャッシュ負荷や、Solid Cache から Redis・memory_store への切り戻しは未検証です。
   adoption_alternatives:
-  - Redis remains a good fit when the deployment already operates Redis and depends
-    on its eviction and observability model.
-  - "`memory_store` can still be enough for small development-only checks where
-    durability is not required."
+  - Redis を運用していて、そのメモリ管理や監視の仕組みに依存する場合は Redis も適しています。
+  - 永続性が不要な小規模の開発用確認では、memory_store で足りる場合があります。
   adoption_requirements:
-  - "`config/cache.yml` needs to describe the intended cache database and store
-    behavior."
-  - Cache table size, expiration, and cleanup should be monitored before relying
-    on Solid Cache in production.
-  - Cache keys and invalidation paths should be rechecked when moving from Redis
-    or memory store.
+  - config/cache.yml に、想定するキャッシュ用データベースと保存方法を定義します。
+  - 本番利用前に、キャッシュ用テーブルの容量、有効期限、削除処理を監視できるようにします。
+  - Redis やメモリから移行する際は、キャッシュキーと無効化の経路を再確認します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -299,17 +272,16 @@ features:
 - slug: runtime-stack
   category: Interactive Demo
   demo_type: runtime_demo
-  title: Runtime stack overview
-  summary: 現行 app の runtime facts を見ながら、Rails の標準 stack がどう進化したかを俯瞰できます。
+  title: 実行環境の構成
+  summary: 現在のアプリの設定と実行状況から、Rails の標準構成の変化を確認できます。
   notes_by_version:
-    '7.0': Hotwire は大きなテーマでしたが、queue / cache / cable / deploy は個別選定の色が強めでした。
-    '8.0': Solid Queue / Cache / Cable、Kamal、Thruster などで default story が一段まとまりました。
-    8.1.4: 8.1 では Continuations・Structured Event Reporting・Local CI など、運用と開発体験の story
-      がさらに広がりました。
+    '7.0': Hotwire が大きなテーマとなる一方、キュー・キャッシュ・配信・デプロイは個別に選択する場面が多くありました。
+    '8.0': Solid Queue・Solid Cache・Solid Cable、Kamal、Thruster により標準構成がまとまりました。
+    8.1.4: Rails 8.1 系では Active Job Continuations・Structured Event Reporting・Local CI など、運用と開発体験が広がりました。
   highlights_by_version:
-    '7.0': Hotwire era baseline
-    '8.0': Default stack gets cohesive
-    8.1.4: Operational developer experience expands
+    '7.0': Hotwire を中心とする構成
+    '8.0': 標準構成がまとまる
+    8.1.4: 運用と開発体験が拡充
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
@@ -318,14 +290,14 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Active Job Continuations
-  summary: 長い job を step 単位で継続できる Rails 8.1 の新機能です。
+  summary: Rails 8.1 で追加された、長いジョブをステップ単位で継続できる機能です。
   notes_by_version:
-    '7.0': 中断に強い multi-step job を標準 API だけで表現するのは難しく、再開ロジックは自前で持ちがちでした。
-    '8.0': Solid Queue は入りましたが、job continuation 自体はまだ標準 API ではありませんでした。
-    8.1.4: ActiveJob::Continuable により step / cursor を用いた再開可能ジョブを標準で組み立てられます。8.1.4 ではエラー後の再開時に例外が正しく記録されるよう修正されています。
+    '7.0': 複数ステップに分けたジョブを中断後に再開するには、標準 API 以外の仕組みや独自の再開ロジックが必要でした。
+    '8.0': Solid Queue は導入されましたが、ジョブの継続処理はまだ標準 API ではありませんでした。
+    8.1.4: ActiveJob::Continuable のステップとカーソルで、再開可能なジョブを作成できます。8.1.4 では、エラー後の再開時に例外が正しく記録されるよう修正されています。
   highlights_by_version:
-    '7.0': Custom resumable jobs
-    '8.0': Durable queue without continuations
+    '7.0': 再開可能なジョブを独自実装
+    '8.0': 永続キューを採用、継続処理は未同梱
     8.1.4: ActiveJob::Continuable
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -335,15 +307,14 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Structured Event Reporting
-  summary: Rails 8.1 の Event Reporter により、構造化イベントを標準インターフェースで発行できます。
+  summary: Rails 8.1 の Event Reporter で、構造化イベントを統一したインターフェースから発行できます。
   notes_by_version:
-    '7.0': 構造化イベントは ActiveSupport::Notifications や独自 logger 設計に分散しやすい状態でした。
-    '8.0': 運用向け default story は広がりましたが、統一的な structured event API はまだありませんでした。
-    8.1.4: Rails.event.notify / tagged / set_context と subscriber により、post-processing
-      向けイベントを標準化できます。
+    '7.0': 構造化イベントの処理は ActiveSupport::Notifications や独自のログ設計に分散しがちでした。
+    '8.0': 運用向けの標準構成は広がりましたが、構造化イベントの統一 API は未同梱でした。
+    8.1.4: Rails.event.notify、tagged、set_context とサブスクライバを使い、後続処理用のイベントを標準化できます。
   highlights_by_version:
-    '7.0': Notifications + custom logging
-    '8.0': No unified event reporter yet
+    '7.0': Notifications と独自のログ設計
+    '8.0': 統一した Event Reporter は未同梱
     8.1.4: Rails.event
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -353,14 +324,14 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Markdown Rendering
-  summary: Rails 8.1 では Markdown response / rendering をより直接扱えるようになりました。
+  summary: Rails 8.1 では Markdown のレスポンスとレンダリングを直接扱いやすくなりました。
   notes_by_version:
-    '7.0': Markdown response は gem や custom responder による拡張が前提になりやすかったです。
-    '8.0': 標準 rendering story は引き続き HTML / JSON 中心でした。
-    8.1.4: 'respond_to の中で render markdown: object を使う導線が公式 release notes に登場しました。'
+    '7.0': Markdown のレスポンスは gem や独自のレスポンダによる拡張が必要になることが多くありました。
+    '8.0': 標準のレンダリングは引き続き HTML と JSON が中心でした。
+    8.1.4: '公式リリースノートで、respond_to の中に render markdown: object を書く方法が紹介されました。'
   highlights_by_version:
-    '7.0': Custom markdown rendering
-    '8.0': No first-class markdown response
+    '7.0': 独自の Markdown レンダリング
+    '8.0': Markdown レスポンスの標準対応は未同梱
     8.1.4: 'render markdown:'
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -370,15 +341,15 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Local CI
-  summary: Rails 8.1 の Local CI DSL は、cloud CI 以外の軽量な標準導線を提供します。
+  summary: Rails 8.1 の Local CI DSL で、クラウド CI 以外にもローカルで実行できる標準の手順を定義できます。
   notes_by_version:
-    '7.0': CI は GitHub Actions や CircleCI などクラウド設定ファイル中心でした。
-    '8.0': 新規 app に CI workflow は入りますが、ローカル実行前提の DSL はありませんでした。
-    8.1.4: config/ci.rb と bin/ci によって、developer machine での標準 CI declaration が導入されました。
+    '7.0': GitHub Actions や CircleCI など、クラウド CI の設定ファイルを使う構成が中心でした。
+    '8.0': 新規アプリに CI ワークフローは含まれますが、ローカル実行向けの DSL はありませんでした。
+    8.1.4: config/ci.rb と bin/ci により、開発マシン上で実行する CI の手順を定義できるようになりました。
   highlights_by_version:
-    '7.0': Cloud CI first
-    '8.0': Generated CI workflow
-    8.1.4: config/ci.rb + bin/ci
+    '7.0': クラウド CI が中心
+    '8.0': CI ワークフローを生成
+    8.1.4: config/ci.rb と bin/ci
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html
@@ -387,14 +358,14 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Command-line Credentials Fetching
-  summary: Rails 8.1 では CLI から credentials を取り出す deploy 導線が強化されました。
+  summary: Rails 8.1 では、コマンドラインで credentials を取得し、デプロイに利用しやすくなりました。
   notes_by_version:
-    '7.0': credentials は Rails 内で読む前提が強く、deploy 連携は custom scripting に寄りがちでした。
-    '8.0': Kamal は近くなりましたが、credentials fetch を前提にした CLI story はまだ薄めでした。
-    8.1.4: rails credentials:fetch が紹介され、Kamal secrets と encrypted credentials をつなぎやすくなりました。
+    '7.0': credentials は Rails 内で読むことが多く、デプロイとの連携には独自のスクリプトが必要になりがちでした。
+    '8.0': Kamal は標準構成に加わりましたが、credentials の取得を前提とするコマンドラインの利用手順はまだ限られていました。
+    8.1.4: rails credentials:fetch が紹介され、Kamal のシークレットと暗号化した credentials を接続しやすくなりました。
   highlights_by_version:
-    '7.0': Custom secret scripting
-    '8.0': Kamal introduced
+    '7.0': シークレット取得を独自実装
+    '8.0': Kamal を標準構成に追加
     8.1.4: rails credentials:fetch
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -404,14 +375,14 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Deprecated Associations
-  summary: Rails 8.1 では association 自体を deprecated として宣言し、利用報告できます。
+  summary: Rails 8.1 では、関連を非推奨と宣言して、その利用を検出できます。
   notes_by_version:
-    '7.0': association の利用抑制や移行警告は、lint や手製 warning に頼ることが多かったです。
-    '8.0': 標準の association deprecation reporting はまだありませんでした。
-    8.1.4: 'has_many :posts, deprecated: true のように関連自体へ deprecation を付けられます。'
+    '7.0': 関連の利用を制限したり移行を警告したりするには、静的検査や独自の警告処理を使うことが多くありました。
+    '8.0': 非推奨の関連の利用を検出する標準機能は未同梱でした。
+    8.1.4: 'has_many :posts, deprecated: true のように、関連そのものを非推奨と宣言できます。'
   highlights_by_version:
-    '7.0': Manual migration warnings
-    '8.0': No built-in deprecated associations
+    '7.0': 移行警告を独自実装
+    '8.0': 非推奨の関連の標準対応は未同梱
     8.1.4: 'deprecated: true'
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -421,20 +392,19 @@ features:
   category: Config / Platform Differences
   demo_type: comparison_card
   title: Propshaft
-  summary: asset pipeline story が Sprockets optional から Propshaft default へどう変わったかを整理します。
+  summary: Sprockets が任意の依存関係となり、Propshaft が標準になるまでのアセットパイプラインの変化を比較します。
   notes_by_version:
-    '7.0': Sprockets は optional dependency になりましたが、asset pipeline の比較軸では依然 Sprockets
-      前提が強く残っていました。
-    '8.0': 新規 app は Propshaft が前提になり、より薄い asset 管理へ寄りました。
-    8.1.4: Propshaft 前提は継続し、importmap / Hotwire と組み合わせた軽量構成を保ちやすいです。
+    '7.0': Sprockets は任意の依存関係になりましたが、アセットパイプラインでは引き続き主要な比較対象でした。
+    '8.0': 新規アプリでは Propshaft が標準となり、アセット管理が簡素になりました。
+    8.1.4: Propshaft を標準とする構成を継続し、importmap・Hotwire と組み合わせた軽量な構成を保ちやすくなっています。
   highlights_by_version:
-    '7.0': Sprockets becomes optional
-    '8.0': Propshaft default
-    8.1.4: Propshaft continues as baseline
+    '7.0': Sprockets が任意の依存関係に
+    '8.0': Propshaft が標準に
+    8.1.4: Propshaft の標準採用を継続
   status_by_version:
-    '7.0': Sprockets is still the common comparison point
-    '8.0': Propshaft becomes the default asset story
-    8.1.4: Propshaft remains the baseline
+    '7.0': Sprockets が主要な比較対象
+    '8.0': アセットパイプラインの標準は Propshaft
+    8.1.4: Propshaft の標準採用を継続
   files_by_version:
     '7.0':
     - config/importmap.rb
@@ -450,14 +420,14 @@ features:
     - app/controllers/features_controller.rb
   upgrade_notes_by_version:
     '7.0':
-    - Trim Sprockets-specific assumptions before adopting Propshaft.
-    - Check how asset fingerprinting and importmap fit together.
+    - Propshaft を採用する前に、Sprockets 固有の前提を整理します。
+    - アセットのフィンガープリントと importmap の組み合わせを確認します。
     '8.0':
-    - Make sure the new default asset pipeline is wired into app boot and deploy.
-    - Review any Sprockets-specific helper or asset config before migrating.
+    - 標準のアセットパイプラインが、アプリの起動とデプロイに組み込まれているか確認します。
+    - 移行前に、Sprockets 固有のヘルパーや設定を確認します。
     8.1.4:
-    - Keep importmap and Propshaft aligned when updating assets.
-    - Re-check fingerprinted asset behavior after each release upgrade.
+    - アセットの更新時は、importmap と Propshaft の設定を揃えます。
+    - Rails の更新ごとに、フィンガープリント付きアセットの挙動を再確認します。
   code_examples_by_version:
     '7.0':
     - config/importmap.rb
@@ -467,11 +437,11 @@ features:
     - importmap + Propshaft
   operational_notes_by_version:
     '7.0':
-    - Audit any Sprockets assumptions in helpers and asset loading paths.
+    - ヘルパーやアセットの読み込み経路に、Sprockets 固有の前提がないか確認します。
     '8.0':
-    - Confirm asset precompilation and fingerprinted file handling still work.
+    - アセットの事前コンパイルと、フィンガープリント付きファイルの処理を確認します。
     8.1.4:
-    - Re-test asset delivery after deploy or cache invalidation changes.
+    - デプロイやキャッシュ無効化の変更後に、アセットの配信を再確認します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -480,20 +450,20 @@ features:
 - slug: kamal
   category: Config / Platform Differences
   demo_type: comparison_card
-  title: Kamal deployments
-  summary: Kamal が Rails app の deploy story にどう入ってきたかを比較します。
+  title: Kamal によるデプロイ
+  summary: Kamal が Rails アプリの標準的なデプロイ構成に加わるまでの変化を比較します。
   notes_by_version:
-    '7.0': deploy は Capistrano / custom CI/CD / PaaS 依存になりがちでした。
-    '8.0': Kamal が Gemfile / config に入り、self-hosted deploy 導線が app に近づきました。
-    8.1.4: Registry-free Kamal deployments が追加され、最初の deploy story がさらに軽くなりました。
+    '7.0': Capistrano、独自の CI/CD、PaaS などに依存するデプロイが中心でした。
+    '8.0': Kamal が Gemfile や設定に加わり、自分で管理するサーバーへのデプロイをアプリに組み込みやすくなりました。
+    8.1.4: コンテナレジストリを使わない Kamal のデプロイが追加され、初回デプロイの準備が簡素になりました。
   highlights_by_version:
-    '7.0': Deploy left to app teams
-    '8.0': Kamal integrated
-    8.1.4: Registry-free Kamal deploys
+    '7.0': アプリのチームがデプロイ方式を選択
+    '8.0': Kamal を統合
+    8.1.4: レジストリなしの Kamal デプロイ
   status_by_version:
-    '7.0': Custom deploy pipelines dominate
-    '8.0': Kamal becomes part of the default deploy story
-    8.1.4: Registry-free deploy is available
+    '7.0': 独自のデプロイ経路が中心
+    '8.0': Kamal が標準のデプロイ構成に追加
+    8.1.4: レジストリなしのデプロイが利用可能
   files_by_version:
     '7.0':
     - config/deploy.yml
@@ -509,14 +479,14 @@ features:
     - app/views/features/demos/_kamal.html.erb
   upgrade_notes_by_version:
     '7.0':
-    - Replace bespoke deploy pipelines with a repeatable app-centric deploy flow.
-    - Review secrets handling before moving to Kamal.
+    - 独自のデプロイ経路から、アプリを中心に再現できる手順への移行を検討します。
+    - Kamal へ移行する前に、シークレットの扱いを確認します。
     '8.0':
-    - Keep `config/deploy.yml` and `.kamal/secrets` in sync with the deploy target.
-    - Decide whether the new deploy story should own registry and proxy settings.
+    - config/deploy.yml と .kamal/secrets をデプロイ先に合わせます。
+    - コンテナレジストリとプロキシの設定を、新しいデプロイ経路で管理するか決めます。
     8.1.4:
-    - Check registry-free deploy and production defaults before rolling forward.
-    - Revisit secret and image host handling as part of the upgrade.
+    - 更新前に、レジストリなしのデプロイと本番の標準設定を確認します。
+    - 更新の一環として、シークレットとイメージの保存先を見直します。
   code_examples_by_version:
     '7.0':
     - bin/kamal deploy
@@ -526,40 +496,27 @@ features:
     - rails credentials:fetch
   operational_notes_by_version:
     '7.0':
-    - Keep deploy secrets and server inventory separately documented.
+    - デプロイ用シークレットとサーバー一覧を、分けて文書化します。
     '8.0':
-    - Verify the deploy image host, proxy, and secret settings together.
+    - イメージの保存先、プロキシ、シークレットの設定をまとめて確認します。
     8.1.4:
-    - Re-check registry-free deploy assumptions before production rollout.
+    - 本番配備前に、レジストリなしでデプロイするための前提を再確認します。
   adoption_when:
-  - You want an app-centric deploy flow where container image, server inventory,
-    proxy, and secrets are reviewed from the Rails repository.
-  - The team is comfortable owning self-hosted deployment operations instead of
-    relying entirely on a PaaS.
-  - Deploy behavior should be inspected through `config/deploy.yml`, `.kamal/secrets`,
-    Docker image settings, and runtime commands.
+  - コンテナイメージ、サーバー一覧、プロキシ、シークレットを Rails のリポジトリから確認できるデプロイを求める場合。
+  - PaaS にすべてを任せず、チームでサーバーへのデプロイを運用できる場合。
+  - config/deploy.yml、.kamal/secrets、Docker イメージの設定、実行コマンドからデプロイの挙動を確認したい場合。
   adoption_cautions:
-  - Avoid treating Kamal as only a generated config file; server access, registry
-    auth, proxy settings, and rollback behavior all need operational ownership.
-  - Be careful when existing Capistrano, PaaS, or CI/CD deploy flows already encode
-    environment-specific safety checks.
-  - This catalog has not yet verified a production rollback or registry-free deploy
-    flow end to end.
+  - 生成した設定ファイルだけで運用できるとは考えないでください。サーバー接続、レジストリの認証、プロキシ、切り戻しにも運用責任が必要です。
+  - 既存の Capistrano・PaaS・CI/CD に環境固有の安全確認がある場合は、移行時に注意が必要です。
+  - このカタログでは、本番の切り戻しやレジストリなしのデプロイを、一連の操作としては検証していません。
   adoption_alternatives:
-  - Capistrano remains a familiar option for SSH-based deployments without adopting
-    Kamal's container workflow.
-  - PaaS platforms can still be preferable when the team wants less server and
-    proxy ownership.
-  - Existing CI/CD pipelines may remain the safer path if they already cover secrets,
-    approvals, and rollback.
+  - Kamal のコンテナ構成を採用せず SSH でデプロイしたい場合は、Capistrano も選択肢です。
+  - サーバーとプロキシの管理負担を減らしたい場合は、PaaS が適することもあります。
+  - 既存の CI/CD がシークレット、承認、切り戻しを網羅している場合は、それを維持する方が安全なこともあります。
   adoption_requirements:
-  - "`config/deploy.yml` needs real server, image, proxy, and environment settings
-    before it is production-ready."
-  - "`.kamal/secrets` should read from ENV or a password manager instead of local
-    files such as `config/master.key` before treating the deploy path as
-    public-safe."
-  - Registry credentials, `RAILS_MASTER_KEY`, and rollback commands should be tested
-    together before relying on Kamal for production work.
+  - 本番利用前に、config/deploy.yml に実際のサーバー・イメージ・プロキシ・環境設定を指定します。
+  - 公開しても安全なデプロイ経路にするには、.kamal/secrets で config/master.key などのローカルファイルではなく、環境変数やパスワードマネージャを参照します。
+  - 本番で Kamal に依存する前に、レジストリの認証情報、RAILS_MASTER_KEY、切り戻しコマンドをまとめて検証します。
   live_demo_available: true
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
@@ -568,16 +525,16 @@ features:
 - slug: thruster
   category: Config / Platform Differences
   demo_type: comparison_card
-  title: Thruster / production defaults
-  summary: reverse proxy / acceleration を含む production story の変化を比較します。
+  title: Thruster と本番環境の標準構成
+  summary: リバースプロキシや配信の高速化を含む、本番環境の標準構成の変化を比較します。
   notes_by_version:
-    '7.0': 本番向け reverse proxy / acceleration は app 外で組み立てる前提が強めでした。
-    '8.0': Thruster が生成時に入り、本番構成の default story が一段増えました。
-    8.1.4: Thruster を含む production defaults は、Kamal や local CI と並ぶ運用導線の一部として理解しやすくなっています。
+    '7.0': 本番環境のリバースプロキシや高速化は、アプリの外で構成することが多くありました。
+    '8.0': 生成した構成に Thruster が加わり、本番向けの標準構成が拡充しました。
+    8.1.4: Thruster を含む本番環境の標準構成を、Kamal や Local CI とあわせて学習できます。
   highlights_by_version:
-    '7.0': External production proxy choices
-    '8.0': Thruster added
-    8.1.4: Production story stays cohesive
+    '7.0': 外部の本番用プロキシを選択
+    '8.0': Thruster を追加
+    8.1.4: 本番環境の標準構成を継続
   source_links_by_version:
     '7.0': https://guides.rubyonrails.org/7_0_release_notes.html
     '8.0': https://guides.rubyonrails.org/8_0_release_notes.html

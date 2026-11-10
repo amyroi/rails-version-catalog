@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for(@user)
-      redirect_to auth_lab_path, notice: "Your demo account is ready."
+      redirect_to auth_lab_path, notice: "デモ用アカウントを作成しました。"
     else
       render :new, status: :unprocessable_entity
     end

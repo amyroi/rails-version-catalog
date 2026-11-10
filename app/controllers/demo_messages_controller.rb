@@ -13,7 +13,7 @@ class DemoMessagesController < ApplicationController
         locals: { demo_message: @demo_message }
       )
 
-      redirect_to feature_path("solid-cable", compare: params[:compare]), notice: "Message broadcast."
+      redirect_to feature_path("solid-cable", compare: params[:compare]), notice: "メッセージを配信しました。"
     else
       redirect_to feature_path("solid-cable", compare: params[:compare]), alert: @demo_message.errors.full_messages.to_sentence
     end

@@ -59,10 +59,6 @@ class CatalogFeature
     slug.tr("-", "_")
   end
 
-  def category_label
-    runtime_demo? ? "Interactive Demo" : "Config / Platform Differences"
-  end
-
   def available_versions
     supported_versions.filter_map { |key| VersionCatalog.fetch(key) }
   end
